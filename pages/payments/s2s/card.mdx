@@ -1,0 +1,115 @@
+## Card Payments (S2S)
+
+### Overview
+
+Process card payments securely through Sayswitch's Server-to-Server (S2S) API. This integration method allows direct card processing from your server without exposing sensitive data to the client side.
+
+### Card Payment Flow
+
+1. Collect card details securely
+2. Submit payment request to Sayswitch
+3. Handle 3DS authentication if required
+4. Process payment response
+
+### Basic Implementation
+
+```javascript
+const sayswitch = new Sayswitch({
+  secretKey: process.env.SAYSWITCH_SECRET_KEY
+});
+
+// Process card payment
+const cardPayment = await sayswitch.s2s.cards.charge({
+  amount: 5000, // Amount in cents
+  currency: 'USD',
+  card: {
+    number: '4242424242424242',
+    expiry_month: '12',
+    expiry_year: '25',
+    cvv: '123'
+  },
+  customer: {
+    email: 'customer@example.com',
+    name: 'John Doe'
+  },
+  reference: 'TX_REF_123'
+});
+```
+
+### Handling 3D Secure
+
+```javascript
+const process3DS = async (paymentId) => {
+  const verification = await sayswitch.s2s.cards.verify3DS({
+    payment_id: paymentId,
+    callback_url: 'https://your-domain.com/3ds-callback'
+  });
+
+  return verification.redirect_url;
+};
+```
+
+### Test Cards
+
+| Card Number | Description | 3DS Status |
+|------------|-------------|------------|
+| 4242424242424242 | Successful payment | No 3DS |
+| 4000000000003220 | Successful payment | 3DS required |
+| 4000000000000002 | Declined payment | No 3DS |
+
+### Error Handling
+
+```javascript
+try {
+  const payment = await sayswitch.s2s.cards.charge({
+    // payment details
+  });
+} catch (error) {
+  if (error.code === 'card_declined') {
+    // Handle declined card
+  } else if (error.code === '3ds_required') {
+    // Redirect to 3DS verification
+  } else {
+    // Handle other errors
+  }
+}
+```
+
+### Security Requirements
+
+1. **PCI Compliance**
+   - Ensure PCI DSS compliance for card data handling
+   - Use secure TLS 1.2+ connections
+   - Implement proper data encryption
+
+2. **Data Validation**
+   - Validate card numbers using Luhn algorithm
+   - Check expiry dates
+   - Verify CVV format
+
+### Response Codes
+
+| Code | Description |
+|------|-------------|
+| 0000 | Success |
+| 1000 | Card declined |
+| 1001 | Insufficient funds |
+| 1002 | Card expired |
+| 1003 | Invalid card |
+
+### Best Practices
+
+- Never log full card numbers
+- Implement retry logic for failed transactions
+- Store card tokens for recurring payments
+- Monitor fraud patterns
+- Implement velocity checks
+
+### Next Steps
+
+- [Card Tokenization](/payments/s2s/tokenization)
+- [Recurring Payments](/payments/s2s/recurring)
+- [3DS Integration](/payments/s2s/3ds)
+- [Error Handling](/payments/s2s/errors)
+
+Need help? Contact our support team at support@sayswitch.com

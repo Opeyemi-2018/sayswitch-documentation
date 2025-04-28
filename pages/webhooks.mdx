@@ -1,0 +1,141 @@
+## Webhooks
+
+### Overview
+
+Webhooks allow your application to receive real-time notifications about events that occur in your Sayswitch account. When an event occurs, we'll send an HTTP POST request to your configured endpoint.
+
+### Setting Up Webhooks
+
+1. Log into your [Sayswitch Dashboard](https://dashboard.sayswitch.com)
+2. Navigate to Settings > Webhooks
+3. Add your endpoint URL
+4. Select events you want to receive
+5. Save your configuration
+
+### Handling Webhook Events
+
+```javascript
+const express = require('express');
+const app = express();
+
+app.post('/webhook', express.json(), (req, res) => {
+  const event = req.body;
+  
+  // Verify webhook signature
+  const isValid = sayswitch.webhooks.verify(
+    req.body,
+    req.headers['x-sayswitch-signature']
+  );
+
+  if (!isValid) {
+    return res.status(400).send('Invalid signature');
+  }
+
+  // Handle different event types
+  switch (event.type) {
+    case 'payment.success':
+      handleSuccessfulPayment(event.data);
+      break;
+    case 'payment.failed':
+      handleFailedPayment(event.data);
+      break;
+    default:
+      console.log('Unhandled event type:', event.type);
+  }
+
+  res.status(200).send('Webhook received');
+});
+```
+
+### Event Types
+
+| Event Type | Description |
+|------------|-------------|
+| payment.success | Payment was successful |
+| payment.failed | Payment failed |
+| payment.pending | Payment is pending |
+| transfer.success | Transfer was successful |
+| transfer.failed | Transfer failed |
+| refund.processed | Refund was processed |
+
+### Security
+
+#### Verifying Signatures
+
+```javascript
+const signature = req.headers['x-sayswitch-signature'];
+const payload = req.body;
+const webhookSecret = process.env.SAYSWITCH_WEBHOOK_SECRET;
+
+const isValid = sayswitch.webhooks.verify(payload, signature, webhookSecret);
+```
+
+#### Best Practices
+
+1. **Verify Signatures**
+   - Always verify webhook signatures
+   - Keep webhook secret secure
+   - Reject unverified requests
+
+2. **Response Handling**
+   - Respond quickly (within 5 seconds)
+   - Process events asynchronously
+   - Implement retry logic
+
+3. **Monitoring**
+   - Log webhook events
+   - Monitor failed deliveries
+   - Set up alerts for failures
+
+### Testing Webhooks
+
+1. **Local Testing**
+   - Use tools like ngrok for local development
+   - Test with our webhook simulator
+   - Verify signature validation
+
+```bash
+# Start ngrok on your webhook endpoint port
+ngrok http 3000
+```
+
+2. **Test Events**
+   - Use test API keys
+   - Trigger test events from dashboard
+   - Verify event handling
+
+### Sample Event Payload
+
+```json
+{
+  "id": "evt_123456789",
+  "type": "payment.success",
+  "created": "2025-04-28T12:00:00Z",
+  "data": {
+    "reference": "TRX_123456",
+    "amount": 5000,
+    "currency": "USD",
+    "status": "success",
+    "customer": {
+      "email": "customer@example.com"
+    }
+  }
+}
+```
+
+### Troubleshooting
+
+- Check webhook logs in dashboard
+- Verify endpoint is accessible
+- Confirm correct secret key
+- Monitor response times
+- Check signature validation
+
+### Next Steps
+
+- [Webhook Integration Guide](/webhooks/integration)
+- [Event Types Reference](/webhooks/events)
+- [Security Best Practices](/webhooks/security)
+- [Testing Guide](/webhooks/testing)
+
+Need help? Contact support at developers@sayswitch.com

@@ -1,0 +1,111 @@
+## Server-to-Server (S2S) Payments
+
+### Overview
+
+Server-to-Server (S2S) payments allow you to process transactions directly between your server and Sayswitch's payment infrastructure, providing more control and customization options for your payment integration.
+
+### Key Benefits
+
+- **Enhanced Security**: Direct server communication reduces exposure to client-side vulnerabilities
+- **Better Control**: Manage the entire payment flow programmatically
+- **Automated Processing**: Ideal for recurring payments and batch transactions
+- **Flexible Integration**: Build custom payment experiences
+
+### Prerequisites
+
+- Sayswitch account with API access
+- Server-side environment with TLS 1.2+
+- Secret API key
+
+### Basic Implementation
+
+```javascript
+const sayswitch = new Sayswitch({
+  secretKey: process.env.SAYSWITCH_SECRET_KEY
+});
+
+// Initialize S2S payment
+const payment = await sayswitch.s2s.initiate({
+  amount: 10000,
+  currency: 'USD',
+  customer: {
+    email: 'customer@example.com',
+    reference: 'CUST_123'
+  },
+  payment_method: {
+    type: 'card',
+    card_number: '4242424242424242',
+    expiry_month: '12',
+    expiry_year: '25',
+    cvv: '123'
+  },
+  metadata: {
+    order_id: 'ORDER_123'
+  }
+});
+```
+
+### Security Requirements
+
+1. **TLS Configuration**
+   - Minimum TLS version 1.2
+   - Strong cipher suites
+   - Valid SSL certificates
+
+2. **Data Protection**
+   - Encrypt sensitive data
+   - Implement request signing
+   - Use secure key storage
+
+### Payment Flow
+
+1. **Authentication**
+   - Validate API credentials
+   - Generate request signature
+
+2. **Transaction Processing**
+   - Submit payment details
+   - Process payment
+   - Handle response
+
+3. **Verification**
+   - Confirm transaction status
+   - Process webhooks
+   - Update records
+
+### Response Handling
+
+```javascript
+try {
+  const payment = await sayswitch.s2s.initiate({
+    // payment details
+  });
+
+  if (payment.status === 'success') {
+    // Handle successful payment
+  } else {
+    // Handle pending or failed payment
+  }
+} catch (error) {
+  // Handle API errors
+}
+```
+
+### Testing
+
+Use these test credentials:
+
+| Card Number | Description |
+|------------|-------------|
+| 4242424242424242 | Successful payment |
+| 4000000000000002 | Failed payment |
+| 4000000000000259 | 3DS required |
+
+### Next Steps
+
+- [S2S Integration Guide](/payments/s2s/integration)
+- [Error Handling](/payments/s2s/errors)
+- [Security Best Practices](/payments/s2s/security)
+- [API Reference](/api-reference/s2s)
+
+For support, contact our technical team at developers@sayswitch.com

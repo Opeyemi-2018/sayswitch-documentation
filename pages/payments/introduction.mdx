@@ -1,0 +1,76 @@
+## Introduction to Payments
+
+### Getting Started with Sayswitch Payments
+
+Sayswitch provides a robust payment processing system that allows you to accept payments from customers worldwide. This guide will help you understand the basics of implementing payments in your application.
+
+### Payment Flow
+
+1. **Initialize Payment**
+   - Create a payment session
+   - Set amount and currency
+   - Specify payment methods
+
+2. **Customer Payment**
+   - Customer enters payment details
+   - Payment is processed
+   - Transaction is verified
+
+3. **Confirmation**
+   - Receive webhook notification
+   - Update order status
+   - Send confirmation to customer
+
+### Basic Implementation
+
+```javascript
+const sayswitch = new Sayswitch({
+  secretKey: process.env.SAYSWITCH_SECRET_KEY
+});
+
+// Initialize a payment
+const payment = await sayswitch.payments.create({
+  amount: 5000, // Amount in cents
+  currency: 'USD',
+  email: 'customer@example.com',
+  reference: 'ORDER_REF_123',
+  callback_url: 'https://your-website.com/callback'
+});
+```
+
+### Supported Payment Methods
+
+- Credit/Debit Cards
+- Bank Transfers
+- Mobile Money
+- Digital Wallets
+- USSD
+- QR Code Payments
+
+### Testing
+
+Use test credentials to simulate payments:
+
+- Test Card: 4242 4242 4242 4242
+- Expiry: Any future date
+- CVV: Any 3 digits
+
+### Transaction Status
+
+Payments can have the following statuses:
+
+| Status | Description |
+|--------|-------------|
+| pending | Payment initiated but not completed |
+| success | Payment successfully processed |
+| failed | Payment attempt failed |
+| cancelled | Payment cancelled by customer |
+
+### Next Steps
+
+- [Accept Your First Payment](/payments/quickstart)
+- [Payment Integration Guide](/payments/integration)
+- [Handle Webhooks](/payments/webhooks)
+- [Test Payment Scenarios](/payments/testing)
+
+Need assistance? Contact our support team at support@sayswitch.com

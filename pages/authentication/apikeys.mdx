@@ -1,0 +1,87 @@
+## API Keys
+
+### Understanding Sayswitch API Keys
+
+Sayswitch provides two types of API keys for secure authentication:
+
+#### Public Keys
+- Start with `pk_`
+- Safe to expose in client-side code
+- Used for client-facing operations
+- Available for both test (`pk_test_`) and live (`pk_live_`) modes
+
+#### Secret Keys
+- Start with `sk_`
+- Must be kept secure and private
+- Used for server-side operations
+- Available for both test (`sk_test_`) and live (`sk_live_`) modes
+
+### Getting Your API Keys
+
+1. Log in to your [Sayswitch Dashboard](https://dashboard.sayswitch.com)
+2. Navigate to Settings > API Keys
+3. Generate or view your API keys
+
+### Implementation Example
+
+```javascript
+// Client-side implementation
+const sayswitchClient = new Sayswitch({
+  publicKey: 'pk_test_1234567890abcdef'
+});
+
+// Server-side implementation
+const sayswitchServer = new Sayswitch({
+  secretKey: 'sk_test_1234567890abcdef'
+});
+```
+
+### Environment Variables
+
+For secure key management, use environment variables:
+
+```javascript
+// In your .env file
+SAYSWITCH_PUBLIC_KEY=pk_test_1234567890abcdef
+SAYSWITCH_SECRET_KEY=sk_test_1234567890abcdef
+
+// In your application
+const sayswitch = new Sayswitch({
+  publicKey: process.env.SAYSWITCH_PUBLIC_KEY,
+  secretKey: process.env.SAYSWITCH_SECRET_KEY
+});
+```
+
+### Key Security Guidelines
+
+1. **Never Share Secret Keys**
+   - Keep secret keys on your server
+   - Don't include them in public repositories
+   - Don't expose them in client-side code
+
+2. **Key Rotation**
+   - Rotate keys every 6 months
+   - Immediately rotate if compromised
+   - Update all integration points after rotation
+
+3. **Environment Separation**
+   - Use test keys for development
+   - Use live keys only in production
+   - Keep environments strictly separated
+
+### API Key Permissions
+
+| Key Type | Allowed Operations |
+|----------|-------------------|
+| Public Key | - Payment initialization - Client-side validation - Public endpoints |
+| Secret Key | - Payment verification - Refunds - Webhooks - All API endpoints |
+
+### Troubleshooting
+
+Common API key issues and solutions:
+
+- **Authentication Error**: Verify correct key format and environment
+- **Invalid Key**: Ensure key hasn't been revoked or expired
+- **Access Denied**: Check if using correct key type for operation
+
+Need help? Contact support at support@sayswitch.com

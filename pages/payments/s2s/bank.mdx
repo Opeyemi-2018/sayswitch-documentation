@@ -1,0 +1,114 @@
+## Bank Payments (S2S)
+
+### Overview
+
+Process bank transfers securely through Sayswitch's Server-to-Server (S2S) API. This integration enables direct bank payments without redirecting customers to external banking platforms.
+
+### Bank Payment Flow
+
+1. Initialize bank payment request
+2. Validate bank account details
+3. Process bank transfer
+4. Handle payment confirmation
+
+### Basic Implementation
+
+```javascript
+const sayswitch = new Sayswitch({
+  secretKey: process.env.SAYSWITCH_SECRET_KEY
+});
+
+// Process bank payment
+const bankPayment = await sayswitch.s2s.bank.transfer({
+  amount: 10000, // Amount in cents
+  currency: 'USD',
+  bank_account: {
+    account_number: '0123456789',
+    bank_code: 'CITI',
+    account_name: 'John Doe'
+  },
+  customer: {
+    email: 'customer@example.com',
+    reference: 'CUST_123'
+  },
+  narration: 'Payment for Order #123'
+});
+```
+
+### Account Validation
+
+```javascript
+const validateAccount = async () => {
+  const verification = await sayswitch.s2s.bank.verifyAccount({
+    account_number: '0123456789',
+    bank_code: 'CITI'
+  });
+
+  return verification.account_name;
+};
+```
+
+### Test Bank Details
+
+| Bank Code | Account Number | Description |
+|-----------|---------------|-------------|
+| CITI | 0123456789 | Successful transfer |
+| CHASE | 9876543210 | Failed transfer |
+| BOA | 1122334455 | Pending transfer |
+
+### Error Handling
+
+```javascript
+try {
+  const payment = await sayswitch.s2s.bank.transfer({
+    // payment details
+  });
+} catch (error) {
+  if (error.code === 'invalid_account') {
+    // Handle invalid account
+  } else if (error.code === 'insufficient_funds') {
+    // Handle insufficient funds
+  } else {
+    // Handle other errors
+  }
+}
+```
+
+### Security Requirements
+
+1. **Account Validation**
+   - Verify account existence
+   - Validate account name match
+   - Check bank code validity
+
+2. **Transaction Limits**
+   - Implement daily transfer limits
+   - Monitor transaction velocity
+   - Apply fraud detection rules
+
+### Response Codes
+
+| Code | Description |
+|------|-------------|
+| 0000 | Success |
+| 2000 | Invalid account |
+| 2001 | Insufficient funds |
+| 2002 | Bank not available |
+| 2003 | Transfer failed |
+
+### Best Practices
+
+- Always validate account details before transfer
+- Implement idempotency for retry scenarios
+- Store transaction references
+- Monitor transfer status
+- Implement webhook handlers
+
+### Next Steps
+
+- [Bank Account Validation](/payments/s2s/bank-validation)
+- [Transfer Status](/payments/s2s/transfer-status)
+- [Webhook Integration](/payments/s2s/webhooks)
+- [Error Handling](/payments/s2s/errors)
+
+For technical support, contact our team at support@sayswitch.com

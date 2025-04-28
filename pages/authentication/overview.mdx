@@ -1,0 +1,71 @@
+## Authentication
+
+### Overview
+
+Sayswitch uses API keys to authenticate requests. You need to obtain your API keys from the Sayswitch Dashboard before you can make API calls. We provide two types of keys:
+
+- **Public Key**: Used for client-side operations
+- **Secret Key**: Used for server-side operations (must be kept secure)
+
+### API Keys
+
+#### Test Mode vs Live Mode
+
+Each environment has its own set of API keys:
+
+- **Test Keys**: Used for development and testing
+- **Live Keys**: Used for processing real transactions
+
+### Authentication Headers
+
+Include your API key in the Authorization header of your requests:
+
+```bash
+Authorization: Bearer YOUR_SECRET_KEY
+```
+
+#### Example Request
+
+```javascript
+const sayswitch = new Sayswitch({
+  secretKey: 'sk_test_xxxxxxxxxxxxx',
+  publicKey: 'pk_test_xxxxxxxxxxxxx'
+});
+
+// Making an authenticated request
+const response = await sayswitch.transactions.verify('TRX_123456');
+```
+
+### Security Best Practices
+
+1. **Never expose your secret key**
+   - Keep it on your server
+   - Don't include it in client-side code
+   - Don't commit it to version control
+
+2. **Use Environment Variables**
+```javascript
+const sayswitch = new Sayswitch({
+  secretKey: process.env.SAYSWITCH_SECRET_KEY,
+  publicKey: process.env.SAYSWITCH_PUBLIC_KEY
+});
+```
+
+3. **Rotate Keys Regularly**
+   - Generate new keys every few months
+   - Update all integration points
+   - Revoke old keys after successful migration
+
+### Key Management
+
+- Access your keys in the [Sayswitch Dashboard](https://dashboard.sayswitch.com)
+- Generate new keys as needed
+- Revoke compromised keys immediately
+- Monitor key usage in dashboard
+
+### Support
+
+Need help with authentication? Contact our support team:
+- Email: support@sayswitch.com
+- Documentation: [API Reference](/api-reference)
+- Support Portal: [Help Center](https://support.sayswitch.com)

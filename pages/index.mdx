@@ -1,0 +1,60 @@
+## Sayswitch Payment Gateway
+
+### Overview
+
+Sayswitch is a secure and reliable payment gateway that enables businesses to accept payments online. With support for multiple payment methods, currencies, and seamless integration options, Sayswitch helps you streamline your payment processing needs.
+
+#### Key Features
+
+- **Multiple Payment Methods**: Support for credit cards, bank transfers, and digital wallets
+- **Global Currency Support**: Process transactions in 160+ currencies
+- **Secure Transactions**: PCI-DSS Level 1 compliant with end-to-end encryption
+- **Real-time Analytics**: Monitor transactions and generate detailed reports
+- **Automated Reconciliation**: Simplify your accounting processes
+- **Developer-Friendly**: RESTful APIs and comprehensive SDKs
+
+### Integration
+
+#### Quick Setup
+
+1. Create your Sayswitch merchant account
+2. Obtain your API keys from the dashboard
+3. Integrate our SDK into your application
+
+#### Code Example
+
+```javascript
+const Sayswitch = require('sayswitch-node');
+
+const sayswitch = new Sayswitch({
+  secretKey: 'your_secret_key',
+  publicKey: 'your_public_key'
+});
+
+// Initialize a payment
+const transaction = await sayswitch.transaction.initialize({
+  amount: 1000,
+  currency: 'USD',
+  email: 'customer@example.com',
+  reference: 'unique_transaction_ref'
+});
+```
+
+### Benefits
+
+- **Competitive Pricing**: Low transaction fees with no hidden charges
+- **24/7 Support**: Dedicated technical support team
+- **Fraud Protection**: Advanced fraud detection and prevention
+- **Fast Settlement**: Quick access to your funds
+- **Easy Integration**: Simple API integration with popular platforms
+
+### Supported Payment Methods
+
+- Credit/Debit Cards
+- Bank Transfers
+- Mobile Money
+- Digital Wallets
+- USSD
+- QR Payments
+
+Ready to start accepting payments? [Create an Account](/signup) or explore our [API Documentation](/docs/api).
