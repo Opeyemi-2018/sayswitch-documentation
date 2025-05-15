@@ -1,0 +1,93 @@
+import { Callout } from 'nextra/components'
+
+## Getting Started with the Sayswitch API
+
+### Quick Setup
+
+Get started with API testing by creating a free Sayswitch account and obtaining your test keys. The Sayswitch API provides the same capabilities you find on your dashboard, making it easy to integrate them into your applications via RESTful methods.
+
+Use our Postman collection for all endpoints, examples, and responses.
+
+### Using the Collection
+
+1.  **Access**: [Link](https://web.postman.co/workspace/171e898e-14bf-43c4-8e8b-807a098a59da)
+2.  **Import**: Via link or Postman app.
+3.  **Configure**: Set up API key and auth details.
+4.  **Test**: Explore categorized requests (e.g., Payments).
+
+<Callout type='info'>
+  Updated regularly with documentation.
+</Callout>
+
+### Benefits
+
+-   See available endpoints and parameters.
+-   Test responses instantly, no code needed.
+-   Use examples for your implementation.
+-   Discover advanced features.
+
+
+### Request Authorization Header
+To ensure the authenticity of API requests, all requests must include the Authorization header with a Bearer Token containing your live or test secret key.
+
+`Authorization: Bearer {{ secret_key }}`
+
+### HTTP Methods
+
+| Method | Description                         |
+|--------|-------------------------------------|
+| POST   | Used to create new resources        |
+| GET    | Used to retrieve resources          |
+| PUT    | Used to update existing resources   |
+| DELETE | Used to remove resources            |
+
+
+### Sample Requests
+We provide sample API calls next to each method using cURL. All you need to do is insert your specific parameters, and you can test the calls from the command line. See this tutorial on using cURL with APIs.
+
+### Requests and Responses
+Both request body data and response data are formatted as JSON. Content type for responses will always be application/json. Generally, all responses will be in the following format:
+
+### Response Keys
+| Key     | Type    | Description                                                                                                                                                                                                                                                                               |
+|---------|---------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| success | Boolean | Indicates whether your request was successful. It's recommended to use this alongside HTTP status codes to determine the outcome of an API call.                                                                                                                                         |
+| message | String  | A brief summary of the response status. For example, when retrieving customers, this might be “Customers retrieved”. In error cases, it describes the issue (e.g., missing authorization header). This is the only universal key across all responses.                                   |
+| data    | Object  | Contains the result of the request. This could be a single object or an array depending on the request type. For instance, a single customer object for one record or an array of customers for a list request.                                                                          |
+
+
+### HTTP Status Codes
+SaySwitch uses conventional HTTP response codes to indicate the success or failure of API requests. Here’s what each code means in the context of SaySwitch operations:
+
+### Success Codes
+
+| HTTP Status Code | Meaning       | SaySwitch Context                                                                                                                                           |
+|------------------|---------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| 200              | OK            | The request was successful. This is returned for most successful GET requests.                                                                               |
+| 201              | Created       | The request was successful and a resource was created. Returned for successful POST requests like creating transactions or customers.                       |
+| 202              | Accepted      | The request has been accepted for processing. Commonly returned when a payment is still being processed but has been queued successfully.                   |
+| 204              | No Content    | The request was successful, but there is no content to return. Typically returned for successful DELETE operations.                                          |
+
+### Client Error Codes
+
+| HTTP Status Code | Meaning                  | SaySwitch Context                                                                                                                                                                                |
+|------------------|--------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| 400              | Bad Request              | The request was malformed or had invalid parameters. For example, creating a transaction with an invalid amount or currency.                                                                       |
+| 401              | Unauthorized             | No valid API key was provided, or the key used is incorrect. Check that you’re using the correct secret key.                                                                                       |
+| 403              | Forbidden                | The API key doesn’t have permission to perform the request. This can occur if you’re using a test key for a live endpoint or accessing features outside your account tier.                        |
+| 404              | Not Found                | The requested resource doesn’t exist. For example, trying to retrieve a transaction with an invalid ID.                                                                                            |
+| 405              | Method Not Allowed       | The HTTP method used is not valid for the endpoint. For instance, trying to DELETE a transaction when only GET, POST, and PUT are allowed.                                                         |
+| 409              | Conflict                 | The request conflicts with the current state. For example, trying to create a duplicate unique resource like a customer with an existing email.                                                    |
+| 415              | Unsupported Media Type   | The request content type is not supported. Ensure you are sending JSON data with the correct `Content-Type` header.                                                                                |
+| 422              | Unprocessable Entity     | The request data was valid, but the server couldn’t process it. Often occurs when a transaction is declined due to issues like insufficient funds or fraud detection.                             |
+| 429              | Too Many Requests        | You’ve exceeded the API rate limits. Slow down and implement exponential backoff retry strategies.                                                                                                 |
+
+### Server Error Codes
+| HTTP Status Code | Meaning                | SaySwitch Context                                                                                                                                         |
+|------------------|------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| 500              | Internal Server Error  | Something went wrong on SaySwitch end. Retry your request after a short delay and contact support if the issue persists.                                 |
+| 502              | Bad Gateway            | SaySwitch is down or undergoing maintenance. Try again later.                                                                                             |
+| 503              | Service Unavailable    | The SaySwitch servers are up, but currently overloaded with requests. Try again later.                                                                    |
+| 504              | Gateway Timeout        | The SaySwitch servers didn’t respond in time. Try again later and check our status page for any ongoing issues.                                          |
+
+

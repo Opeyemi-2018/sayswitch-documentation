@@ -1,0 +1,58 @@
+## Create Customer Endpoint
+
+This endpoint enables you to register a new customer on the platform by providing their essential details, such as email, name, and phone number, along with other optional information.
+
+#### API Endpoint
+
+```js copy
+POST https://backendapi.sayswitchgroup.com/api/v1/customer
+```
+
+### Request Headers
+
+| Header          | Type     | Description                                            |
+| --------------- | -------- | ------------------------------------------------------ |
+| `Content-Type`  | `string` | Indicates that the request body should be formatted as `application/json`. |
+| `Authorization` | `string` | Your API secret key, prefixed with `Bearer `. Example: `Bearer secret_key`. |
+
+### Request Body Parameters
+
+| Parameter   | Type     | Description                                    | Required |
+| ----------- | -------- | ---------------------------------------------- | -------- |
+| `email`     | `string` | The customer's valid email address.            | Yes      |
+| `first_name`| `string` | The customer's given name.                   | Yes      |
+| `last_name` | `string` | The customer's surname or family name.       | Yes      |
+| `phone`     | `string` | The customer's primary phone number.           | Yes      |
+
+
+
+### Sample  Request
+```bash  copy
+curl -X POST https://backendapi.sayswitchgroup.com/api/v1/customer 
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer YOUR_SECRET_KEY" \
+  -d '{
+    "email": "test@email.com",
+    "first_name": "Rosemond",
+    "last_name": "Oyeniyi",
+    "phone": "08159994269"
+  }'
+  ```
+
+  ### Sample Response
+
+
+  ```js
+{
+  "success": true,
+  "message": "Customer created",
+  "data": {
+    "email": "test@email.com",
+    "domain": "test",
+    "customer_code": "CUS_8n9f689gok7obwg",
+    "id": 330,
+    "created_at": "2025-05-13T14:35:44.000000Z",
+    "updated_at": "2025-05-13T14:35:44.000000Z"
+  }
+}
+```

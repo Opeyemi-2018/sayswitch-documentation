@@ -1,0 +1,106 @@
+## Server-to-Server (S2S) Payments
+
+### Overview
+
+Server-to-Server (S2S) payments enable direct communication between your server and Sayswitch’s payment platform, giving you complete control over how transactions are initiated and processed.
+
+### Why Choose S2S?
+
+- **Stronger Security**: Server-side processing helps minimize exposure to frontend vulnerabilities.
+- **Full Control**: Orchestrate the payment experience entirely from your backend.
+- **Ideal for Automation**: Perfect for handling subscriptions, recurring billing, and batch transactions.
+- **Custom Integration**: Easily build tailored payment workflows.
+
+### Requirements
+
+To get started, ensure the following are in place:
+
+- An active Sayswitch account with API access
+- A server environment with support for TLS 1.2 or higher
+- Your Secret API Key securely stored
+
+### How to Implement
+
+```js
+const sayswitch = new Sayswitch({
+  secretKey: process.env.SAYSWITCH_SECRET_KEY
+});
+
+// Create an S2S payment
+const payment = await sayswitch.s2s.initiate({
+  amount: 10000,
+  currency: 'USD',
+  customer: {
+    email: 'customer@example.com',
+    reference: 'CUST_123'
+  },
+  payment_method: {
+    type: 'card',
+    card_number: '4242424242424242',
+    expiry_month: '12',
+    expiry_year: '25',
+    cvv: '123'
+  },
+  metadata: {
+    order_id: 'ORDER_123'
+  }
+});
+```
+
+
+### Security Guidelines
+
+#### 1. TLS Setup
+
+- Use **TLS version 1.2 or higher** to ensure secure data transmission
+- Enable **strong cipher suites** for encrypted communication
+- Apply **valid SSL certificates** for your server
+
+#### 2. Data Security Practices
+
+- **Encrypt sensitive information** such as card data or personal identifiers
+- **Sign API requests** to validate authenticity
+- Store your **API keys securely** using environment variables or secret managers
+
+---
+
+
+### Payment Processing Workflow
+
+#### 1. Authentication
+
+- Authenticate each request using your Sayswitch API credentials
+- Optionally generate and attach a **request signature** for added verification
+
+#### 2. Transaction Execution
+
+- Send the payment information securely to the API
+- The server processes the transaction and responds with the result
+- Handle and interpret the API response accordingly
+
+#### 3. Post-Transaction Verification
+
+- Confirm the transaction status via response or webhook
+- Process any incoming **webhook notifications**
+- Update your system records based on the final outcome
+
+### Response Handling
+
+```javascript
+try {
+  const payment = await sayswitch.s2s.initiate({
+    // payment details
+  });
+
+  if (payment.status === 'success') {
+    // Handle successful payment
+  } else {
+    // Handle pending or failed payment
+  }
+} catch (error) {
+  // Handle API errors
+}
+```
+
+
+For support, contact our technical team at developers@sayswitch.com

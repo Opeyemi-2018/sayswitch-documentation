@@ -1,0 +1,57 @@
+## Get Customer
+
+Use this endpoint to retrieve detailed information about a specific customer using their unique customer email code.
+
+### Endpoint
+`GET https://backendapi.sayswitchgroup.com/api/v1/customer/{email_or_code}`
+
+### Request Headers
+
+| Header         | Type   | Description                              |
+|----------------|--------|------------------------------------------|
+| Authorization  | string | Bearer token with your secret key        |
+
+### Sample cURL Request
+```js
+curl -X GET https://backendapi.sayswitchgroup.com/api/v1/customer/test@gmail.com 
+  -H "Authorization: Bearer SECRET_KEY"
+```
+
+
+### Sample Response
+```js 
+{
+    "success": true,
+    "message": "Customer retrieved",
+    "data": {
+        "id": 330,
+        "first_name": "Rosemond",
+        "last_name": "Oyeniyi",
+        "email": "test@email.com",
+        "phone": "08159994269",
+        "bvn": null,
+        "domain": "test",
+        "customer_code": "CUS_8n9f689gok7obwg",
+        "metadata": "{}",
+        "status": "active"
+    }
+}
+```
+
+### Response Fields
+
+
+| Field         | Type     | Description                                   |
+| :------------ | :------- | :-------------------------------------------- |
+| `success`     | `boolean` | Indicates if the request was successful     |
+| `message`     | `string`  | Message describing the result               |
+| `id`          | `number`  | Unique identifier for the customer          |
+| `first_name`  | `string`  | The customer's first name                   |
+| `last_name`   | `string`  | The customer's last name                    |
+| `email`       | `string`  | The customer's email address                |
+| `phone`       | `string`  | The customer's phone number                 |
+| `bvn`         | `string`  | The customer's BVN (may be null)            |
+| `domain`      | `string`  | The domain associated with the customer     |
+| `customer_code` | `string`  | Unique code assigned to the customer        |
+| `metadata`    | `string`  | Additional data in JSON string format       |
+| `status`      | `string`  | Current status of the customer (`active`, etc.) |

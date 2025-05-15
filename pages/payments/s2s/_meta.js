@@ -1,5 +1,5 @@
 export default {
-    introduction: "Introduction",
+    overview: "overview",
     card: "Card",
     bank: "Bank Transfer"
 }

@@ -1,0 +1,51 @@
+## Retrieve Customers
+
+This endpoint retrieves the complete list of customers registered in the system.
+
+### Endpoint  
+`GET https://backendapi.sayswitchgroup.com/api/v1/customer`
+
+### Request Headers
+
+| Header        | Type   | Description                          |
+|---------------|--------|------------------------------------|
+| Authorization | string | Bearer token containing your secret key |
+
+---
+
+### Example Request
+
+```js copy
+GET https://backendapi.sayswitchgroup.com/api/v1/customer
+```
+
+### Example cURL Command
+```js
+curl -X GET https://backendapi.sayswitchgroup.com/api/v1/customer 
+  -H "Authorization: Bearer SECRET_KEY"
+```
+
+### Example Response
+```js
+{
+  "success": true,
+  "message": "Customers retrieved",
+  "data": [
+    {
+      "id": 330,
+      "first_name": "Rosemond",
+      "last_name": "Oyeniyi",
+      "email": "test@email.com",
+      "phone": "08159994269",
+      "bvn": null,
+      "domain": "test",
+      "customer_code": "CUS_8n9f689gok7obwg",
+      "metadata": "{}"
+    }
+    // ...additional customer records
+  ]
+}
+
+```
+
+

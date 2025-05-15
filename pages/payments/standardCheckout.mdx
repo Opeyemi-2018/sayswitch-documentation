@@ -1,0 +1,52 @@
+## Standard Checkout
+
+The Standard Checkout integration enables you to create a secure, one-time payment link that customers can use to complete their transactions safely.
+
+
+### Step 1: Start the Payment Process
+Make a server-side `POST` request to the payment initialization endpoint with the following payload:
+```js
+{
+    "email": "test@email.com",
+    "amount": "100",
+    "callback": "https://webhook.site/1580cf0d-9dd7-4baa-becb-f4d8747eba35",
+    "currency": "NGN"
+}
+```
+
+| Field     | Type   | Required | Description                                                  |
+|-----------|--------|----------|--------------------------------------------------------------|
+| email     | string | Yes      | The email address of the customer making the transaction     |
+| amount    | string | Yes      | The amount to be charged or processed                        |
+| callback  | string | Yes      | The URL to receive webhook notifications after transaction   |
+| currency  | string | Yes      | The currency for the transaction (e.g., NGN for Naira)       |
+
+
+### Step 2: Send the Customer to the Payment Page
+Upon a successful request, we’ll return a unique link or access code for the payment page. Redirect your customer to this page to complete their payment.
+
+### Response
+```js
+{
+    "success": true,
+    "message": "Authorization URL created",
+    "data": {
+        "authorization_url": "https://checkout.sayswitchgroup.com/pay/SSW_17471703346211972",
+        "access_code": "ekns5nhydaaa",
+        "reference": "SSW_17471703346211972",
+        "payer_id": null
+    }
+}
+```
+
+### Step 3: After the Payment
+
+Once the transaction is successfully completed, the following actions will take place:
+
+1. The customer will be redirected to your specified `redirect_url`, with query parameters such as `status` and `reference`.
+2. If webhooks are enabled, a notification will be triggered and sent to your configured webhook endpoint. [Learn more about webhooks](#).
+3. A confirmation receipt will be emailed to the customer if the payment was successful, unless this option is disabled.
+4. You will also receive a transaction email notification, unless you've opted out of this feature.
+
+> 💡 On your server, ensure that you handle the redirect properly and always verify the final status of the transaction for accuracy.
+

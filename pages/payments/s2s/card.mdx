@@ -1,19 +1,20 @@
 ## Card Payments (S2S)
 
-### Overview
+### Introduction
 
-Process card payments securely through Sayswitch's Server-to-Server (S2S) API. This integration method allows direct card processing from your server without exposing sensitive data to the client side.
+Enable secure card transactions by integrating with Sayswitch's Server-to-Server (S2S) API. This approach allows you to handle card payments directly from your backend, keeping sensitive card information off the client side.
 
-### Card Payment Flow
+### How It Works
 
-1. Collect card details securely
-2. Submit payment request to Sayswitch
-3. Handle 3DS authentication if required
-4. Process payment response
+1. Safely collect the customer's card information
+2. Send the payment request directly to the Sayswitch API
+3. Complete 3D Secure (3DS) authentication when prompted
+4. Process the API response to determine the payment outcome
 
-### Basic Implementation
 
-```javascript
+### How to Implementation
+
+```javascript copy
 const sayswitch = new Sayswitch({
   secretKey: process.env.SAYSWITCH_SECRET_KEY
 });
@@ -78,14 +79,15 @@ try {
 ### Security Requirements
 
 1. **PCI Compliance**
-   - Ensure PCI DSS compliance for card data handling
-   - Use secure TLS 1.2+ connections
-   - Implement proper data encryption
+   - Maintain compliance with PCI DSS standards when handling card information  
+   - Ensure all connections use TLS version 1.2 or higher  
+   - Apply strong encryption practices to protect sensitive data  
 
 2. **Data Validation**
-   - Validate card numbers using Luhn algorithm
-   - Check expiry dates
-   - Verify CVV format
+   - Use the Luhn algorithm to validate card numbers  
+   - Confirm that card expiry dates are valid and current  
+   - Verify that the CVV is in the correct format before processing  
+
 
 ### Response Codes
 
@@ -105,11 +107,6 @@ try {
 - Monitor fraud patterns
 - Implement velocity checks
 
-### Next Steps
 
-- [Card Tokenization](/payments/s2s/tokenization)
-- [Recurring Payments](/payments/s2s/recurring)
-- [3DS Integration](/payments/s2s/3ds)
-- [Error Handling](/payments/s2s/errors)
 
 Need help? Contact our support team at support@sayswitch.com

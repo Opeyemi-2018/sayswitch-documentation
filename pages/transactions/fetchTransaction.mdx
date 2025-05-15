@@ -1,0 +1,93 @@
+## Fetch Transaction Details
+
+This endpoint allows you to retrieve the details of a specific transaction using its unique identifier.
+
+#### API Endpoint
+`GET https://backendapi.sayswitchgroup.com/api/v1/transaction/:id`
+
+**Path Parameter:**
+* `id`: The unique identifier of the transaction you want to retrieve (e.g., `2280`).
+
+### Request Headers
+
+| Header          | Type     | Description                                            |
+| --------------- | -------- | ------------------------------------------------------ |
+| `Authorization` | `string` | Your API secret key, prefixed with `Bearer `. Example: `secret_key`. |
+
+
+### Sample Response
+```bash
+  {
+    "success": true,
+    "message": "Transactions retrieved",
+    "data": {
+        "id": 2280,
+        "domain": "test",
+        "status": "pending",
+        "reference": "SSW_17471703346211972",
+        "amount": "100",
+        "gateway_response": null,
+        "paid_at": null,
+        "created_at": "2025-05-13T21:05:34.000000Z",
+        "channel": null,
+        "currency": "NGN",
+        "ip_address": null
+    },
+    "log": {
+        "time_spent": 0,
+        "attempts": 0,
+        "authentication": null,
+        "errors": 0,
+        "success": false,
+        "channel": null,
+        "history": []
+    },
+    "fees": "1.2",
+    "customer": {
+        "id": 330,
+        "customer_code": "CUS_8n9f689gok7obwg",
+        "first_name": "Rosemond",
+        "last_name": "Oyeniyi",
+        "email": "test@email.com",
+        "phone": "08159994269",
+        "metadata": "{}"
+    },
+    "plan": null,
+    "paid_at": null,
+    "created_at": "2025-05-13T21:05:34.000000Z",
+    "requested_amount": "100"
+}
+```
+
+### Explanation of the Response
+
+| Field             | Type     | Description                                                                                                                               |
+| :---------------- | :------- | :---------------------------------------------------------------------------------------------------------------------------------------- |
+| `success`         | `boolean` | Indicates if the API request was successful.                                                                                             |
+| `message`         | `string`  | A descriptive message about the API request status.                                                                                      |
+| `data`            | `object`  | Contains the main details of the transaction:                                                                                            |
+| `id`         | `integer` | The unique identifier of the transaction.                                                                                                |
+| `domain`     | `string`  | The environment or domain this transaction belongs to (e.g., "test").                                                                    |
+| `status`     | `string`  | The current status of the transaction (e.g., "pending", "successful", "failed").                                                         |
+| `reference`  | `string`  | A unique reference code for this transaction.                                                                                            |
+| `amount`     | `string`  | The amount of the transaction (in the smallest currency unit).                                                                           |
+| `gateway_response` | `mixed`   | The raw response from the payment gateway, if applicable (may be `null`).                                                          |
+| `paid_at`    | `string`  | The timestamp indicating when the transaction was successfully paid (may be `null`).                                                     |
+| `created_at` | `string`  | The timestamp indicating when the transaction was initiated (ISO 8601 format).                                                           |
+| `channel`    | `string`  | The channel used for the transaction (e.g., "card", "bank").                                                                             |
+| `currency`   | `string`  | The currency of the transaction (e.g., "NGN").                                                                                           |
+| `ip_address` | `string`  | The IP address of the user who initiated the transaction (may be `null`).                                                                |
+| `log`             | `object`  | Contains logging information about the transaction:                                                                                      |
+| `log.time_spent`  | `integer` | The time spent processing the transaction (in milliseconds).                                                                             |
+| `log.attempts`    | `integer` | The number of attempts made for this transaction.                                                                                        |
+| `log.authentication`| `mixed`   | Information related to authentication, if applicable (may be `null`).                                                                  |
+| `log.errors`      | `integer` | The number of errors encountered during the transaction.                                                                                 |
+| `log.success`     | `boolean` | Indicates if the transaction was ultimately successful within the logging context.                                                       |
+| `log.channel`     | `string`  | The channel used for the transaction (mirrors `channel`).                                                                           |
+| `log.history`     | `array`   | An array containing a history of events related to the transaction.                                                                      |
+| `fees`            | `string`  | The fees charged for this transaction.                                                                                                   |
+| `customer`        | `object`  | Information about the customer involved in the transaction: `id`, `customer_code`, `first_name`, `last_name`, `email`, `phone`, `metadata`. |
+| `plan`            | `mixed`   | Information about any associated plan, if applicable (may be `null`).                                                                       |
+| `paid_at`         | `string`  | The timestamp indicating when the transaction was successfully paid (mirrors `paid_at`).                                               |
+| `created_at`      | `string`  | The timestamp indicating when the transaction was initiated (mirrors `created_at`).                                                    | 
+| `requested_amount`| `string`  | The initial amount requested for the transaction.                                                                                           |

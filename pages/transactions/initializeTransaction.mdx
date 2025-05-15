@@ -1,0 +1,55 @@
+## Initialize Transfer
+
+This endpoint initiates a transfer transaction. You provide the recipient's email, the amount to transfer, a callback URL for notification, and the currency.
+
+#### API Endpoint
+
+`POST https://backendapi.sayswitchgroup.com/api/v1/transaction/initialize`
+
+### Request Headers
+
+| Header          | Type     | Description                                            |
+| --------------- | -------- | ------------------------------------------------------ |
+| `Content-Type`  | `string` | Specifies that the request body should be formatted as `application/json`. |
+| `Authorization` | `string` | Your API secret key, prefixed with `Bearer `. Example: `Bearer secret_key`. |
+
+### Request Body Parameters
+
+| Parameter  | Type     | Description                                                                                               | Required |
+| ---------- | -------- | --------------------------------------------------------------------------------------------------------- | -------- |
+| `email`    | `string` | The email address of the recipient.                                                                       | Yes      |
+| `amount`   | `string` | The amount to be transferred.  Use the smallest currency unit (e.g., kobo for NGN, cents for USD).          | Yes      |
+| `callback` | `string` |  A URL to which a POST request will be sent to notify you of the transfer status.                       | Yes      |
+| `currency` | `string` | The currency of the transfer (e.g., "NGN", "USD").                                                          | Yes      |
+
+### Sample Request
+
+```json
+{
+  "email": "test@email.com",
+  "amount": "100",
+  "callback": "https://webhook.site/1580cf0d-9dd7-4baa-becb-f4d8747eba35",
+  "currency": "NGN"
+}
+```
+
+### Sample Response
+```js
+{
+  "success": true,
+  "message": "Transaction initialized",
+  "data": {
+    "reference": "TRF_1234567890",
+    "authorization_url": null,
+    "access_code": null
+  }
+}
+```
+
+### Explanation of the Response
+
+| Field             | Type     | Description                                                                                                                               |
+| ----------------- | -------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
+| `reference`       | `string` | A unique identifier generated for this transfer transaction. This is essential for tracking the status of the transfer.                   |
+| `authorization_url` | `string` | A URL that may be present if further authorization is required to complete the transfer (e.g., for certain payment methods). May be `null`. |
+| `access_code`     | `string` | An access code that might be needed to finalize the transfer. May be `null` if no additional code is required.                           |

@@ -1,0 +1,92 @@
+## List Virtual Accounts
+
+This endpoint retrieves a list of all virtual bank accounts that have been created on your platform.
+
+#### API Endpoint
+
+`GET https://backendapi.sayswitchgroup.com/api/v1/list_dedicated_accounts`
+
+### Request Headers
+
+| Header          | Type     | Description                                            |
+| --------------- | -------- | ------------------------------------------------------ |
+| `Authorization` | `string` | Your API secret key, prefixed with `Bearer `. Example: `Bearer ECRET_KEY`. |
+
+### Request Body
+
+This endpoint does not require a request body.
+
+### Sample Request
+
+```bash
+curl -X GET https://backendapi.sayswitchgroup.com/api/v1/list_dedicated_accounts 
+  -H "Authorization: Bearer SECRET_KEY"
+```
+
+### Sample Response
+
+```json
+{
+    "success": true,
+    "message": "Managed accounts successfully retrieved",
+    "data": [
+        {
+            "id": 484,
+            "account_name": "Rosemond Oyeniyi",
+            "account_number": "1581273727",
+            "bank_name": "SaySwitch",
+            "currency": "NGN",
+            "status": "active",
+            "blockreason": null,
+            "domain": "test",
+            "reference": "jqo2p61yeqrlqsv",
+            "payment_type_id": 2,
+            "routing_code": null,
+            "created_at": "2025-05-15T06:26:01.000000Z",
+            "updated_at": "2025-05-15T06:26:01.000000Z",
+            "customer": {
+                "id": 334,
+                "first_name": "Rosemond",
+                "last_name": "Oyeniyi",
+                "email": "ope@email.com",
+                "phone": "08159994269",
+                "bvn": null,
+                "domain": "test",
+                "customer_code": "CUS_ngfz27uqjin3ny5",
+                "metadata": "{}",
+                "status": "active"
+            }
+        },
+        {
+            "id": 485,
+            "account_name": "Rosemond Oyeniyi",
+            "account_number": "1654101278",
+            "bank_name": "SaySwitch",
+            "currency": "NGN",
+            "status": "active",
+            "blockreason": null,
+            "domain": "test",
+            "reference": "erdgsilhfo3rzxu",
+            "payment_type_id": 2,
+            "routing_code": null,
+            "created_at": "2025-05-15T07:07:25.000000Z",
+            "updated_at": "2025-05-15T07:07:25.000000Z",
+            "customer": {
+                "id": 335,
+                "first_name": "Rosemond",
+                "last_name": "Oyeniyi",
+                "email": "john@email.com",
+                "phone": "08159994269",
+                "bvn": null,
+                "domain": "test",
+                "customer_code": "CUS_im4nqocx55tum1p",
+                "metadata": "{}",
+                "status": "active"
+            }
+        }
+    ],
+    "meta": {
+        "total": 2
+    }
+}
+```

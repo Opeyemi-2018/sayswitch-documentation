@@ -1,0 +1,47 @@
+## Get Total Transactions
+
+This endpoint retrieves aggregated totals for transactions on your platform.
+
+#### API Endpoint
+
+`GET https://backendapi.sayswitchgroup.com/api/v1/transactions/totals`
+
+### Request Headers
+| Header          | Type     | Description                                            |
+| --------------- | -------- | ------------------------------------------------------ |
+| `Authorization` | `string` | Your API secret key, prefixed with `Bearer `. Example: `Bearer secret_key`. |
+
+### Sample Request
+
+```bash
+curl -X GET https://backendapi.sayswitchgroup.com/api/v1/transactions/totals 
+  -H "Authorization: Bearer YOUR_SECRET_KEY"
+```
+
+### Sample Response
+
+```json
+{
+  "success": true,
+  "message": "Transaction totals",
+  "data": {
+    "total_transactions": 2,
+    "unique_customers": 1,
+    "total_volume": 200,
+    "total_volume_by_currency": [],
+    "pending_transfers": 200,
+    "pending_transfers_by_currency": []
+  }
+}
+```
+
+### Explanation of the Response 
+
+| Field                         | Type    | Description                                                                                                |
+| :---------------------------- | :------ | :--------------------------------------------------------------------------------------------------------- |
+| `total_transactions`          | `integer` | The total number of transactions processed on your platform.                                              |
+| `unique_customers`            | `integer` | The number of unique customers who have initiated transactions.                                           |
+| `total_volume`                | `integer` | The total volume of all transactions (sum of all transaction amounts).                                     |
+| `total_volume_by_currency`    | `array` | An array detailing the total transaction volume for each currency. Each element is likely an object with `currency` and `volume` keys. |
+| `pending_transfers`           | `integer` | The total amount of transactions that are currently in a pending state.                                   |
+| `pending_transfers_by_currency` | `array` | An array detailing the total pending transfer volume for each currency. Each element is likely an object with `currency` and `volume` keys. |

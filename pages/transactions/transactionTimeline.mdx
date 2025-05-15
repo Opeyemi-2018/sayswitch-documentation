@@ -1,0 +1,55 @@
+## Transaction Timeline
+This endpoint retrieves the timeline or outline of a specific transaction using either its unique ID or its reference.
+#### API Endpoint
+
+`GET https://backendapi.sayswitchgroup.com/api/v1/transaction/:id_or_reference`
+
+**Path Parameter:**
+* `:id_or_reference`: The unique identifier (`id`) or the reference code of the transaction you want to retrieve the timeline for (e.g., `2280` or `SSW_17471703346211972`).
+
+### Request Headers
+
+| Header          | Type     | Description                                            |
+| --------------- | -------- | ------------------------------------------------------ |
+| `Authorization` | `string` | Your API secret key, prefixed with `Bearer `. Example: `Bearer secret_key`. |
+
+### Request Body
+
+This endpoint does not require a request body.
+
+### Sample Request
+
+```bash
+curl -X GET https://backendapi.sayswitchgroup.com/api/v1/transaction/SSW_17471703346211972/timeline 
+  -H "Authorization: Bearer SECRET_KEY"
+```
+
+### Sample Response
+
+```json
+{
+  "success": true,
+  "message": "Timeline retrieved",
+  "data": {
+    "time_spent": 0,
+    "attempts": 0,
+    "authentication": null,
+    "errors": 0,
+    "success": false,
+    "channel": null,
+    "history": []
+  }
+}
+```
+
+### Explanation of the Response 
+
+| Field            | Type     | Description                                                                     |
+| :--------------- | :------- | :------------------------------------------------------------------------------ |
+| `time_spent`   | `integer` | The total time spent processing the transaction (in milliseconds).              |
+| `attempts`     | `integer` | The number of attempts made to process the transaction.                         |
+| `authentication` | `mixed`   | Details about any authentication steps involved (may be `null`).               |
+| `errors`       | `integer` | The total number of errors encountered during the transaction processing.       |
+| `success`      | `boolean` | Indicates whether the transaction was ultimately successful (within this timeline context). |
+| `channel`      | `string`  | The channel used for the transaction (e.g., "card", "bank", may be `null`).    |
+| `history`      | `array`   | An array containing a chronological record of events and statuses for the transaction. Each element in the array will likely be an object with details about a specific event (timestamp, status, message, etc.). |

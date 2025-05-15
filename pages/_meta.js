@@ -1,5 +1,8 @@
 export default {
-    index: 'Overview',
-    authentication: 'Authentication',
-    payments: 'Payments'
-}
+  index: "Overview",
+  authentication: "Authentication",
+  transactions: "Transactions",
+  payments: "Payments",
+  virtualAccount: "Virtual Account",
+  customers: "Customers",
+};

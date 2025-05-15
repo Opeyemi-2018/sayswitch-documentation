@@ -58,7 +58,7 @@ const validateAccount = async () => {
 
 ### Error Handling
 
-```javascript
+```javascript copy
 try {
   const payment = await sayswitch.s2s.bank.transfer({
     // payment details
@@ -76,15 +76,16 @@ try {
 
 ### Security Requirements
 
-1. **Account Validation**
-   - Verify account existence
-   - Validate account name match
-   - Check bank code validity
+1. **Account Verification**
+   - Confirm that the account exists  
+   - Ensure the account name matches the provided details  
+   - Validate the bank code for accuracy  
 
-2. **Transaction Limits**
-   - Implement daily transfer limits
-   - Monitor transaction velocity
-   - Apply fraud detection rules
+2. **Transaction Controls**
+   - Enforce daily transfer limits  
+   - Track transaction frequency to detect unusual activity  
+   - Apply fraud detection mechanisms to safeguard transactions  
+
 
 ### Response Codes
 
@@ -97,18 +98,13 @@ try {
 | 2003 | Transfer failed |
 
 ### Best Practices
+- Perform account detail validation before initiating a transfer  
+- Use idempotency keys to handle retries safely and prevent duplicate transfers  
+- Save transaction references for tracking and reconciliation  
+- Continuously monitor the status of each transfer to ensure completion  
+- Set up webhook listeners to automatically handle transfer updates and notifications  
 
-- Always validate account details before transfer
-- Implement idempotency for retry scenarios
-- Store transaction references
-- Monitor transfer status
-- Implement webhook handlers
 
-### Next Steps
 
-- [Bank Account Validation](/payments/s2s/bank-validation)
-- [Transfer Status](/payments/s2s/transfer-status)
-- [Webhook Integration](/payments/s2s/webhooks)
-- [Error Handling](/payments/s2s/errors)
 
 For technical support, contact our team at support@sayswitch.com
