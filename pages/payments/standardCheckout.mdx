@@ -1,3 +1,5 @@
+import { Callout } from 'nextra/components'
+
 ## Standard Checkout
 
 The Standard Checkout integration enables you to create a secure, one-time payment link that customers can use to complete their transactions safely.
@@ -48,5 +50,6 @@ Once the transaction is successfully completed, the following actions will take 
 3. A confirmation receipt will be emailed to the customer if the payment was successful, unless this option is disabled.
 4. You will also receive a transaction email notification, unless you've opted out of this feature.
 
-> 💡 On your server, ensure that you handle the redirect properly and always verify the final status of the transaction for accuracy.
-
+<Callout type='info'>
+ On your server, ensure that you handle the redirect properly and always verify the final status of the transaction for accuracy.
+</Callout>

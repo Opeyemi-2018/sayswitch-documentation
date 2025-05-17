@@ -1,0 +1,100 @@
+## List Settlements
+
+The Settlements API allows you to retrieve a list of payments that have been settled in your account.
+
+### Endpoint
+`GET https://backendapi.sayswitchgroup.com/api/v1/settlement`
+
+This endpoint returns a paginated list of all settled payments in your account, including details about each settlement.
+
+### Request Headers
+
+| Name | Value |
+|------|-------|
+| Authorization | Bearer `YOUR_SECRET_KEY` | 
+| Content-Type | application/json   |
+
+### Sample Response
+```json 
+{
+    "success": true,
+    "message": "Settlement retrieved",
+    "data": [
+       
+        {
+            "id": 80,
+            "batchid": "17681d32e1503",
+            "currency": "NGN",
+            "total_amount": "101.2",
+            "settled_amount": "100",
+            "domain": "live",
+            "status": "success",
+            "subaccount": null,
+            "created_at": "2025-03-26T01:31:02.000000Z",
+            "updated_at": "2025-03-26T01:31:02.000000Z"
+        },
+        {
+            "id": 42,
+            "batchid": "0718219978657",
+            "currency": "NGN",
+            "total_amount": "20.24",
+            "settled_amount": "20",
+            "domain": "live",
+            "status": "success",
+            "subaccount": null,
+            "created_at": "2024-09-10T01:31:02.000000Z",
+            "updated_at": "2024-09-10T01:31:02.000000Z"
+        },
+        {
+            "id": 26,
+            "batchid": "077b766557663",
+            "currency": "NGN",
+            "total_amount": "50.6",
+            "settled_amount": "50",
+            "domain": "live",
+            "status": "success",
+            "subaccount": null,
+            "created_at": "2024-08-13T01:31:02.000000Z",
+            "updated_at": "2024-08-13T01:31:02.000000Z"
+        },
+        {
+            "id": 16,
+            "batchid": "9f8ac86615a25",
+            "currency": "NGN",
+            "total_amount": "121.68",
+            "settled_amount": "120",
+            "domain": "live",
+            "status": "success",
+            "subaccount": null,
+            "created_at": "2024-07-28T01:31:02.000000Z",
+            "updated_at": "2024-07-28T01:31:02.000000Z"
+        },
+
+        // and more
+        
+    ],
+    "meta": {
+        "total": 4
+    }
+}
+```
+
+### Explanation of the response 
+
+| Field          | Type    | Description |
+|----------------|---------|-------------|
+| **Root Fields** | | |
+| success        | boolean | Indicates whether the API request was successful |
+| message        | string  | Human-readable status message about the operation |
+| data           | array   | Contains the list of settlement records |
+| **Settlement Fields** | | |
+| id             | integer | Unique identifier for the settlement record |
+| batchid        | string  | Unique identifier for the batch of transactions |
+| currency       | string  | Currency code of the settlement (ISO 4217 format) |
+| total_amount   | string  | Original transaction amount before any deductions |
+| settled_amount | string  | Actual amount that was settled after deductions |
+| domain         | string  | Indicates the environment where settlement occurred (live/test) |
+| status         | string  | Current status of the settlement (success/pending/failed) |
+| subaccount     | null    | Placeholder for subaccount information when applicable |
+| created_at     | string  | Timestamp when the settlement record was created (ISO 8601 format) |
+| updated_at     | string  | Timestamp when the settlement record was last updated |

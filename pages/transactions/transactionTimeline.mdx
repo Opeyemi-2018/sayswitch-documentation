@@ -11,7 +11,7 @@ This endpoint retrieves the timeline or outline of a specific transaction using 
 
 | Header          | Type     | Description                                            |
 | --------------- | -------- | ------------------------------------------------------ |
-| `Authorization` | `string` | Your API secret key, prefixed with `Bearer `. Example: `Bearer secret_key` |
+| `Authorization` | `string` | Your API secret key, prefixed with `Bearer `. Example: Bearer `YOUR_SECRET_KEY` |
 
 
 
@@ -19,7 +19,7 @@ This endpoint retrieves the timeline or outline of a specific transaction using 
 
 ```bash
 curl -X GET https://backendapi.sayswitchgroup.com/api/v1/transaction/SSW_17471703346211972/timeline 
-  -H "Authorization: Bearer SECRET_KEY"
+  -H "Authorization: Bearer `YOUR_SECRET_KEY`"
 ```
 
 ### Sample Response

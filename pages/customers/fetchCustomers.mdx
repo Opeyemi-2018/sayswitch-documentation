@@ -9,7 +9,7 @@ This endpoint retrieves the complete list of customers registered in the system.
 
 | Header        | Type   | Description                          |
 |---------------|--------|------------------------------------|
-| Authorization | string | Bearer token containing your secret key |
+| Authorization | string | Bearer token containing `YOUR_SECRET_KEY` |
 
 ---
 
@@ -22,7 +22,7 @@ GET https://backendapi.sayswitchgroup.com/api/v1/customer
 ### Example cURL Command
 ```js
 curl -X GET https://backendapi.sayswitchgroup.com/api/v1/customer 
-  -H "Authorization: Bearer SECRET_KEY"
+  -H "Authorization: Bearer YOUR_SECRET_KEY"
 ```
 
 ### Example Response
@@ -41,7 +41,18 @@ curl -X GET https://backendapi.sayswitchgroup.com/api/v1/customer
       "domain": "test",
       "customer_code": "CUS_8n9f689gok7obwg",
       "metadata": "{}"
-    }
+    }, 
+    {
+      "id": 54,
+      "first_name": "Test",
+      "last_name": "Test",
+      "email": "test@gmail.com",
+      "phone": "08326900563",
+      "bvn": null,
+      "domain": "live",
+      "customer_code": "CUS_cdoyvpt3yadgflq",
+      "metadata": "{}"
+   },
     // ...additional customer records
   ]
 }

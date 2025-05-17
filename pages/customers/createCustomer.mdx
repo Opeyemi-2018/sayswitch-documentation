@@ -13,16 +13,8 @@ POST https://backendapi.sayswitchgroup.com/api/v1/customer
 | Header          | Type     | Description                                            |
 | --------------- | -------- | ------------------------------------------------------ |
 | `Content-Type`  | `string` | Indicates that the request body should be formatted as `application/json`. |
-| `Authorization` | `string` | Your API secret key, prefixed with `Bearer `. Example: `Bearer secret_key`. |
+| `Authorization` | `string` | Your API secret key, prefixed with `Bearer `. Example: `YOUR_SECRET_KEY`. |
 
-### Request Body Parameters
-
-| Parameter   | Type     | Description                                    | Required |
-| ----------- | -------- | ---------------------------------------------- | -------- |
-| `email`     | `string` | The customer's valid email address.            | Yes      |
-| `first_name`| `string` | The customer's given name.                   | Yes      |
-| `last_name` | `string` | The customer's surname or family name.       | Yes      |
-| `phone`     | `string` | The customer's primary phone number.           | Yes      |
 
 
 
@@ -38,6 +30,16 @@ curl -X POST https://backendapi.sayswitchgroup.com/api/v1/customer
     "phone": "08159994269"
   }'
   ```
+
+  ### Request Explanation
+
+| Fields   | Type     | Description                                    | 
+| ----------- | -------- | ---------------------------------------------- | 
+| `email`     | `string` | The customer's valid email address.            | 
+| `first_name`| `string` | The customer's given name.                   | 
+| `last_name` | `string` | The customer's surname or family name.       | 
+| `phone`     | `string` | The customer's primary phone number.           | 
+
 
   ### Sample Response
 

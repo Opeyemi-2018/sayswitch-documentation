@@ -17,6 +17,9 @@ const config = {
       titleTemplate: "%s – Sayswitch Documentation",
     };
   },
+  syntaxHighlight: {
+    theme: "vsc-dark-plus",
+  },
   head: (
     <>
       <title>Sayswitch - Developer Documentation</title>

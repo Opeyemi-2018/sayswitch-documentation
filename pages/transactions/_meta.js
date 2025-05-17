@@ -4,4 +4,5 @@ export default {
   fetchTransaction: "Fetch Transaction",
   transactionTimeline: "Transaction Timeline",
   transactionTotal: "Transaction Total",
+  listSettlement: "List Settlement"
 };
