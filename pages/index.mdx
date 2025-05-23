@@ -18,19 +18,12 @@ Sayswitch is a secure and reliable payment gateway that enables businesses to ac
 #### Quick Setup
 
 1. Create your Sayswitch merchant account
-2. Obtain your API keys from the dashboard
-3. Integrate our SDK into your application
+2. Obtain your API keys from the dashboard.
+3. Integrate our SDK into your application.
 
 #### Code Example
 
 ```javascript copy
-const Sayswitch = require('sayswitch-node');
-
-const sayswitch = new Sayswitch({
-  secretKey: 'your_secret_key',
-  publicKey: 'your_public_key'
-});
-
 // Initialize a payment
 const transaction = await sayswitch.transaction.initialize({
   amount: 1000,
@@ -52,9 +45,9 @@ const transaction = await sayswitch.transaction.initialize({
 
 - Credit/Debit Cards
 - Bank Transfers
-- Mobile Money
-- Digital Wallets
 - USSD
-- QR Payments
+- Mobile Money (Coming Soon)
+- Digital Wallets (Coming Soon)
+- QR Payments (Coming Soon)
 
 Ready to start accepting payments? [Create an Account](/signup) or explore our [API Documentation](/docs/api).
