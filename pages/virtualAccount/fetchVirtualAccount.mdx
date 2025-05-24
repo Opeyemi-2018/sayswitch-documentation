@@ -1,5 +1,4 @@
 ## Fetch Virtual Account Details
-
 This endpoint allows you to retrieve the details of a specific virtual bank account using its unique identifier.
 
 #### API Endpoint
@@ -7,15 +6,14 @@ This endpoint allows you to retrieve the details of a specific virtual bank acco
 `GET https://backendapi.sayswitchgroup.com/api/v1/dedicated_account/:account_id`
 
 **Path Parameter:**
+- `account_id` - The unique ID of the virtual account you want to retrieve (e.g., `484` in the example)
 
-* `account_id`: The unique ID of the virtual account you want to retrieve (e.g., `484` in the example).
 
-### Request Headers
+## Request Headers
 
-| Header          | Type     | Description                                            |
-| --------------- | -------- | ------------------------------------------------------ |
-| `Authorization` | `string` | Your API secret key, prefixed with `Bearer `. Example: `secret_key`. |
-
+| Header | Type | Description |
+|--------|------|-------------|
+| `Authorization` | `string` | Your API secret key, prefixed with `Bearer `. Example: `Bearer YOUR_SECRET_KEY` |
 
 ### Sample Request
 

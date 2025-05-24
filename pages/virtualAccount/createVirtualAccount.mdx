@@ -1,20 +1,18 @@
 ## Create Virtual Account
 
-This endpoint allows you to generate a dedicated virtual bank account  for a specific customer. 
-Virtual accounts facilitate easier tracking of payments and reconciliation.
+This endpoint allows you to generate a dedicated virtual bank account for a specific customer. Virtual accounts facilitate easier tracking of payments and reconciliation.
 
 **Prerequisite:** Before creating a virtual account, you must first [create a customer account](/customers/createCustomer) and retrieve the customer's unique `customer_code`. This `customer_code` will be used in the request body to associate the virtual account with the correct customer.
-
 #### API Endpoint
 
 `POST https://backendapi.sayswitchgroup.com/api/v1/dedicated_virtual_account`
 
 ### Request Headers
 
-| Header          | Type     | Description                                            |
-| --------------- | -------- | ------------------------------------------------------ |
-| `Content-Type`  | `string` | Specifies that the request body should be formatted as `application/json`. |
-| `Authorization` | `string` | Your API secret key, prefixed with `Bearer `. Example: `YOUR_SECRET_KEY`. |
+| Header          | Type     | Description                                                                |  Required  |    
+| --------------- | -------- | ------------------------------------------------------                     | ---------- |
+| `Content-Type`  | `string` | Specifies that the request body should be formatted as `application/json`. |      Yes   |
+| `Authorization` | `string` | Your API secret key, prefixed with `Bearer `. Example: `YOUR_SECRET_KEY`.  |      Yes   |
 
 
 ### Sample Request
@@ -28,3 +26,13 @@ Virtual accounts facilitate easier tracking of payments and reconciliation.
 | Parameter  | Type     | Description                                                                 | Required |
 | ---------- | -------- | --------------------------------------------------------------------------- | -------- |
 | `customer` | `string` | The unique identifier of the customer, obtained from the [create account](/customers/createCustomer) response as `customer_code`. | Yes      |
+
+### Example Usage
+``` json copy
+    curl -X POST https://backendapi.sayswitchgroup.com/api/v1/dedicated_virtual_account \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer YOUR_SECRET_KEY" \
+  -d '{
+    "customer": "CUS_ngfz27uqjin3ny5"
+  }'
+```

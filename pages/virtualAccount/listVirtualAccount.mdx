@@ -1,30 +1,26 @@
 ## List Virtual Accounts
 
 This endpoint allows you to retrieve a comprehensive list of all virtual bank accounts associated with your platform. This is useful for oversight, reporting, and managing your payment ecosystem.
-
 #### API Endpoint
 `GET https://backendapi.sayswitchgroup.com/api/v1/list_dedicated_accounts`
 
 ### Request Headers
 
-| Header          | Type     | Description                                            |
-| --------------- | -------- | ------------------------------------------------------ |
-| `Authorization` | `string` | Your API secret key, prefixed with `Bearer `. Example: `Bearer ECRET_KEY`. |
+| Header | Type | Description | Required |
+|--------|------|-------------|----------|
+| `Authorization` | `string` | Your API secret key, prefixed with `Bearer `. Example: `Bearer SECRET_KEY` | **Yes** |
 
-### Request Body
-
+## Request Body
 This endpoint does not require a request body.
 
-### Sample Request
-
+## Sample Request
 ```bash
-curl -X GET https://backendapi.sayswitchgroup.com/api/v1/list_dedicated_accounts 
+curl -X GET https://backendapi.sayswitchgroup.com/api/v1/list_dedicated_accounts \
   -H "Authorization: Bearer SECRET_KEY"
-```
 
 ### Sample Response
 
-```json
+```json copy
 {
     "success": true,
     "message": "Managed accounts successfully retrieved",
@@ -89,3 +85,31 @@ curl -X GET https://backendapi.sayswitchgroup.com/api/v1/list_dedicated_accounts
     }
 }
 ```
+
+## Response Fields
+
+### Account Object
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `id` | `integer` | Unique identifier for the virtual account |
+| `account_name` | `string` | Name associated with the account |
+| `account_number` | `string` | Virtual bank account number |
+| `bank_name` | `string` | Bank name (SaySwitch) |
+| `currency` | `string` | Account currency |
+| `status` | `string` | Account status (active/inactive) |
+| `reference` | `string` | Unique reference for the account |
+| `created_at` | `string` | Account creation timestamp |
+| `updated_at` | `string` | Last update timestamp |
+
+### Customer Object
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `customer_code` | `string` | Unique customer identifier |
+| `first_name` | `string` | Customer's first name |
+| `last_name` | `string` | Customer's last name |
+| `email` | `string` | Customer's email address |
+| `phone` | `string` | Customer's phone number |
+| `status` | `string` | Customer account status |
+
