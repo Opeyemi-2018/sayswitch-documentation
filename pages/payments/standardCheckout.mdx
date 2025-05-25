@@ -1,55 +1,104 @@
 import { Callout } from 'nextra/components'
 
-## Standard Checkout
+## SaySwitch Standard Checkout Integration Guide
 
-The Standard Checkout integration enables you to create a secure, one-time payment link that customers can use to complete their transactions safely.
-
-
-### Step 1: Start the Payment Process
-Make a server-side `POST` request to the payment initialization endpoint with the following payload:
-```js
-{
-    "email": "test@email.com",
-    "amount": "100",
-    "callback": "https://webhook.site/1580cf0d-9dd7-4baa-becb-f4d8747eba35",
-    "currency": "NGN"
-}
-```
-
-| Field     | Type   | Required | Description                                                  |
-|-----------|--------|----------|--------------------------------------------------------------|
-| email     | string | Yes      | The email address of the customer making the transaction     |
-| amount    | string | Yes      | The amount to be charged or processed                        |
-| callback  | string | Yes      | The URL to receive webhook notifications after transaction   |
-| currency  | string | Yes      | The currency for the transaction (e.g., NGN for Naira)       |
+The Standard Checkout integration enables you to create secure, one-time payment links that redirect customers to SaySwitch's hosted payment page for safe transaction processing.
 
 
-### Step 2: Send the Customer to the Payment Page
-Upon a successful request, we’ll return a unique link or access code for the payment page. Redirect your customer to this page to complete their payment.
+### Overview
+The integration follows a simple 3-step process:
 
-### Response
-```js
-{
-    "success": true,
-    "message": "Authorization URL created",
-    "data": {
-        "authorization_url": "https://checkout.sayswitchgroup.com/pay/SSW_17471703346211972",
-        "access_code": "ekns5nhydaaa",
-        "reference": "SSW_17471703346211972",
-        "payer_id": null
-    }
-}
-```
+1. **Initialize Payment:** Create a payment session on your server
+1. **Redirect Customer:** Send customer to SaySwitch payment page from your frontend application
+1. **Handle Response:** Process the payment result.
 
-### Step 3: After the Payment
+### Prerequisites
+Before you begin, ensure you have:
 
-Once the transaction is successfully completed, the following actions will take place:
+- A SaySwitch merchant account
+- Your API keys (test and live)
+- A server endpoint to handle payment initialization
+- A frontend application to trigger payments
 
-1. The customer will be redirected to your specified `redirect_url`, with query parameters such as `status` and `reference`.
-2. If webhooks are enabled, a notification will be triggered and sent to your configured webhook endpoint. [Learn more about webhooks](#).
-3. A confirmation receipt will be emailed to the customer if the payment was successful, unless this option is disabled.
-4. You will also receive a transaction email notification, unless you've opted out of this feature.
+### API Keys
+You'll need these keys for authentication:
+- **Test Secret Key:** `sk_test_...` (for development)
+- **Live Secret Key:** `sk_live_...` (for production)
 
-<Callout type='info'>
- On your server, ensure that you handle the redirect properly and always verify the final status of the transaction for accuracy.
+![Alt text](/assets/img/api-key.png)
+<Callout type='warning'>
+ Security Note: Never expose your secret keys in frontend code. Always keep them on your server(.env)
 </Callout>
+
+### Step 1: Server-Side Payment Initialization
+Create an API endpoint on your server to initialize payments with SaySwitch.
+### API Endpoint
+`POST https://backendapi.sayswitchgroup.com/api/v1/transaction/initialize`
+
+### Required Headers
+```json
+Authorization: Bearer YOUR_SECRET_KEY
+Content-Type: application/json
+```
+
+
+###  Request Payload
+
+```json
+{
+  "email": "customer@example.com",
+  "amount": "100",
+  "currency": "NGN",
+  "reference": "txn_1234567890",
+  "callback_url": "https://yourdomain.com/webhook",
+  "redirect_url": "https://yourdomain.com/payment-success"
+}
+```
+
+### Field Descriptions
+
+| Field         | Type   | Required    | Description                                                          |
+|---------------|--------|-------------|----------------------------------------------------------------------|
+| email         | string | Yes         | Customer's email address                                             |
+| amount        | string | Yes         | Amount to charge (in the smallest currency unit)                     |
+| currency      | string | Yes         | Currency code (e.g., "NGN" for Nigerian Naira)                      |
+| reference     | string | Yes         | Unique transaction reference (must be unique per transaction)        |
+| callback_url  | string | Recommended | Webhook URL for payment notifications (essential for reliable        |
+|               |        |             | payment processing)                                                  |
+| redirect_url  | string | Recommended | URL to redirect customer after payment (essential for good UX)       |
+
+
+
+
+### Step 2: Frontend Integration
+Create a checkout component that collects customer information, sends it to your server for payment initialization, and then redirects to the SaySwitch payment page.
+
+The Flow:
+
+1. Collect customer data (name, email, address, etc.) on your checkout form
+2. Submit form data to your server endpoint
+2. Receive payment URL from your server (which got it from SaySwitch)
+3. Redirect customer to SaySwitch payment page using the received URL
+
+### Sample Frontend Code
+
+```js copy
+const handlePay = async () => {
+    const res = await fetch("/api/checkout/pay", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ amount: 100, email: "test2018@gmail.com" }),
+    });
+
+    const data = await res.json();
+
+    if (data.url) {
+      window.location.href = data.url; 
+    } else {
+      alert("Payment initialization failed.");
+    }
+  };
+```
+
+### Step 3: Handle Payment Response
+After the customer completes payment on SaySwitch's page, they'll be redirected back to your application.
