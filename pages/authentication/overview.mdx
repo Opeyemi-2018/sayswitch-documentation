@@ -24,18 +24,6 @@ Include your API key in the Authorization header of your requests:
 Authorization: Bearer YOUR_SECRET_KEY
 ```
 
-#### Example Request
-
-```javascript
-const sayswitch = new Sayswitch({
-  secretKey: 'sk_test_xxxxxxxxxxxxx',
-  publicKey: 'pk_test_xxxxxxxxxxxxx'
-});
-
-// Making an authenticated request
-const response = await sayswitch.transactions.verify('TRX_123456');
-```
-
 ### Security Best Practices
 
 1. **Never expose your secret key**
@@ -43,13 +31,6 @@ const response = await sayswitch.transactions.verify('TRX_123456');
    - Don't include it in client-side code
    - Don't commit it to version control
 
-2. **Use Environment Variables**
-```javascript
-const sayswitch = new Sayswitch({
-  secretKey: process.env.SAYSWITCH_SECRET_KEY,
-  publicKey: process.env.SAYSWITCH_PUBLIC_KEY
-});
-```
 
 3. **Rotate Keys Regularly**
    - Generate new keys every few months

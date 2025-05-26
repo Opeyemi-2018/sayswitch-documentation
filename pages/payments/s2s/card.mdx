@@ -6,107 +6,200 @@ Enable secure card transactions by integrating with Sayswitch's Server-to-Server
 
 ### How It Works
 
-1. Safely collect the customer's card information
-2. Send the payment request directly to the Sayswitch API
-3. Complete 3D Secure (3DS) authentication when prompted
-4. Process the API response to determine the payment outcome
+
+### 1. Collection of Card information
+
+`POST https://backendapi.sayswitchgroup.com/api/s2s/transaction/initialize`
+### Request Headers
+
+| Header          | Type     | Description                                                                |  Required  |    
+| --------------- | -------- | ------------------------------------------------------                     | ---------- |
+| `Content-Type`  | `string` | Specifies that the request body should be formatted as `application/json`. |      Yes   |
+| `Authorization` | `string` | Your API secret key, prefixed with `Bearer `. Example: `YOUR_SECRET_KEY`.  |      Yes   |
 
 
-### How to Implementation
-
-```javascript copy
-const sayswitch = new Sayswitch({
-  secretKey: process.env.SAYSWITCH_SECRET_KEY
-});
-
-// Process card payment
-const cardPayment = await sayswitch.s2s.cards.charge({
-  amount: 5000, // Amount in cents
-  currency: 'USD',
-  card: {
-    number: '4242424242424242',
-    expiry_month: '12',
-    expiry_year: '25',
-    cvv: '123'
-  },
-  customer: {
-    email: 'customer@example.com',
-    name: 'John Doe'
-  },
-  reference: 'TX_REF_123'
-});
-```
-
-### Handling 3D Secure
-
-```javascript
-const process3DS = async (paymentId) => {
-  const verification = await sayswitch.s2s.cards.verify3DS({
-    payment_id: paymentId,
-    callback_url: 'https://your-domain.com/3ds-callback'
-  });
-
-  return verification.redirect_url;
-};
-```
-
-### Test Cards
-
-| Card Number | Description | 3DS Status |
-|------------|-------------|------------|
-| 4242424242424242 | Successful payment | No 3DS |
-| 4000000000003220 | Successful payment | 3DS required |
-| 4000000000000002 | Declined payment | No 3DS |
-
-### Error Handling
-
-```javascript
-try {
-  const payment = await sayswitch.s2s.cards.charge({
-    // payment details
-  });
-} catch (error) {
-  if (error.code === 'card_declined') {
-    // Handle declined card
-  } else if (error.code === '3ds_required') {
-    // Redirect to 3DS verification
-  } else {
-    // Handle other errors
-  }
+### Sample Request
+``` js copy
+{
+    "amount": "10",
+    "card" :"0fda52cd13d6ba74d4065b872310d128c50b317ddb9117bc7c553d17476d36d7de56044182d7b384357636e0581c99ca964f1772970d31a3547fa551fba893d4a118a60104a0969eaa1dbae11d00272633fccfb89af69fdf5551a5c693bc58d2",
+    "currency": "NGN",
+    "email": "test@gmail.com",
+    "pin":"1234",
+    "reference": "4757846579098456"
 }
 ```
 
-### Security Requirements
+Request Parameters
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `amount`  | string | Yes | Transaction amount |
+| `card` | string | Yes | Encrypted card details |
+| `currency` | string | Yes | Currency code (e.g., NGN for Nigerian Naira) |
+| `email` | string | Yes | Customer's email address |
+| `pin` | string | Yes | Card PIN |
+| `reference` | string | Yes | Unique transaction reference |
 
-1. **PCI Compliance**
-   - Maintain compliance with PCI DSS standards when handling card information  
-   - Ensure all connections use TLS version 1.2 or higher  
-   - Apply strong encryption practices to protect sensitive data  
+### Response Format
+```js 
+{
+    "status": true,
+    "message": "Kindly enter the OTP sent to 234706***9927",
+    "data": {
+        "paymentid": "1933565739",
+        "supportMessage": "Didn't get the OTP? Dial *322*0# on your phone (MTN, Etisalat, Airtel) Glo, use *805*0#.",
+        "_links": {
+            "url": "https://backendapi.sayswitchgroup.com/api/i5678930tyuhjns-cardotp",
+            "method": "POST",
+            "payload": [
+                "otp",
+                "ref", 
+                "payid"
+            ]
+        }
+    }
+}
+```
 
-2. **Data Validation**
-   - Use the Luhn algorithm to validate card numbers  
-   - Confirm that card expiry dates are valid and current  
-   - Verify that the CVV is in the correct format before processing  
+### Response Field 
+| Field | Type | Description |
+|-------|------|-------------|
+| `status` | boolean | Transaction status indicator |
+| `message` | string | User-friendly message about OTP delivery |
+| `data.paymentid` | string | Unique payment identifier for this transaction |
+| `data.supportMessage` | string | Instructions for customers who don't receive OTP |
+| `data._links.url` | string | Next step URL for OTP verification |
+| `data._links.method` | string | HTTP method for the next request |
+| `data._links.payload` | array | Required parameters for OTP verification |
 
 
-### Response Codes
 
-| Code | Description |
-|------|-------------|
-| 0000 | Success |
-| 1000 | Card declined |
-| 1001 | Insufficient funds |
-| 1002 | Card expired |
-| 1003 | Invalid card |
+### 2. OTP Verification
+After receiving the initial response, the user will be navigated to the SaySwitch checkout page to complete the transaction using the provided URL:
 
-### Best Practices
+`https://backendapi.sayswitchgroup.com/api/i5678930tyuhjns`
 
-- Never log full card numbers
-- Implement retry logic for failed transactions
-- Store card tokens for recurring payments
-- Monitor fraud patterns
-- Implement velocity checks
+### OTP Verification Request
+The checkout page will make a POST request to the above URL with the following parameters:
+| Parameter | Description |
+|-----------|-------------|
+| `otp` | One-time password sent to customer's phone |
+| `ref` | Transaction reference from initial request |
+| `payid` | Payment ID from the initial response |
+
+### Verify Transaction  
+Required Headers
+```json
+ httpAuthorization: Bearer YOUR_SECRET_KEY
+   Content-Type: application/json
+```
+### Endpoint
+Append the transaction reference ID to the endpoint URL to verify the transaction status
+
+` GET https://backendapi.sayswitchgroup.com/api/s2s/reference`
+### Example usage
+```http
+ https://backendapi.sayswitchgroup.com/api/s2s/4757846579098812
+```
 
 
+### Success Response
+
+```js 
+{
+    "success": true,
+    "message": "Verification successful",
+    "data": {
+        "amount": "10.12",
+        "currency": "NGN",
+        "status": "success",
+        "transaction_date": "2025-05-26 08:52:23",
+        "reference": "4757846579098812",
+        "domain": "live",
+        "gateway_response": null,
+        "channel": "card",
+        "ip_address": null,
+        "originator_name": "",
+        "originator_account_number": "",
+        "fees": "0.12",
+        "plan": null,
+        "requested_amount": "10"
+    },
+    "customer": {
+        "id": 1340,
+        "customer_code": "CUS_7ewvq2vt6zlqyij",
+        "first_name": "",
+        "last_name": "",
+        "email": "test@gmail.com"
+    },
+    "card": {
+        "first6Digits": "506105",
+        "last4Digits": "7163",
+        "expiry": "0827",
+        "type": "verve",
+        "token": "ss-tkn-fin1refv13noydilm77dhske"
+    },
+    "log": {
+        "time_spent": null,
+        "attempts": null,
+        "authentication": null,
+        "errors": 3,
+        "success": true,
+        "channel": "card",
+        "history": [
+            {
+                "id": 8125,
+                "type": "TRANSACTION RECORDED",
+                "message": "success",
+                "time": null,
+                "reference": "4757846579098812",
+                "channel": "S2S",
+                "ip_address": "102.89.76.86",
+                "device": "PostmanRuntime/7.43.4"
+            },
+        ]
+    }
+}
+```
+
+### Verification Response Fields
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `success` | boolean | Verification request status |
+| `message` | string | Verification response message |
+| `data.status` | string | Transaction status (`success`, `pending`, `failed`) |
+| `data.amount` | string | Final transaction amount including fees |
+| `data.requested_amount` | string | Original requested amount |
+| `data.fees` | string | Transaction fees charged |
+| `data.currency` | string | Transaction currency |
+| `data.reference` | string | Transaction reference |
+| `data.transaction_date` | string | Transaction completion timestamp |
+| `data.channel` | string | Payment channel used (card) |
+| `customer.email` | string | Customer email address |
+| `customer.customer_code` | string | Unique customer identifier |
+| `card.first6Digits` | string | First 6 digits of the card |
+| `card.last4Digits` | string | Last 4 digits of the card |
+| `card.type` | string | Card type (e.g., verve, visa, mastercard) |
+| `card.token` | string | Tokenized card reference for future use |
+| `log.history` | array | Transaction processing history |
+
+
+### Transaction Status Values
+
+| Status | Description |
+|--------|-------------|
+| `success` | Transaction completed successfully |
+| `pending` | Transaction is still being processed |
+| `failed` | Transaction failed or was declined |
+
+
+### Transaction Flow
+
+1. **Initialize Transaction** – Send card details and other required fields to initiate a payment.
+2. **OTP Prompt** – Customer receives a one-time password (OTP) on their registered mobile number.
+3. **Redirect to Checkout** – Customer is directed to a secure Sayswitch page to input their OTP.
+4. **Complete Transaction** – OTP is validated and the payment is processed.
+5. **Verify Status** – Use the verification endpoint to confirm the final transaction result.
 
 Need help? Contact our support team at support@sayswitch.com

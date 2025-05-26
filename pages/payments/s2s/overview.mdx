@@ -19,33 +19,8 @@ To get started, ensure the following are in place:
 - A server environment with support for TLS 1.2 or higher
 - Your Secret API Key securely stored
 
-### How to Implement
 
-```js
-const sayswitch = new Sayswitch({
-  secretKey: process.env.SAYSWITCH_SECRET_KEY
-});
 
-// Create an S2S payment
-const payment = await sayswitch.s2s.initiate({
-  amount: 10000,
-  currency: 'USD',
-  customer: {
-    email: 'customer@example.com',
-    reference: 'CUST_123'
-  },
-  payment_method: {
-    type: 'card',
-    card_number: '4242424242424242',
-    expiry_month: '12',
-    expiry_year: '25',
-    cvv: '123'
-  },
-  metadata: {
-    order_id: 'ORDER_123'
-  }
-});
-```
 
 
 ### Security Guidelines
@@ -84,23 +59,7 @@ const payment = await sayswitch.s2s.initiate({
 - Process any incoming **webhook notifications**
 - Update your system records based on the final outcome
 
-### Response Handling
 
-```javascript
-try {
-  const payment = await sayswitch.s2s.initiate({
-    // payment details
-  });
-
-  if (payment.status === 'success') {
-    // Handle successful payment
-  } else {
-    // Handle pending or failed payment
-  }
-} catch (error) {
-  // Handle API errors
-}
-```
 
 
 For support, contact our technical team at developers@sayswitch.com

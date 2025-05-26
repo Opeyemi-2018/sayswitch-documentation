@@ -2,103 +2,205 @@ import { Callout } from 'nextra/components'
 
 ## SaySwitch Standard Checkout Integration Guide
 
-The Standard Checkout integration enables you to create secure, one-time payment links that redirect customers to SaySwitch's hosted payment page for safe transaction processing.
+The Standard Checkout API allows you to initialize payment transactions and redirect customers to a secure SaySwitch checkout page to complete their payments.
 
+### Endpoint
+`POST https://backendapi.sayswitchgroup.com/api/v1/Initialize/transaction/initialize`
 
-### Overview
-The integration follows a simple 3-step process:
+### Request Headers
 
-1. **Initialize Payment:** Create a payment session on your server
-1. **Redirect Customer:** Send customer to SaySwitch payment page from your frontend application
-1. **Handle Response:** Process the payment result.
+| Header          | Type     | Description                                                                |  Required  |    
+| --------------- | -------- | ------------------------------------------------------                     | ---------- |
+| `Content-Type`  | `string` | Specifies that the request body should be formatted as `application/json`. |      Yes   |
+| `Authorization` | `string` | Your API secret key, prefixed with `Bearer `. Example: `YOUR_SECRET_KEY`.  |      Yes   |
 
-### Prerequisites
-Before you begin, ensure you have:
-
-- A SaySwitch merchant account
-- Your API keys (test and live)
-- A server endpoint to handle payment initialization
-- A frontend application to trigger payments
-
-### API Keys
-You'll need these keys for authentication:
-- **Test Secret Key:** `sk_test_...` (for development)
-- **Live Secret Key:** `sk_live_...` (for production)
-
-![Alt text](/assets/img/api-key.png)
-<Callout type='warning'>
- Security Note: Never expose your secret keys in frontend code. Always keep them on your server(.env)
-</Callout>
-
-### Step 1: Server-Side Payment Initialization
-Create an API endpoint on your server to initialize payments with SaySwitch.
-### API Endpoint
-`POST https://backendapi.sayswitchgroup.com/api/v1/transaction/initialize`
-
-### Required Headers
-```json
-Authorization: Bearer YOUR_SECRET_KEY
-Content-Type: application/json
-```
-
-
-###  Request Payload
-
+### Request Body
 ```json
 {
-  "email": "customer@example.com",
-  "amount": "100",
-  "currency": "NGN",
-  "reference": "txn_1234567890",
-  "callback_url": "https://yourdomain.com/webhook",
-  "redirect_url": "https://yourdomain.com/payment-success"
+    "email": "test@gmail.com",
+    "amount": "10",
+    "callback": "https://google.com",
+    "currency": "NGN"
 }
 ```
 
-### Field Descriptions
+Request Parameters
 
-| Field         | Type   | Required    | Description                                                          |
-|---------------|--------|-------------|----------------------------------------------------------------------|
-| email         | string | Yes         | Customer's email address                                             |
-| amount        | string | Yes         | Amount to charge (in the smallest currency unit)                     |
-| currency      | string | Yes         | Currency code (e.g., "NGN" for Nigerian Naira)                      |
-| reference     | string | Yes         | Unique transaction reference (must be unique per transaction)        |
-| callback_url  | string | Recommended | Webhook URL for payment notifications (essential for reliable        |
-|               |        |             | payment processing)                                                  |
-| redirect_url  | string | Recommended | URL to redirect customer after payment (essential for good UX)       |
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `email` | string | Yes | Customer's email address |
+| `amount` | string | Yes | Transaction amount |
+| `callback` | string | Yes | URL to redirect after payment completion |
+| `currency` | string | Yes | Currency code (e.g., NGN for Nigerian Naira) |
 
 
-
-
-### Step 2: Frontend Integration
-Create a checkout component that collects customer information, sends it to your server for payment initialization, and then redirects to the SaySwitch payment page.
-
-The Flow:
-
-1. Collect customer data (name, email, address, etc.) on your checkout form
-2. Submit form data to your server endpoint
-2. Receive payment URL from your server (which got it from SaySwitch)
-3. Redirect customer to SaySwitch payment page using the received URL
-
-### Sample Frontend Code
-
-```js copy
-const handlePay = async () => {
-    const res = await fetch("/api/checkout/pay", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ amount: 100, email: "test2018@gmail.com" }),
-    });
-
-    const data = await res.json();
-
-    if (data.url) {
-      window.location.href = data.url; 
-    } else {
-      alert("Payment initialization failed.");
+### Response Format
+```js
+{
+    "success": true,
+    "message": "Authorization URL created",
+    "data": {
+        "authorization_url": "https://checkout.sayswitchgroup.com/pay/SSW_17482463876876919",
+        "access_code": "cy2mfzkwqbl9",
+        "reference": "SSW_17482463876876919",
+        "payer_id": null
     }
-  };
+} 
 ```
 
-### Step 3: Handle Payment Response
-After the customer completes payment on SaySwitch's page, they'll be redirected back to your application.
+### Response Fields
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `success` | boolean | Transaction initialization status |
+| `message` | string | Response message |
+| `data.authorization_url` | string | URL to redirect customer for payment |
+| `data.access_code` | string | Access code for this transaction |
+| `data.reference` | string | Unique transaction reference |
+| `data.payer_id` | string/null | Payer identifier (null for new transactions) | 
+
+### Transaction Flow
+- **Initialize Transaction:** Send a POST request to the Initialize Transaction endpoint with customer details and transaction amount
+- **Get Authorization URL:** The API returns a secure checkout URL in the authorization_url field
+- **Redirect Customer:** Direct the customer to the authorization URL where they can complete their payment
+- **Payment Processing:** Customer completes payment on the SaySwitch secure checkout page
+- **Callback Redirect:** After payment completion, the customer is automatically redirected to your specified callback URL
+
+### Integration Steps
+#### Step 1: Initialize the Transaction
+Make a POST request to initialize the transaction:
+```js copy 
+const response = await fetch('https://backendapi.sayswitchgroup.com/api/v1/transaction/initialize', {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+        email: 'customer@example.com',
+        amount: '100.00',
+        callback: 'https://yoursite.com/payment-callback',
+        currency: 'NGN'
+    })
+});
+
+const result = await response.json();
+```
+
+#### Step 2: Redirect to Checkout
+Use the returned authorization URL to redirect your customer:
+```js copy
+if (result.success) {
+    // Redirect customer to the checkout page
+    window.location.href = result.data.authorization_url;
+}
+```
+
+### Step 3: Handle Callback
+Set up your callback URL to handle the payment completion response and update your application accordingly.
+
+### Verify Transaction  
+Required Headers
+```json
+ Authorization: Bearer YOUR_SECRET_KEY
+Content-Type: application/json
+```
+### Endpoint
+`GET https://backendapi.sayswitchgroup.com/api/s2s/your_referenceId`
+### Example usage
+``` http
+https://backendapi.sayswitchgroup.com/api/s2s/SSW_17482573443162479
+```
+### Success Response
+```js 
+{
+    "success": true,
+    "message": "Verification successful",
+    "data": {
+        "amount": "10.12",
+        "currency": "NGN",
+        "status": "success",
+        "transaction_date": "2025-05-26 12:04:40",
+        "reference": "SSW_17482573443162479",
+        "domain": "live",
+        "gateway_response": null,
+        "channel": "card",
+        "ip_address": null,
+        "originator_name": "",
+        "originator_account_number": "",
+        "fees": "0.12",
+        "plan": null,
+        "requested_amount": "10"
+    },
+    "customer": {
+        "id": 1340,
+        "customer_code": "CUS_7ewvq2vt6zlqyij",
+        "first_name": "",
+        "last_name": "",
+        "email": "opeyemiodunayo2018@gmail.com"
+    },
+    "card": {
+        "first6Digits": "506105",
+        "last4Digits": "7163",
+        "expiry": "0827",
+        "type": "verve",
+        "token": "ss-tkn-uoekyzfdvnttyqscdkemrhq9"
+    },
+    "log": {
+        "time_spent": null,
+        "attempts": null,
+        "authentication": null,
+        "errors": 2,
+        "success": true,
+        "channel": "card",
+        "history": [
+            {
+                "id": 8133,
+                "type": "PURCHASES",
+                "message": "{\"transactionRef\":\"SSW_17482573443162479\",\"paymentId\":\"1933911626\",\"bankCode\":\"011\",\"message\":\"Kindly enter the OTP sent to 234706***9927\",\"amount\":\"10.12\",\"responseCode\":\"T0\",\"plainTextSuppo",
+                "time": null,
+                "reference": "SSW_17482573443162479",
+                "channel": "interswitch",
+                "ip_address": "102.89.83.206",
+                "device": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36"
+            },
+            
+        ]
+    }
+}
+```
+
+### Verification Response Fields
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `success` | boolean | Verification request status |
+| `message` | string | Verification response message |
+| `data.status` | string | Transaction status (`success`, `pending`, `failed`) |
+| `data.amount` | string | Final transaction amount including fees |
+| `data.requested_amount` | string | Original requested amount |
+| `data.fees` | string | Transaction fees charged |
+| `data.currency` | string | Transaction currency |
+| `data.reference` | string | Transaction reference |
+| `data.transaction_date` | string | Transaction completion timestamp |
+| `data.channel` | string | Payment channel used (card) |
+| `customer.email` | string | Customer email address |
+| `customer.customer_code` | string | Unique customer identifier |
+| `card.first6Digits` | string | First 6 digits of the card |
+| `card.last4Digits` | string | Last 4 digits of the card |
+| `card.type` | string | Card type (e.g., verve, visa, mastercard) |
+| `card.token` | string | Tokenized card reference for future use |
+| `log.history` | array | Transaction processing history |
+
+
+### Transaction Status Values
+
+| Status | Description |
+|--------|-------------|
+| `success` | Transaction completed successfully |
+| `pending` | Transaction is still being processed |
+| `failed` | Transaction failed or was declined |
+
+
+
+
+
