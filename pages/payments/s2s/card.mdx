@@ -7,7 +7,7 @@ Enable secure card transactions by integrating with Sayswitch's Server-to-Server
 ### How It Works
 
 
-### 1. collection of Card information
+### 1. Collection of Card information
 
 `POST https://backendapi.sayswitchgroup.com/api/s2s/transaction/initialize`
 ### Request Headers
@@ -21,13 +21,12 @@ Enable secure card transactions by integrating with Sayswitch's Server-to-Server
 ### Sample Request
 ``` js copy
 {
-    "data" :{
-        "number": "8365920590274095730",
-        "expiryMonth": "02",
-        "expiryYear": "26",
-        "cvv" : "789"
-    },
-    "reference": "1257846579098812"
+    "amount": "10",
+    "card" :"0fda52cd13d6ba74d4065b872310d128c50b317ddb9117bc7c553d17476d36d7de56044182d7b384357636e0581c99ca964f1772970d31a3547fa551fba893d4a118a60104a0969eaa1dbae11d00272633fccfb89af69fdf5551a5c693bc58d2",
+    "currency": "NGN",
+    "email": "test@gmail.com",
+    "pin":"1234",
+    "reference": "4757846579098456"
 }
 ```
 
@@ -75,10 +74,10 @@ Request Parameters
 
 
 
-### 2. Sending the payment request  the Sayswitch API
+### 2. OTP Verification
 After receiving the initial response, the user will be navigated to the SaySwitch checkout page to complete the transaction using the provided URL:
 
-`https://backendapi.sayswitchgroup.com/api/i5678930tyuhjns-cardotp`
+`https://backendapi.sayswitchgroup.com/api/i5678930tyuhjns`
 
 ### OTP Verification Request
 The checkout page will make a POST request to the above URL with the following parameters:
@@ -95,7 +94,14 @@ Required Headers
    Content-Type: application/json
 ```
 ### Endpoint
-`GET https://backendapi.sayswitchgroup.com/api/s2s/reference`
+Append the transaction reference ID to the endpoint URL to verify the transaction status
+
+` GET https://backendapi.sayswitchgroup.com/api/s2s/reference`
+### Example usage
+```http
+ https://backendapi.sayswitchgroup.com/api/s2s/4757846579098812
+```
+
 
 ### Success Response
 
@@ -190,11 +196,10 @@ Required Headers
 
 ### Transaction Flow
 
-- **Initial Request:** Submit card transaction details
-- **OTP Generation:** System sends OTP to customer's registered phone number
-- **User Redirect:** Customer is directed to SaySwitch checkout page
-- **OTP Verification:** Customer enters OTP to complete transaction
-- **Transaction Processing:** Payment is processed by the financial institution
-- **Verification:** Use the verification endpoint to check final transaction status
+1. **Initialize Transaction** – Send card details and other required fields to initiate a payment.
+2. **OTP Prompt** – Customer receives a one-time password (OTP) on their registered mobile number.
+3. **Redirect to Checkout** – Customer is directed to a secure Sayswitch page to input their OTP.
+4. **Complete Transaction** – OTP is validated and the payment is processed.
+5. **Verify Status** – Use the verification endpoint to confirm the final transaction result.
 
 Need help? Contact our support team at support@sayswitch.com
