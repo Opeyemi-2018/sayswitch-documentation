@@ -25,36 +25,6 @@ Sayswitch provides two types of API keys for secure authentication:
 ![Alt text](/assets/img/api-key.png)
 
 
-### Implementation Example
-
-```javascript
-// Client-side implementation
-const sayswitchClient = new Sayswitch({
-  publicKey: 'pk_test_1234567890abcdef'
-});
-
-// Server-side implementation
-const sayswitchServer = new Sayswitch({
-  secretKey: 'sk_test_1234567890abcdef'
-});
-```
-
-### Environment Variables
-
-For secure key management, use environment variables:
-
-```javascript
-// In your .env file
-SAYSWITCH_PUBLIC_KEY=pk_test_1234567890abcdef
-SAYSWITCH_SECRET_KEY=sk_test_1234567890abcdef
-
-// In your application
-const sayswitch = new Sayswitch({
-  publicKey: process.env.SAYSWITCH_PUBLIC_KEY,
-  secretKey: process.env.SAYSWITCH_SECRET_KEY
-});
-```
-
 ### Key Security Guidelines
 
 1. **Never Share Secret Keys**
