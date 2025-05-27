@@ -1,0 +1,63 @@
+## Get Airtime Providers
+Get Airtime Providers Endpoint Fetches a list of available airtime providers along with their logos and minimum/maximum amount requirements.
+
+### Endpoint
+`GET https://backendapi.sayswitchgroup.com/api/v1/airtime`
+
+### Sample cURL Request
+
+```js
+curl --request GET \
+  --url "https://backendapi.sayswitchgroup.com/api/v1/airtime \
+  --header 'Authorization: Bearer YOUR_SECRET_KEY'
+ ```
+
+### Sample Response
+```js
+{
+  "success": true,
+  "code": "00000",
+  "message": "Fetched successfully",
+  "data": [
+    {
+      "provider": "AIRTEL",
+      "providerLogoUrl": "assets/images/bills/Airtel-Airtime.jpg",
+      "minAmount": "5",
+      "maxAmount": ""
+    },
+    {
+      "provider": "MTN",
+      "providerLogoUrl": "assets/images/bills/MTN-Airtime.jpg",
+      "minAmount": "5",
+      "maxAmount": ""
+    },
+    {
+      "provider": "GLO",
+      "providerLogoUrl": "assets/images/bills/GLO-Airtime.jpg",
+      "minAmount": "5",
+      "maxAmount": ""
+    },
+    {
+      "provider": "9MOBILE",
+      "providerLogoUrl": "assets/images/bills/9mobile-Airtime.jpg",
+      "minAmount": "5",
+      "maxAmount": ""
+    }
+  ]
+}
+```
+
+### Response Fields
+| Field             | Type     | Description                                      |
+|------------------|----------|--------------------------------------------------|
+| success          | boolean  | Indicates if the request was successful          |
+| code             | string   | API-specific response code                       |
+| message          | string   | Description message                              |
+| data             | array    | List of airtime providers                        |
+| provider       | string   | Name of the provider (e.g., MTN, AIRTEL)         |
+| providerLogoUrl| string   | Path to the provider's logo image                |
+| minAmount      | string   | Minimum allowable purchase amount                |
+| maxAmount      | string   | Maximum allowable purchase amount (can be empty) |
+
+
+

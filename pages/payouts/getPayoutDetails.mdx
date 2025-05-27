@@ -1,0 +1,88 @@
+### Get PayoutDetails
+
+This endpoint is used to retrieve the full details of a specific payout transaction using its unique reference. It's ideal for tracking payout status, viewing transaction metadata, and displaying individual payout summaries
+
+### endpoint
+`GET https://backendapi.sayswitchgroup.com/api/v1/payout/{reference}`
+
+### Sample cURL Request
+
+```json
+curl -X GET https://backendapi.sayswitchgroup.com/api/v1/payout/SSW_trf_m47f3023693d6d \
+  -H "Authorization: Bearer YOUR_SECRET_KEY"
+```
+
+### Sample Response 
+```js
+{
+  "success": true,
+  "message": "Payout retrieved",
+  "data": {
+    "id": 2,
+    "reference": "SSW_trf_m47f3023693d6d",
+    "sessionid": null,
+    "currency": "NGN",
+    "amount": "50",
+    "fee": "10",
+    "bank_code": "000013",
+    "bank_name": "GTBank",
+    "account_number": "0176448496",
+    "account_name": "OWOLABI SAMUEL BLESSING",
+    "countryCode": "NG",
+    "serviceCode": null,
+    "paymentMode": "bank",
+    "narration": "Test",
+    "sender": "SAYSWITCH",
+    "domain": "live",
+    "requestIp": "102.88.35.88",
+    "initiator": "7|Samuel Owolabi",
+    "status": "reversed",
+    "updated_by": "dg marious",
+    "updated_on": "2024-07-22 15:22:19",
+    "beneficiary": 0,
+    "subaccount": null,
+    "gateway": null,
+    "gateway_response": null,
+    "batch_id": "4d18123078162",
+    "created_at": "2024-07-02T13:06:53.000000Z",
+    "updated_at": "2024-07-22T14:22:19.000000Z"
+  }
+}
+```
+
+### Response Fields
+
+| Field             | Type     | Description                                                     |
+|------------------|----------|-----------------------------------------------------------------|
+| success           | boolean  | Indicates if the request was successful.                        |
+| message           | string   | Message describing the outcome.                                |
+| data              | object   | Payout details object.                                          |
+| id              | integer  | Unique identifier of the payout.                               |
+| reference       | string   | Unique payout reference code.                                  |
+| sessionid       | string   | Session ID (if available).                                     |
+| currency        | string   | Currency used for the payout (e.g., `NGN`).                    |
+| amount          | string   | Amount sent in the payout.                                     |
+| fee             | string   | Fee deducted for the transaction.                              |
+| bank_code       | string   | Code of the recipient's bank.                                  |
+| bank_name       | string   | Name of the recipient's bank.                                  |
+| account_number  | string   | Recipient's account number.                                    |
+| account_name    | string   | Recipient's account name.                                      |
+| countryCode     | string   | Country code, typically `NG` for Nigeria.                      |
+| serviceCode     | string   | Associated service code, if any.                               |
+| paymentMode     | string   | Mode of payment (`bank`, etc.).                                |
+| narration       | string   | Narration or remark for the payout.                            |
+| sender          | string   | The originator or system that initiated the payout.            |
+| domain          | string   | Environment domain (`live` or `test`).                         |
+| requestIp       | string   | IP address of the initiator.                                   |
+| initiator       | string   | Information about the initiator (`userId|name`).               |
+| status          | string   | Payout status (`success`, `pending`, `reversed`, etc.).        |
+| updated_by      | string   | Name of the person or system that last updated the record.     |
+| updated_on      | string   | Timestamp of last update (human-readable).                     |
+| beneficiary     | integer  | Indicates whether it's a beneficiary record (0 or 1).          |
+| subaccount      | string   | Subaccount ID if payout was routed through a subaccount.       |
+| gateway         | string   | Payment gateway used (if applicable).                          |
+| gateway_response| string   | Gateway's response message or code.                            |
+| batch_id        | string   | Batch ID if payout was part of a batch.                        |
+| created_at      | string   | ISO timestamp of when the payout was created.                  |
+| updated_at      | string   | ISO timestamp of the last update.                              |
+

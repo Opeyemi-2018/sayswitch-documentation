@@ -1,4 +1,4 @@
-## Fetch Virtual Account Details
+## Get Virtual Account Details
 This endpoint allows you to retrieve the details of a specific virtual bank account using its unique identifier.
 
 #### API Endpoint
@@ -8,12 +8,6 @@ This endpoint allows you to retrieve the details of a specific virtual bank acco
 **Path Parameter:**
 - `account_id` - The unique ID of the virtual account you want to retrieve (e.g., `484` in the example)
 
-
-## Request Headers
-
-| Header | Type | Description |
-|--------|------|-------------|
-| `Authorization` | `string` | Your API secret key, prefixed with `Bearer `. Example: `Bearer YOUR_SECRET_KEY` |
 
 ### Sample Request
 
@@ -30,7 +24,7 @@ curl -X GET https://backendapi.sayswitchgroup.com/api/v1/dedicated_account/484
   "message": "Dedicated account successfully retrieved",
   "data": {
     "id": 484,
-    "account_name": "Rosemond Oyeniyi",
+    "account_name": "John Doe",
     "account_number": "1581273727",
     "bank_name": "SaySwitch",
     "currency": "NGN",
@@ -44,9 +38,9 @@ curl -X GET https://backendapi.sayswitchgroup.com/api/v1/dedicated_account/484
     "updated_at": "2025-05-15T06:26:01.000000Z",
     "customer": {
       "id": 334,
-      "first_name": "Rosemond",
-      "last_name": "Oyeniyi",
-      "email": "ope@email.com",
+      "first_name": "John",
+      "last_name": "Doe",
+      "email": "John Doe@email.com",
       "phone": "08159994269",
       "bvn": null,
       "domain": "test",
@@ -86,4 +80,3 @@ curl -X GET https://backendapi.sayswitchgroup.com/api/v1/dedicated_account/484
 | `customer.customer_code`| `string` | The unique customer code.                                                                            |
 | `customer.metadata`| `string` | Additional information about the customer (often an empty JSON string `{}`).                               |
 | `customer.status`| `string` | The current status of the customer account (e.g., "active").                                              |
-```

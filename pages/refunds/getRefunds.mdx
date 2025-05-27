@@ -1,0 +1,113 @@
+## Get Refunds
+
+Retrieve a list of all refund transactions.
+
+### Endpoint
+`GET https://backendapi.sayswitchgroup.com/api/v1/refund`
+
+ Sample cURL Request
+ ```js
+curl --request GET \
+  --url https://backendapi.sayswitchgroup.com/api/v1/refund \
+  --header 'Authorization: Bearer YOUR_SECRET_KEY'
+ ```
+
+ ### Sample Response
+ ```js
+ {
+    "success": true,
+    "message": "Refund retrieved",
+    "data": [
+        {
+            "id": 12,
+            "transaction_id": 2527,
+            "refund_reference": "RF_qquhr0w88zxo7n7",
+            "amount": "10.12",
+            "deducted_amount": "0",
+            "currency": "NGN",
+            "channel": "Interswitch",
+            "domain": "live",
+            "fully_deducted": 1,
+            "refunded_by": "self",
+            "refunded_at": "2025-05-26 23:25:25",
+            "expected_at": null,
+            "settlement": null,
+            "merchant_note": "Refund for transaction 4757846579098876",
+            "customer_note": "Refund for transaction 4757846579098876",
+            "status": "pending",
+            "created_at": "2025-05-26T22:25:25.000000Z",
+            "updated_at": "2025-05-26T22:25:25.000000Z"
+        },
+        {
+            "id": 11,
+            "transaction_id": 2525,
+            "refund_reference": "RF_9hz8spjkbefhgda",
+            "amount": "10.12",
+            "deducted_amount": "0",
+            "currency": "NGN",
+            "channel": "Interswitch",
+            "domain": "live",
+            "fully_deducted": 1,
+            "refunded_by": "self",
+            "refunded_at": "2025-05-26 23:19:33",
+            "expected_at": null,
+            "settlement": null,
+            "merchant_note": "Refund for transaction SSW_17482573443162479",
+            "customer_note": "Refund for transaction SSW_17482573443162479",
+            "status": "pending",
+            "created_at": "2025-05-26T22:19:33.000000Z",
+            "updated_at": "2025-05-26T22:19:33.000000Z"
+        },
+        {
+            "id": 5,
+            "transaction_id": 330,
+            "refund_reference": "RF_8eycrzzccqcv90s",
+            "amount": "20.24",
+            "deducted_amount": "0",
+            "currency": "NGN",
+            "channel": "Mastercard",
+            "domain": "live",
+            "fully_deducted": 1,
+            "refunded_by": "self",
+            "refunded_at": "2024-08-22 12:20:13",
+            "expected_at": null,
+            "settlement": null,
+            "merchant_note": "eba",
+            "customer_note": "Refund for transaction ref_1723485884185929",
+            "status": "success",
+            "created_at": "2024-08-22T11:20:13.000000Z",
+            "updated_at": "2024-08-22T11:21:03.000000Z"
+        }
+    ],
+    "meta": {
+        "total": 3
+    }
+}
+```
+
+### Response Fields
+
+| Field                  | Type      | Description                                                        |
+|------------------------|-----------|--------------------------------------------------------------------|
+| `success`              | `boolean` | Indicates if the request was successful.                          |
+| `message`              | `string`  | Message describing the status of the operation.                   |
+| `data`                 | `array`   | List of refund transaction objects.                               |
+| `id`            | `integer` | Unique ID of the refund entry.                                    |
+| `transaction_id`| `integer` | ID of the original transaction being refunded.                    |
+| `refund_reference`| `string`| Unique system-generated reference for the refund.                 |
+| `amount`        | `string`  | Amount refunded.                                                  |
+| `deducted_amount`| `string` | Portion of the amount deducted during the refund process.         |
+| `currency`      | `string`  | Currency code (e.g. `NGN`).                                       |
+| `channel`       | `string`  | Payment channel used (e.g. `Interswitch`, `Mastercard`).          |
+| `domain`        | `string`  | Environment domain (`live` or `test`).                            |
+| `fully_deducted`| `integer` | Whether the refund was fully deducted (1 = yes, 0 = no).          |
+| `refunded_by`   | `string`  | Who initiated the refund (`self`, `admin`, etc.).                 |
+| `refunded_at`   | `string`  | Timestamp when the refund was processed.                          |
+| `expected_at`   | `string`  | Timestamp when the refund is expected (nullable).                 |
+| `settlement`    | `string`  | Settlement info if applicable (nullable).                         |
+| `merchant_note` | `string`  | Internal note about the refund.                                   |
+| `customer_note` | `string`  | Note shared with the customer about the refund.                   |
+| `status`        | `string`  | Refund status (`pending`, `success`, etc.).                       |
+| `created_at`    | `string`  | Creation timestamp of the refund record.                          |
+| `updated_at`    | `string`  | Last update timestamp for the refund record.                      |
+| `meta.total`           | `integer` | Total number of refund records available.                         |

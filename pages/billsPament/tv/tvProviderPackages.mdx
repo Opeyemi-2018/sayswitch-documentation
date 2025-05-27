@@ -1,0 +1,61 @@
+## Get TV Packages for a Provider
+
+This Endpoint Fetches the available TV subscription packages for a given TV provider by specifying the provider name in the URL.
+
+### Endpoint
+`GET https://backendapi.sayswitchgroup.com/api/v1/tv/packages/{providerName}`
+
+Replace `providerName` with the name of the TV provider, e.g. DSTV, GOTV, etc.
+
+```js
+curl --request GET \
+  --url https://backendapi.sayswitchgroup.com/api/v1/tv/packages/DSTV \
+  --header "Authorization: Bearer YOUR_SECRET_KEY"
+```
+
+### Response Example
+```js
+{
+  "success": true,
+  "code": "00000",
+  "message": "CableTv Packages Fetched successfully",
+  "data": [
+    {
+      "id": 1,
+      "name": "DStv Padi N4,400",
+      "code": "dstv-padi",
+      "amount": "4400.00"
+    },
+    {
+      "id": 2,
+      "name": "DStv Yanga N6,000",
+      "code": "dstv-yanga",
+      "amount": "6000.00"
+    }
+    // ... more packages
+  ]
+}
+```
+### Response Fields
+
+| Field    | Type    | Description                       |
+|----------|---------|---------------------------------|
+| `success`| boolean | Indicates if the request was successful |
+| `code`   | string  | Response status code             |
+| `message`| string  | Descriptive message about the response |
+| `data`   | array   | List of TV packages             |
+
+Each object inside the `data` array contains:
+
+| Field    | Type    | Description                       |
+|----------|---------|---------------------------------|
+| `id`     | number  | Unique identifier of the package |
+| `name`   | string  | Name and price of the package     |
+| `code`   | string  | Unique package code               |
+| `amount` | string  | Price of the package as a string |
+
+
+
+
+
+

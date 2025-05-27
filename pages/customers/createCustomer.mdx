@@ -7,16 +7,6 @@ This endpoint allows you to register a new customer on the platform by submittin
 POST https://backendapi.sayswitchgroup.com/api/v1/customer
 ```
 
-### Request Headers
-
-| Header          | Type     | Description                                            |
-| --------------- | -------- | ------------------------------------------------------ |
-| `Content-Type`  | `string` | Indicates that the request body should be formatted as `application/json`. |
-| `Authorization` | `string` | Your API secret key, prefixed with `Bearer `. Example: `YOUR_SECRET_KEY`. |
-
-
-
-
 ### Sample  Request
 ```bash  copy
 curl -X POST https://backendapi.sayswitchgroup.com/api/v1/customer 
@@ -24,8 +14,8 @@ curl -X POST https://backendapi.sayswitchgroup.com/api/v1/customer
   -H "Authorization: Bearer YOUR_SECRET_KEY" \
   -d '{
     "email": "test@email.com",
-    "first_name": "Rosemond",
-    "last_name": "Oyeniyi",
+    "first_name": "test",
+    "last_name": "tester",
     "phone": "08159994269"
   }'
   ```

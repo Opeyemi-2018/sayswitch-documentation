@@ -1,22 +1,14 @@
-## List Virtual Accounts
+## Get Virtual Accounts
 
 This endpoint allows you to retrieve a comprehensive list of all virtual bank accounts associated with your platform. This is useful for oversight, reporting, and managing your payment ecosystem.
 #### API Endpoint
 `GET https://backendapi.sayswitchgroup.com/api/v1/list_dedicated_accounts`
 
-### Request Headers
-
-| Header | Type | Description | Required |
-|--------|------|-------------|----------|
-| `Authorization` | `string` | Your API secret key, prefixed with `Bearer `. Example: `Bearer SECRET_KEY` | **Yes** |
-
-## Request Body
-This endpoint does not require a request body.
 
 ## Sample Request
 ```bash
 curl -X GET https://backendapi.sayswitchgroup.com/api/v1/list_dedicated_accounts \
-  -H "Authorization: Bearer SECRET_KEY"
+  -H "Authorization: Bearer YOUR_SECRET_KEY"
 
 ### Sample Response
 
@@ -27,7 +19,7 @@ curl -X GET https://backendapi.sayswitchgroup.com/api/v1/list_dedicated_accounts
     "data": [
         {
             "id": 484,
-            "account_name": "Rosemond Oyeniyi",
+            "account_name": "John Doe",
             "account_number": "1581273727",
             "bank_name": "SaySwitch",
             "currency": "NGN",
@@ -41,9 +33,9 @@ curl -X GET https://backendapi.sayswitchgroup.com/api/v1/list_dedicated_accounts
             "updated_at": "2025-05-15T06:26:01.000000Z",
             "customer": {
                 "id": 334,
-                "first_name": "Rosemond",
-                "last_name": "Oyeniyi",
-                "email": "ope@email.com",
+                "first_name": "John",
+                "last_name": "Doe",
+                "email": "JohnDoe@email.com",
                 "phone": "08159994269",
                 "bvn": null,
                 "domain": "test",
@@ -54,7 +46,7 @@ curl -X GET https://backendapi.sayswitchgroup.com/api/v1/list_dedicated_accounts
         },
         {
             "id": 485,
-            "account_name": "Rosemond Oyeniyi",
+            "account_name": "test tester",
             "account_number": "1654101278",
             "bank_name": "SaySwitch",
             "currency": "NGN",
@@ -68,9 +60,9 @@ curl -X GET https://backendapi.sayswitchgroup.com/api/v1/list_dedicated_accounts
             "updated_at": "2025-05-15T07:07:25.000000Z",
             "customer": {
                 "id": 335,
-                "first_name": "Rosemond",
-                "last_name": "Oyeniyi",
-                "email": "john@email.com",
+                "first_name": "test",
+                "last_name": "tester",
+                "email": "test@email.com",
                 "phone": "08159994269",
                 "bvn": null,
                 "domain": "test",

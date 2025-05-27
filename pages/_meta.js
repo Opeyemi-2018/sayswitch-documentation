@@ -1,8 +1,12 @@
 export default {
   index: "Overview",
   authentication: "Authentication",
+  acceptPayment: "Accept Paments",
   transactions: "Transactions",
-  payments: "Payments",
-  virtualAccount: "Virtual Account",
+  payouts: "Payouts",
+  wallet: "Wallet",
+  refunds: "Refunds",
   customers: "Customers",
+  virtualAccount: "Virtual Account",
+  billsPament: "Bills Paments"
 };

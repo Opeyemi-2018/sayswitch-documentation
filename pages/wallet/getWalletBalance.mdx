@@ -1,0 +1,58 @@
+## Get Wallet Balance
+
+The Wallet Balance API allows  users to retrieve the  financial status of their wallet in a specified currency. 
+
+### Endpoint
+`GET https://backendapi.sayswitchgroup.com/api/v1wallet_balance/NGN`
+
+Replace NGN with the desired currency code (e.g., USD for US Dollar wallet).
+
+### Example cURL Request
+
+```json
+curl -X GET https://backendapi.sayswitchgroup.com/api/v1wallet_balance/NGN \
+  -H "Authorization: Bearer YOUR_SECRET_KEY"
+```
+
+### Successful Response (Naira Wallet)
+```
+{
+  "success": true,
+  "message": "Wallet Balance Fetched Successfully",
+  "data": {
+    "currency": "NGN",
+    "balance": "1154.2",
+    "pending": "-10.12"
+  }
+}
+```
+
+###  Successful Response (Dollar Wallet)
+
+```json
+{
+  "success": true,
+  "message": "Wallet Balance Fetched Successfully",
+  "data": {
+    "currency": "USD",
+    "balance": "100.2",
+    "pending": "0"
+  }
+}
+```
+
+| Field             | Type     | Description                                                                |
+|------------------|----------|----------------------------------------------------------------------------|
+| success          | boolean  | Indicates whether the request was successful.                             |
+| message          | string   | A human-readable message describing the result of the request.            |
+| data             | object   | Contains wallet information.                                              |
+| data.currency    | string   | The currency code of the wallet (e.g., 'NGN' for Naira, 'USD' for Dollar).|
+| data.balance     | string   | The current available balance in the wallet.                              |
+| data.pending     | string   | The amount that is pending or on hold in the wallet.                      |
+
+
+
+
+
+
+

@@ -1,0 +1,37 @@
+## Initiate Refunds
+This endpoint allows you to initiate a refund for a specific transaction using its reference. Refunds can only be made on successful transactions that meet refund eligibility criteria.
+
+### Endpoint
+`POST https://backendapi.sayswitchgroup.com/api/v1/refund`
+
+```json
+curl -X POST https://backendapi.sayswitchgroup.com/api/v1/refund \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer YOUR_SECRET_KEY" \
+  -d '{
+    "reference": "4757846579098876"
+  }'
+  ```
+
+  ### Sample Response
+  ```json
+{
+  "success": true,
+  "message": "Refund submitted and in progress",
+  "data": {
+    "refund_id": 12,
+    "reference": "RF_qquhr0w88zxo7n7",
+    "status": "pending"
+  }
+}
+```
+
+### Response Fields
+| Field              | Type      | Description                                         |
+|-------------------|-----------|-----------------------------------------------------|
+| `success`         | `boolean` | Indicates if the refund request was successful.     |
+| `message`         | `string`  | Descriptive status message.                         |
+| `data.refund_id`  | `integer` | Unique identifier of the refund.                    |
+| `data.reference`  | `string`  | Unique reference for the refund transaction.        |
+| `data.status`     | `string`  | Status of the refund (`pending`, `success`, etc.).  |
+
