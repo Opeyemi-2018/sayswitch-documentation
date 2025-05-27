@@ -1,0 +1,68 @@
+## Get Refund Details
+Retrieves the status of a specific refund using its unique  `refund_reference`.
+
+### Endpoint
+`GET https://backendapi.sayswitchgroup.com/api/v1/refund/status/{refund_reference}`
+
+### Sample cURL Request
+
+```js
+curl --request GET \
+  --url "https://backendapi.sayswitchgroup.com/api/v1/refund/status/RF_qquhr0w88zxo7n7 \
+  --header 'Authorization: Bearer YOUR_SECRET_KEY'
+ ```
+
+ ###  Sample Response
+```js
+ {
+  "success": true,
+  "message": "Refund retrieved",
+  "data": {
+    "id": 12,
+    "transaction_id": 2527,
+    "refund_reference": "RF_qquhr0w88zxo7n7",
+    "amount": "10.12",
+    "deducted_amount": "0",
+    "currency": "NGN",
+    "channel": "Interswitch",
+    "domain": "live",
+    "fully_deducted": 1,
+    "refunded_by": "self",
+    "refunded_at": "2025-05-26 23:25:25",
+    "expected_at": null,
+    "settlement": null,
+    "merchant_note": "Refund for transaction 4757846579098876",
+    "customer_note": "Refund for transaction 4757846579098876",
+    "status": "pending",
+    "created_at": "2025-05-26T22:25:25.000000Z",
+    "updated_at": "2025-05-26T22:25:25.000000Z"
+  }
+}
+```
+
+### Response Fields
+
+| Field             | Type     | Description                                      |
+|------------------|----------|--------------------------------------------------|
+| id               | integer  | Refund record ID                                 |
+| transaction_id   | integer  | Associated transaction ID                        |
+| refund_reference | string   | Unique reference for the refund                  |
+| amount           | string   | Amount refunded                                  |
+| deducted_amount  | string   | Amount deducted during the refund process        |
+| currency         | string   | Currency code (e.g., NGN)                        |
+| channel          | string   | Payment channel used (e.g., Interswitch)         |
+| domain           | string   | API environment (`live` or `test`)               |
+| fully_deducted   | integer  | Indicates if the full amount was deducted (1=yes)|
+| refunded_by      | string   | Source initiating the refund                     |
+| refunded_at      | datetime | Time the refund was processed                    |
+| expected_at      | datetime | When refund is expected (if applicable)          |
+| settlement       | string   | Settlement information (null if not available)   |
+| merchant_note    | string   | Note added by the merchant                       |
+| customer_note    | string   | Note shown to the customer                       |
+| status           | string   | Refund status (`pending`, `success`, etc.)       |
+| created_at       | datetime | Refund creation timestamp                        |
+| updated_at       | datetime | Refund last updated timestamp                    |
+
+
+
+

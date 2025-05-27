@@ -1,0 +1,343 @@
+### View Wallet Transaction
+ The View Wallet Transaction endpoint retrieves the transaction history of a user's wallet for a specific currency (like NGN for Naira or USD for Dollar).
+
+### Endpoint
+`GET https://backendapi.sayswitchgroup.com/api/v1/wallet_transactions/{currency}`
+
+Replace currency with the appropriate currency code like NGN or USD.
+
+###  Example cURL Request
+
+```js
+curl -X GET https://backendapi.sayswitchgroup.com/api/v1/wallet_transactions/NGN \
+  -H "Authorization: Bearer YOUR_SECRET_KEY"
+```
+
+Sample Response
+
+```js
+{
+    "success": true,
+    "message": "Transfers retrieved",
+    "data": {
+        "current_page": 1,
+        "data": [
+            {
+                "id": 89942,
+                "wallet_id": 75,
+                "type": "settlement",
+                "debit": "no",
+                "currency": "NGN",
+                "domain": "live",
+                "amount": "20",
+                "note": "Daily settlement on 2025-05-27 with settlement batchID 146358d0e5489",
+                "bal_before": "1133.96",
+                "bal_after": "1153.96",
+                "status": "success",
+                "reference": "146358d0e5489",
+                "created_at": "2025-05-27T01:31:02.000000Z"
+            },
+            {
+                "id": 67094,
+                "wallet_id": 75,
+                "type": "settlement",
+                "debit": "no",
+                "currency": "NGN",
+                "domain": "live",
+                "amount": "100",
+                "note": "Daily settlement on 2025-05-21 with settlement batchID 64d146687312e",
+                "bal_before": "1054.2",
+                "bal_after": "1154.2",
+                "status": "success",
+                "reference": "64d146687312e",
+                "created_at": "2025-05-21T01:31:02.000000Z"
+            },
+            {
+                "id": 8263,
+                "wallet_id": 75,
+                "type": "settlement",
+                "debit": "no",
+                "currency": "NGN",
+                "domain": "live",
+                "amount": "50",
+                "note": "Daily settlement on 2025-05-03 with settlement batchID 1919376216134",
+                "bal_before": "1004.2",
+                "bal_after": "1054.2",
+                "status": "success",
+                "reference": "1919376216134",
+                "created_at": "2025-05-03T01:31:03.000000Z"
+            },
+            {
+                "id": 986,
+                "wallet_id": 75,
+                "type": "settlement",
+                "debit": "no",
+                "currency": "NGN",
+                "domain": "live",
+                "amount": "150",
+                "note": "Daily settlement on 2025-04-23 with settlement batchID 45256013d8057",
+                "bal_before": "854.2",
+                "bal_after": "1004.2",
+                "status": "success",
+                "reference": "45256013d8057",
+                "created_at": "2025-04-23T01:31:02.000000Z"
+            },
+            {
+                "id": 981,
+                "wallet_id": 75,
+                "type": "settlement",
+                "debit": "no",
+                "currency": "NGN",
+                "domain": "live",
+                "amount": "100",
+                "note": "Daily settlement on 2025-04-18 with settlement batchID 71189867230d3",
+                "bal_before": "754.2",
+                "bal_after": "854.2",
+                "status": "success",
+                "reference": "71189867230d3",
+                "created_at": "2025-04-18T01:31:02.000000Z"
+            },
+            {
+                "id": 973,
+                "wallet_id": 75,
+                "type": "settlement",
+                "debit": "no",
+                "currency": "NGN",
+                "domain": "live",
+                "amount": "100",
+                "note": "Daily settlement on 2025-04-16 with settlement batchID 202876a1f86a8",
+                "bal_before": "654.2",
+                "bal_after": "754.2",
+                "status": "success",
+                "reference": "202876a1f86a8",
+                "created_at": "2025-04-16T01:31:03.000000Z"
+            },
+            {
+                "id": 962,
+                "wallet_id": 75,
+                "type": "settlement",
+                "debit": "no",
+                "currency": "NGN",
+                "domain": "live",
+                "amount": "100",
+                "note": "Daily settlement on 2025-04-13 with settlement batchID 7611279237589",
+                "bal_before": "554.2",
+                "bal_after": "654.2",
+                "status": "success",
+                "reference": "7611279237589",
+                "created_at": "2025-04-13T01:31:03.000000Z"
+            },
+            {
+                "id": 956,
+                "wallet_id": 75,
+                "type": "settlement",
+                "debit": "no",
+                "currency": "NGN",
+                "domain": "live",
+                "amount": "100",
+                "note": "Daily settlement on 2025-04-12 with settlement batchID 9485979201811",
+                "bal_before": "454.2",
+                "bal_after": "554.2",
+                "status": "success",
+                "reference": "9485979201811",
+                "created_at": "2025-04-12T01:31:02.000000Z"
+            },
+            {
+                "id": 930,
+                "wallet_id": 75,
+                "type": "settlement",
+                "debit": "no",
+                "currency": "NGN",
+                "domain": "live",
+                "amount": "35.42",
+                "note": "Daily settlement on split payment with settlement batchID 186f575026447",
+                "bal_before": "418.78",
+                "bal_after": "454.2",
+                "status": "success",
+                "reference": "186f575026447",
+                "created_at": "2025-04-05T01:31:03.000000Z"
+            },
+            {
+                "id": 929,
+                "wallet_id": 75,
+                "type": "settlement",
+                "debit": "no",
+                "currency": "NGN",
+                "domain": "live",
+                "amount": "50",
+                "note": "Daily settlement on 2025-04-05 with settlement batchID 258071de24066",
+                "bal_before": "368.78",
+                "bal_after": "418.78",
+                "status": "success",
+                "reference": "258071de24066",
+                "created_at": "2025-04-05T01:31:03.000000Z"
+            },
+            {
+                "id": 886,
+                "wallet_id": 75,
+                "type": "settlement",
+                "debit": "no",
+                "currency": "NGN",
+                "domain": "live",
+                "amount": "100",
+                "note": "Daily settlement on 2025-03-26 with settlement batchID 17681d32e1503",
+                "bal_before": "268.78",
+                "bal_after": "368.78",
+                "status": "success",
+                "reference": "17681d32e1503",
+                "created_at": "2025-03-26T01:31:02.000000Z"
+            },
+            {
+                "id": 137,
+                "wallet_id": 75,
+                "type": "settlement",
+                "debit": "no",
+                "currency": "NGN",
+                "domain": "live",
+                "amount": "20",
+                "note": "Daily settlement on 2024-09-10 with settlement batchID 0718219978657",
+                "bal_before": "248.78",
+                "bal_after": "268.78",
+                "status": "success",
+                "reference": "0718219978657",
+                "created_at": "2024-09-10T01:31:02.000000Z"
+            },
+            {
+                "id": 97,
+                "wallet_id": 75,
+                "type": "settlement",
+                "debit": "no",
+                "currency": "NGN",
+                "domain": "live",
+                "amount": "50",
+                "note": "Daily settlement on 2024-08-13 with settlement batchID 077b766557663",
+                "bal_before": "219.02",
+                "bal_after": "269.02",
+                "status": "success",
+                "reference": "077b766557663",
+                "created_at": "2024-08-13T01:31:02.000000Z"
+            },
+            {
+                "id": 39,
+                "wallet_id": 75,
+                "type": "settlement",
+                "debit": "no",
+                "currency": "NGN",
+                "domain": "live",
+                "amount": "120",
+                "note": "Daily settlement on 2024-07-28 with settlement batchID 9f8ac86615a25",
+                "bal_before": "99.02",
+                "bal_after": "219.02",
+                "status": "success",
+                "reference": "9f8ac86615a25",
+                "created_at": "2024-07-28T01:31:02.000000Z"
+            },
+            {
+                "id": 37,
+                "wallet_id": 75,
+                "type": "transfer",
+                "debit": "yes",
+                "currency": "NGN",
+                "domain": "live",
+                "amount": "50",
+                "note": "Test",
+                "bal_before": "149.02",
+                "bal_after": "99.02",
+                "status": "success",
+                "reference": "SSW_trf_5f81m5x527aa3c",
+                "created_at": "2024-07-26T14:05:30.000000Z"
+            },
+            // and 15 more ...
+        ],
+        "first_page_url": "https://backendapi.sayswitchgroup.com/api/v1/wallet_transactions/NGN?page=1",
+        "from": 1,
+        "last_page": 2,
+        "last_page_url": "https://backendapi.sayswitchgroup.com/api/v1/wallet_transactions/NGN?page=2",
+        "links": [
+            {
+                "url": null,
+                "label": "&laquo; Previous",
+                "active": false
+            },
+            {
+                "url": "https://backendapi.sayswitchgroup.com/api/v1/wallet_transactions/NGN?page=1",
+                "label": "1",
+                "active": true
+            },
+            {
+                "url": "https://backendapi.sayswitchgroup.com/api/v1/wallet_transactions/NGN?page=2",
+                "label": "2",
+                "active": false
+            },
+            {
+                "url": "https://backendapi.sayswitchgroup.com/api/v1/wallet_transactions/NGN?page=2",
+                "label": "Next &raquo;",
+                "active": false
+            }
+        ],
+        "next_page_url": "https://backendapi.sayswitchgroup.com/api/v1/wallet_transactions/NGN?page=2",
+        "path": "https://backendapi.sayswitchgroup.com/api/v1/wallet_transactions/NGN",
+        "per_page": 20,
+        "prev_page_url": null,
+        "to": 20,
+        "total": 21
+    }
+}
+```
+
+
+
+### Notes
+- This endpoint is paginated, returning up to 20 transactions per page by default.
+- If there are no transactions, the data array will be empty and total will be 0.
+- Pagination fields help in navigating through multiple pages of transactions.
+
+### Response Explanation
+
+#### Top-Level Fields
+| Field    | Type    | Description                          |
+|----------|---------|------------------------------------|
+| success  | boolean | Indicates if the request was successful |
+| message  | string  | Message describing the response    |
+| data     | object  | Contains pagination info and transactions array |
+
+
+
+#### Pagination Data Fields (`data` object)
+
+| Field           | Type          | Description                                                |
+|-----------------|---------------|------------------------------------------------------------|
+| current_page    | number        | The current page number of results                          |
+| data            | array         | Array of transaction objects                                |
+| first_page_url  | string (URL)  | URL to the first page of results                            |
+| from            | number        | Index of the first item on the current page                |
+| last_page       | number        | Total number of pages available                             |
+| last_page_url   | string (URL)  | URL to the last page of results                             |
+| links           | array         | Array of pagination links (objects with URLs and labels)   |
+| next_page_url   | string (URL) or null | URL to the next page or null if none                 |
+| path            | string (URL)  | Base API endpoint URL                                       |
+| per_page        | number        | Number of items per page                                    |
+| prev_page_url   | string (URL) or null | URL to the previous page or null if none             |
+| to              | number        | Index of the last item on the current page                 |
+| total           | number        | Total number of items (transactions) available             |
+
+
+####  Transaction Object Fields (each item in `data` array)
+
+| Field        | Type    | Description                                               |
+|--------------|---------|-----------------------------------------------------------|
+| id           | number  | Unique identifier of the transaction                      |
+| wallet_id    | number  | Identifier of the wallet associated with the transaction |
+| type         | string  | Transaction type (e.g., "settlement", "transfer")         |
+| debit        | string  | Indicates if money was debited ("yes") or credited ("no") |
+| currency     | string  | Currency code, e.g., "NGN"                                |
+| domain       | string  | Environment, e.g., "live"                                 |
+| amount       | string  | Amount of the transaction                                 |
+| note         | string  | Additional notes or description about the transaction    |
+| bal_before   | string  | Wallet balance before the transaction                     |
+| bal_after    | string  | Wallet balance after the transaction                      |
+| status       | string  | Status of the transaction, e.g., "success"                |
+| reference    | string  | Reference or batch ID for the transaction                 |
+| created_at   | string  | ISO 8601 timestamp of when the transaction was created   |
+
+

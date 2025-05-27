@@ -1,0 +1,84 @@
+## Get Electricity Providers
+Retrieves a list of electricity distribution companies available for bill payment, along with their details including provider name, logo URL, and minimum payment amount.
+
+### Endpoint
+`GET https://backendapi.sayswitchgroup.com/api/v1/electricity`
+
+
+### Sample cURL Request
+
+```js
+curl --request GET \
+  --url "https://backendapi.sayswitchgroup.com/api/v1/electricity \
+  --header 'Authorization: Bearer YOUR_SECRET_KEY'
+ ```
+
+### Sample Response
+```js
+{
+  "success": true,
+  "code": "00000",
+  "message": "Fetched successfully",
+  "data": [
+    {
+      "provider": "IKEDC",
+      "code": "ikeja-electric",
+      "providerLogoUrl": "assets/images/bills/Ikeja-Electric-Payment-PHCN.jpg",
+      "minAmount": "500"
+    },
+    {
+      "provider": "EKEDC",
+      "code": "eko-electric",
+      "providerLogoUrl": "assets/images/bills/Eko-Electric-Payment-PHCN.jpg",
+      "minAmount": "500"
+    },
+    {
+      "provider": "KEDCO",
+      "code": "kano-electric",
+      "providerLogoUrl": "assets/images/bills/Kano-Electric.jpg",
+      "minAmount": "500"
+    },
+    {
+      "provider": "PHED",
+      "code": "portharcourt-electric",
+      "providerLogoUrl": "assets/images/bills/Port-Harcourt-Electric.jpg",
+      "minAmount": "500"
+    },
+    {
+      "provider": "JED",
+      "code": "jos-electric",
+      "providerLogoUrl": "assets/images/bills/Jos-Electric-JED.jpg",
+      "minAmount": "500"
+    },
+    {
+      "provider": "IBEDC",
+      "code": "ibadan-electric",
+      "providerLogoUrl": "assets/images/bills/IBEDC-Ibadan-Electricity-Distribution-Company.jpg",
+      "minAmount": "500"
+    },
+    {
+      "provider": "KAEDCO",
+      "code": "kaduna-electric",
+      "providerLogoUrl": "assets/images/bills/Kaduna-Electric-KAEDCO.jpg",
+      "minAmount": "500"
+    },
+    {
+      "provider": "AEDC",
+      "code": "abuja-electric",
+      "providerLogoUrl": "assets/images/bills/Abuja-Electric.jpg",
+      "minAmount": "500"
+    }
+  ]
+}
+```
+### Response Field
+| Field             | Type     | Description                                        |
+|------------------|----------|----------------------------------------------------|
+| success          | boolean  | Indicates if the request was successful            |
+| code             | string   | API-specific response code                         |
+| message          | string   | Description of the response                        |
+| data             | array    | List of electricity providers                      |
+| provider       | string   | Name of the electricity provider (e.g., IKEDC)     |
+| code           | string   | Unique code used for referencing the provider      |
+| providerLogoUrl| string   | Path to the provider’s logo image                  |
+| minAmount      | string   | Minimum amount allowed for payment (in NGN)        |

@@ -1,6 +1,6 @@
 export default {
   overview: "overview",
   createVirtualAccount: "Create Virtual Account",
-  listVirtualAccount: "List Virtual Accounts",
-  fetchVirtualAccount: "Get Virtual  Accounts"
+  getVirtualAccount: "Get Virtual Accounts",
+  getVirtualAccountDetails: "Get Virtual Account Details",
 };

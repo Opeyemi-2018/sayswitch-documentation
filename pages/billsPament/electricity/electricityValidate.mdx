@@ -1,0 +1,47 @@
+## Validate Electricity Customer
+Validates a customer's meter number for a selected electricity provider and meter type (prepaid or postpaid).
+
+### Endpoint
+`POST https://backendapi.sayswitchgroup.com/api/v1/electricity/validate`
+
+### Sample cURL Request
+
+```js
+curl -X POST https://backendapi.sayswitchgroup.com/api/v1/electricity/validate \
+  -H "Content-Type: application/json" \
+  -d '{
+    "provider": "IBEDC",
+    "type": "prepaid",
+    "number": "0159003278896"
+  }'
+
+```
+
+Sample Response
+```js
+{
+  "success": true,
+  "code": "00000",
+  "message": "Fetched successfully",
+  "data": {
+    "provider": "IBEDC",
+    "number": "0159003278896",
+    "type": "prepaid",
+    "Customer_Name": "IDOWU ADEDOYIN  SUNDAY 3   ."
+  }
+}
+```
+
+### Response Fields
+
+| Field           | Type     | Description                                              |
+|----------------|----------|----------------------------------------------------------|
+| `success`       | boolean  | Indicates if the request was successful                  |
+| `code`          | string   | Application-level response code                          |
+| `message`       | string   | Descriptive message about the result                     |
+| `data`          | object   | Contains the validated meter details                     |
+| `provider`   | string   | The electricity provider (e.g., "IBEDC")                 |
+| `number`     | string   | The meter number that was validated                      |
+| `type`       | string   | Meter type (e.g., "prepaid", "postpaid")                 |
+| `Customer_Name` | string | Name associated with the meter number                   |
+

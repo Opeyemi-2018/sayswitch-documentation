@@ -1,0 +1,40 @@
+### Account Name Verification
+
+This endpoint verifies a recipient's account name using the provided bank_code, account_number, and currency. It is commonly used before initiating a bank transfer to ensure the account details are valid.
+
+### endpoint
+`POST https://backendapi.sayswitchgroup.com/api/v1/account_name_verify`
+
+
+### Sample cURL Request 
+```json
+curl -X POST https://backendapi.sayswitchgroup.com/api/v1/account_name_verify \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer YOUR_ACCESS_TOKEN" \
+  -d '{
+    "bank_code": "100004",
+    "account_number": "7036218209",
+    "currency": "NGN"
+  }'
+  ```
+
+  ### Sample Response
+  ```json
+  {
+  "success": true,
+  "message": "Account name retrieved.",
+  "data": "John Doe"
+}
+  ```
+
+  ### Response Fields
+
+
+| Field     | Type    | Description                                       |
+|-----------|---------|---------------------------------------------------|
+| success   | boolean | Indicates if the request was successful.          |
+| message   | string  | A message describing the result of the operation. |
+| data      | string  | The resolved account holder's full name.          |
+
+
+

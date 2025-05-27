@@ -10,10 +10,12 @@ This endpoint allows you to retrieve the details of a specific transaction using
 
 ### Request Headers
 
-| Header          | Type     | Description                                            |
-| --------------- | -------- | ------------------------------------------------------ |
-| `Authorization` | `string` | Your API secret key, prefixed with `Bearer `. Example: `YOUR_SECRET_KEY`. |
+### Sample Request
 
+```bash copy
+curl -X GET https://backendapi.sayswitchgroup.com/api/v1/transaction/2280 
+  -H "Authorization: Bearer YOUR_SECRET_KEY"
+```
 
 ### Sample Response
 ```bash

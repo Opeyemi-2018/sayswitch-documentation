@@ -1,6 +1,6 @@
 export default {
-  overview: "overview",
+  overview: "Overview",
   createCustomer: "Create Customer",
-  fetchCustomers: "List Customers",
-  getCustomer: "Get Customer",
+  getCustomers: "Get Customers",
+  getCustomerDetails: "Get Customer Details",
 };

@@ -1,8 +1,6 @@
 export default {
-  overview: "overview",
-  // initializeTransaction: "Initialize Transaction",
-  fetchTransaction: "Fetch Transaction",
+  overview: "Overview",
+  getTransactionDetails: "⁠Get Transaction Details",
   transactionTimeline: "Transaction Timeline",
   transactionTotal: "Transaction Total",
-  listSettlement: "List Settlement",
 };

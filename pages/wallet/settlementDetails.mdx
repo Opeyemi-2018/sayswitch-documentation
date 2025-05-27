@@ -1,0 +1,56 @@
+### Get Settlement Details
+
+This endpoint allows you to retrieve the details of a specific settlement using its batch ID.
+
+Endpoint
+ `GET https://backendapi.sayswitchgroup.com/api/v1/settlement/details/:{batchid}`
+
+ ### Example cURL Request
+
+```json
+curl -X GET https://backendapi.sayswitchgroup.com/api/v1/settlement/details/1919376216134 \
+  -H "Authorization: Bearer YOUR_SECRET_KEY"
+```
+
+Sample Response
+```json
+{
+    "success": true,
+    "message": "Settlement retrieved",
+    "data": {
+        "id": 173,
+        "batchid": "64d146687312e",
+        "currency": "NGN",
+        "total_amount": "101.2",
+        "settled_amount": "100",
+        "domain": "live",
+        "status": "success",
+        "subaccount": null,
+        "created_at": "2025-05-21T01:31:02.000000Z",
+        "updated_at": "2025-05-21T01:31:02.000000Z"
+    },
+    "transactions": []
+}
+```
+
+Sure, here's the information you provided formatted as a Markdown table:
+
+Response Fields
+
+| Field                  | Type      | Description                                                                                  |
+|------------------------|-----------|----------------------------------------------------------------------------------------------|
+| success                | boolean   | Indicates if the request was successful.                                                     |
+| message                | string    | A descriptive message about the status of the request.                                       |
+| data                   | object    | An object containing the settlement details.                                                 |
+| data.id                | integer   | The unique ID of the settlement record.                                                      |
+| data.batchid           | string    | The unique batch ID for the settlement.                                                      |
+| data.currency          | string    | The currency of the settlement (e.g., "NGN").                                                |
+| data.total_amount      | string    | The total amount involved in the settlement before any deductions.                           |
+| data.settled_amount    | string    | The actual amount that was settled.                                                          |
+| data.domain            | string    | The environment where the settlement occurred (e.g., "live").                                |
+| data.status            | string    | The status of the settlement (e.g., "success").                                              |
+| data.subaccount        | string \n null | The subaccount associated with the settlement. Can be null if not applicable.           |
+| data.created_at        | string    | The timestamp when the settlement record was created (ISO 8601 format).                     |
+| data.updated_at        | string    | The timestamp when the settlement record was last updated (ISO 8601 format).                |
+| transactions           | array     | An array of transactions included in this settlement. Empty if not requested or not linked. |
+

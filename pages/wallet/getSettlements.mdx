@@ -1,4 +1,4 @@
-## List Settlements
+### Get Settlements 
 
 The Settlements API allows you to retrieve a list of payments that have been settled in your account.
 
@@ -7,12 +7,12 @@ The Settlements API allows you to retrieve a list of payments that have been set
 
 This endpoint returns a paginated list of all settled payments in your account, including details about each settlement.
 
-### Request Headers
+### Example cURL Request
 
-| Name | Value |
-|------|-------|
-| Authorization | Bearer `YOUR_SECRET_KEY` | 
-| Content-Type | application/json   |
+```json
+curl -X GET https://backendapi.sayswitchgroup.com/api/v1/settlement \
+  -H "Authorization: Bearer YOUR_SECRET_KEY"
+```
 
 ### Sample Response
 ```json 

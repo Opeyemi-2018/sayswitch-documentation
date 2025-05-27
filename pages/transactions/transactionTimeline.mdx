@@ -2,23 +2,15 @@
 This endpoint retrieves the timeline or outline of a specific transaction using either its unique ID or its reference.
 ### API Endpoint
 
-`GET https://backendapi.sayswitchgroup.com/api/v1/transaction/:id_or_reference`
+`GET https://backendapi.sayswitchgroup.com/api/v1/transaction/timeline/:id_or_reference`
 
 **Path Parameter:**
 * `:id_or_reference`: The unique identifier (`id`) or the reference code of the transaction you want to retrieve the timeline for (e.g., `2280` or `SSW_17471703346211972`).
 
-### Request Headers
-
-| Header          | Type     | Description                                            |
-| --------------- | -------- | ------------------------------------------------------ |
-| `Authorization` | `string` | Your API secret key, prefixed with `Bearer `. Example: Bearer `YOUR_SECRET_KEY` |
-
-
-
 ### Sample Request
 
 ```bash
-curl -X GET https://backendapi.sayswitchgroup.com/api/v1/transaction/SSW_17471703346211972/timeline 
+curl -X GET https://backendapi.sayswitchgroup.com/api/v1/transaction/timeline/SSW_17471703346211972 
   -H "Authorization: Bearer `YOUR_SECRET_KEY`"
 ```
 

@@ -1,0 +1,61 @@
+### Get Payouts
+The Get Payouts endpoint retrieves a history of all payout transactions processed on the platform. This includes detailed information such as the amount paid, status, account details, sender, and other transaction metadata. It's commonly used for auditing, tracking, and displaying payout records to admins or users.
+
+### Endpoint
+`GET https://backendapi.sayswitchgroup.com/api/v1/payout`
+
+###  Sample cURL Response
+
+```js
+{
+  "success": true,
+  "message": "Payout retrieved",
+  "data": [
+    {
+      "id": 644,
+      "reference": "186f575026447_subaccount",
+      "sessionid": "000017250405023102736775422250",
+      "currency": "NGN",
+      "amount": "15.18",
+      "fee": "0",
+      "bank_code": "100004",
+      "bank_name": "PAYCOM",
+      "account_number": "8080976685",
+      "account_name": "YUSUF ABODUNRIN ARODU",
+      "countryCode": "NG",
+      "paymentMode": "bank",
+      "narration": "Split Payment on SSW_17437701414070124",
+      "sender": "SAYSWITCH",
+      "domain": "live",
+      "status": "success",
+      "created_at": "2025-04-05T01:31:03.000000Z",
+      "updated_at": "2025-04-05T01:31:05.000000Z"
+    }
+    // more records...
+  ]
+}
+```
+
+| Field          | Type      | Description                                               |
+|----------------|-----------|-----------------------------------------------------------|
+| success        | boolean   | Indicates if the request was successful.                 |
+| message        | string    | A short message about the request.                       |
+| data           | array     | List of payout records. Each record includes:            |
+| id           | integer   | Unique ID of the payout record.                          |
+| reference    | string    | Unique transaction reference.                            |
+| sessionid    | string    | Payment session ID.                                      |
+| currency     | string    | Currency used in the payout (e.g., `NGN`).               |
+| amount       | string    | Amount transferred.                                      |
+| fee          | string    | Fee charged for the payout.                              |
+| bank_code    | string    | Code of the recipient's bank.                            |
+| bank_name    | string    | Name of the recipient's bank.                            |
+| account_number| string   | Beneficiary’s account number.                            |
+| account_name | string    | Beneficiary’s account name.                              |
+| countryCode  | string    | Country code (e.g., `NG`).                               |
+| paymentMode  | string    | Payment mode (e.g., `bank`).                             |
+| narration    | string    | Description or narration attached to the payout.         |
+| sender       | string    | The initiator of the payout, e.g., "SAYSWITCH".          |
+| domain       | string    | Environment domain, e.g., `live`.                        |
+| status       | string    | Status of the payout (`success`, `reversed`, etc).       |
+| created_at   | string    | ISO 8601 timestamp when the payout was created.          |
+| updated_at   | string    | ISO 8601 timestamp when the payout was last updated.     |

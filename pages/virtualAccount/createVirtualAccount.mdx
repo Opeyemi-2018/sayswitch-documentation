@@ -7,14 +7,6 @@ This endpoint allows you to generate a dedicated virtual bank account for a spec
 
 `POST https://backendapi.sayswitchgroup.com/api/v1/dedicated_virtual_account`
 
-### Request Headers
-
-| Header          | Type     | Description                                                                |  Required  |    
-| --------------- | -------- | ------------------------------------------------------                     | ---------- |
-| `Content-Type`  | `string` | Specifies that the request body should be formatted as `application/json`. |      Yes   |
-| `Authorization` | `string` | Your API secret key, prefixed with `Bearer `. Example: `YOUR_SECRET_KEY`.  |      Yes   |
-
-
 ### Sample Request
 
 ```json
@@ -25,7 +17,7 @@ This endpoint allows you to generate a dedicated virtual bank account for a spec
 
 | Parameter  | Type     | Description                                                                 | Required |
 | ---------- | -------- | --------------------------------------------------------------------------- | -------- |
-| `customer` | `string` | The unique identifier of the customer, obtained from the [create account](/customers/createCustomer) response as `customer_code`. | Yes      |
+| `customer` | `string` | The unique identifier of the customer, obtained from the [create customer account](/customers/createCustomer) response as `customer_code`. | Yes      |
 
 ### Example Usage
 ``` json copy

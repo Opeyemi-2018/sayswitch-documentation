@@ -1,0 +1,43 @@
+### Get Bank List
+
+This endpoint retrieves a list of banks available for a specified currency (NGN in this case). Each bank entry includes its name, code, and logo.
+
+### endpoint
+`GET https://backendapi.sayswitchgroup.com/api/v1/bank_list`
+
+### Sample cURL Request 
+```json
+curl -X GET https://backendapi.sayswitchgroup.com/api/v1/bank_list \
+  -H "Authorization: Bearer YOUR_SECRET_KEY"
+  ```
+
+  Sample Response
+ ```js {
+  "success": true,
+  "message": "Bank list retrieved",
+  "currency": "NGN",
+  "data": [
+    {
+      "bankName": "78 FINANCE COMPANY LIMITED",
+      "bankCode": "110072",
+      "logo": "https://cdn-icons-png.freepik.com/256/2830/2830155.png"
+    },  {
+            "bankName": "9 PAYMENT SOLUTIONS BANK",
+            "bankCode": "120001",
+            "logo": "https://cdn-icons-png.freepik.com/256/2830/2830155.png"
+        },
+        {
+            "bankName": "9JAPAY MICROFINANCE BANK",
+            "bankCode": "090629",
+            "logo": "https://cdn-icons-png.freepik.com/256/2830/2830155.png"
+        },
+        {
+            "bankName": "AB MICROFINANCE BANK ",
+            "bankCode": "090270",
+            "logo": "https://cdn-icons-png.freepik.com/256/2830/2830155.png"
+        },
+        // and more ....
+  ]
+}
+```
+

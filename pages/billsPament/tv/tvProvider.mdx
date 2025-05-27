@@ -1,0 +1,48 @@
+## Get TV Providers
+The Get TV Provider Endpoint Fetches the list of available TV subscription providers along with their minimum amount and provider logo.
+
+### Endpoint
+`GET https://backendapi.sayswitchgroup.com/api/v1/tv`
+
+```js
+curl --request GET \
+  --url https://backendapi.sayswitchgroup.com/api/v1/tv \
+  --header "Authorization: Bearer YOUR_SECRET_KEY"
+ ```
+
+### Sample Response 
+```js
+{
+  "success": true,
+  "code": "00000",
+  "message": "Fetched successfully",
+  "data": [
+    {
+      "provider": "DSTV",
+      "providerLogoUrl": "assets/images/bills/DSTV.jpg",
+      "minAmount": "500"
+    },
+    {
+      "provider": "GOTV",
+      "providerLogoUrl": "assets/images/bills/GOTV.jpg",
+      "minAmount": "500"
+    },
+    {
+      "provider": "STARTIMES",
+      "providerLogoUrl": "assets/images/bills/STARTIMES.jpg",
+      "minAmount": "500"
+    }
+  ]
+}
+```
+
+###  Response Fields
+| Field               | Type     | Description                                    |
+|--------------------|----------|------------------------------------------------|
+| `success`           | boolean  | Indicates whether the request was successful  |
+| `code`              | string   | Custom response code                          |
+| `message`           | string   | Descriptive response message                   |
+| `data`              | array    | List of available TV providers                 |
+| `provider`       | string   | Name of the TV provider (e.g., DSTV, GOTV)     |
+| `providerLogoUrl`| string   | Path to the logo image for the provider        |
+| `minAmount`      | string   | Minimum amount required for a subscription     |
