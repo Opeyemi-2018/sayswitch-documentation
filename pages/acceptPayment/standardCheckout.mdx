@@ -5,23 +5,19 @@ import { Callout } from 'nextra/components'
 The Standard Checkout API allows you to initialize payment transactions and redirect customers to a secure SaySwitch checkout page to complete their payments.
 
 ### Endpoint
-`POST https://backendapi.sayswitchgroup.com/api/v1/Initialize/transaction/initialize`
+`POST https://backendapi.sayswitchgroup.com/api/v1/transaction/initialize`
 
-### Request Headers
-
-| Header          | Type     | Description                                                                |  Required  |    
-| --------------- | -------- | ------------------------------------------------------                     | ---------- |
-| `Content-Type`  | `string` | Specifies that the request body should be formatted as `application/json`. |      Yes   |
-| `Authorization` | `string` | Your API secret key, prefixed with `Bearer `. Example: `YOUR_SECRET_KEY`.  |      Yes   |
-
-### Request Body
-```json
-{
+### cURL Request 
+```js
+curl -X POST https://backendapi.sayswitchgroup.com/api/v1/transaction/initialize \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer YOUR_SECRET_KEY" \
+  -d '{
     "email": "test@gmail.com",
     "amount": "10",
     "callback": "https://google.com",
     "currency": "NGN"
-}
+}'
 ```
 
 Request Parameters
@@ -62,7 +58,7 @@ Request Parameters
 ### Transaction Flow
 - **Initialize Transaction:** Send a POST request to the Initialize Transaction endpoint with customer details and transaction amount
 - **Get Authorization URL:** The API returns a secure checkout URL in the authorization_url field
-- **Redirect Customer:** Direct the customer to the authorization URL where they can complete their payment
+- **Redirect Customer:** Direct the customer to the authorization URL(Sayswitch check out page) where they can complete their payment
 - **Payment Processing:** Customer completes payment on the SaySwitch secure checkout page
 - **Callback Redirect:** After payment completion, the customer is automatically redirected to your specified callback URL
 
@@ -89,28 +85,32 @@ const result = await response.json();
 #### Step 2: Redirect to Checkout
 Use the returned authorization URL to redirect your customer:
 ```js copy
-if (result.success) {
-    // Redirect customer to the checkout page
-    window.location.href = result.data.authorization_url;
+{
+    "success": true,
+    "message": "Authorization URL created",
+    "data": {
+        "authorization_url": "https://checkout.sayswitchgroup.com/pay/SSW_17485283875909552",
+        "access_code": "bvgpovv29dc5",
+        "reference": "SSW_17485283875909552",
+        "payer_id": null
+    }
 }
 ```
 
-### Step 3: Handle Callback
-Set up your callback URL to handle the payment completion response and update your application accordingly.
+### Step 3 Verify Transaction  
 
-### Verify Transaction  
-Required Headers
-```json
- Authorization: Bearer YOUR_SECRET_KEY
-Content-Type: application/json
-```
 ### Endpoint
-`GET https://backendapi.sayswitchgroup.com/api/s2s/your_referenceId`
-### Example usage
-``` http
-https://backendapi.sayswitchgroup.com/api/s2s/SSW_17482573443162479
+`GET https://backendapi.sayswitchgroup.com/api/v1/your_referenceId`
+
+Verification of transaction is done by adding the `reference` of a specific transaction  as URL path parameter  
+
+### Example cURL Request
+```json
+curl -X GET https://backendapi.sayswitchgroup.com/api/v1/SSW_17482573443162479 \
+  -H "Authorization: Bearer YOUR_SECRET_KEY"
 ```
-### Success Response
+
+### Sample Response
 ```js 
 {
     "success": true,
@@ -136,7 +136,7 @@ https://backendapi.sayswitchgroup.com/api/s2s/SSW_17482573443162479
         "customer_code": "CUS_7ewvq2vt6zlqyij",
         "first_name": "",
         "last_name": "",
-        "email": "opeyemiodunayo2018@gmail.com"
+        "email": "johndoe@gmail.com"
     },
     "card": {
         "first6Digits": "506105",

@@ -1,0 +1,60 @@
+## Electricity Recharge
+
+This endpoint allows users to recharge electricity (prepaid or postpaid) by specifying provider details, meter number, amount, and meter type.
+
+### Endpoint
+
+`POST https://backendapi.sayswitchgroup.com/api/v1/electricity/recharge`
+
+###  cURL Request Example
+``` json
+curl -X POST https://backendapi.sayswitchgroup.com/api/v1/electricity/recharge \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer YOUR_SECRET_KEY_HERE" \
+  -d '{
+    "provider": "IKEDC",
+    "number": "1111111111111",
+    "type": "prepaid",
+    "amount": 1000,
+    "reference": "2022051105275457530"
+}
+```
+
+### Sample Response
+
+```json
+{
+  "success": true,
+  "code": "00000",
+  "message": "SUCCESSFUL",
+  "data": {
+    "orderNo": "value_of_$orderNo",
+    "reference": "value_of_$reference",
+    "status": "value_of_$status",
+    "errorMsg": "value_of_$errorMsg",
+    "purchased_code": "value_of_$purchased_code",
+    "units": "value_of_$units",
+    "customer_name": "value_of_$customer_name",
+    "customer_address": "value_of_$customer_address",
+    "account_type": "value_of_$account_type",
+    "date": "value_of_$bl->created_at"
+  }
+}
+```
+
+### Response Field
+| Field                 | Type     | Description                                                  |
+|----------------------|----------|--------------------------------------------------------------|
+| `success`            | boolean  | Indicates if the API call was successful                     |
+| `code`               | string   | Status code (`00000` means success)                          |
+| `message`            | string   | Summary message (e.g. "SUCCESSFUL")                          |
+| `data.orderNo`       | string   | Internal order number assigned by the server                 |
+| `data.reference`     | string   | Unique transaction reference provided by the client          |
+| `data.status`        | string   | Current status of the transaction (e.g., "delivered")        |
+| `data.errorMsg`      | string   | Additional info about the transaction (e.g., success reason) |
+| `data.purchased_code`| string   | Token code (for prepaid recharges)                           |
+| `data.units`         | string   | Quantity of electricity units bought                         |
+| `data.customer_name` | string   | Name registered to the meter number                          |
+| `data.customer_address`| string | Address registered to the meter                              |
+| `data.account_type`  | string   | Either `prepaid` or `postpaid`                               |
+| `data.date`          | string   | Timestamp of the transaction 

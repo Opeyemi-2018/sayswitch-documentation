@@ -1,0 +1,57 @@
+## Internet Providers
+
+The Internet Provider API returns a list of internet service providers along with their logos. This is useful for applications that need to display available providers for users to choose from, such as data top-up or broadband payment systems.
+
+### Endpoint
+`GET https://backendapi.sayswitchgroup.com/api/v1/internet`
+
+### Sample cURL Request
+
+```http
+curl -X GET https://backendapi.sayswitchgroup.com/api/v1/internet \
+  -H "Content-Type: application/json" \
+   --header 'Authorization: Bearer YOUR_SECRET_KEY'
+```
+
+### Sample Response
+
+```js
+{
+  "success": true,
+  "code": "00000",
+  "message": "Fetched successfully",
+  "data": [
+    {
+      "provider": "AIRTEL",
+      "providerLogoUrl": "assets/images/bills/Airtel-Data.jpg"
+    },
+    {
+      "provider": "MTN",
+      "providerLogoUrl": "assets/images/bills/MTN-Data.jpg"
+    },
+    {
+      "provider": "GLO",
+      "providerLogoUrl": "assets/images/bills/GLO-Data.jpg"
+    },
+    {
+      "provider": "9MOBILE",
+      "providerLogoUrl": "assets/images/bills/9mobile-Data.jpg"
+    },
+    {
+      "provider": "SMILE4G",
+      "providerLogoUrl": "assets/images/bills/Smile-Payment.jpg"
+    }
+  ]
+}
+```
+
+### Response Field
+
+| Field             | Type     | Description                                                  |
+|------------------|----------|--------------------------------------------------------------|
+| `success`         | boolean  | Indicates whether the API call was successful (`true`/`false`). |
+| `code`            | string   | Custom response code. `"00000"` usually means success.        |
+| `message`         | string   | Human-readable message describing the outcome of the request. |
+| `data`            | array    | A list of internet providers and their associated logo URLs.  |
+| `provider`          | string   | Name of the internet service provider (e.g., `MTN`, `GLO`). |
+| `providerLogoUrl`   | string   | Relative URL of the provider's logo image.                 |

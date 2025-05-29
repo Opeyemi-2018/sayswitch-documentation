@@ -1,1 +1,50 @@
 ## Airtime Topup
+
+The Airtime Top-Up API allows you to integrate airtime recharge functionality into your applications. It enables users to automatically send mobile airtime to a specified phone number across supported
+
+### Endpoint
+`POST https://backendapi.sayswitchgroup.com/api/v1/airtime/topup`
+
+### Sample cURL Request
+
+```js
+curl -X POST https://backendapi.sayswitchgroup.com/api/v1/airtime/topup \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer YOUR_SECRET_KEY" \
+  -d '{
+    "network": "mtn",
+    "phone": "08012345678",
+    "amount": "100"
+  }'
+```
+
+### Sample  Response
+
+```js
+{
+  "success": true,
+  "code": "00000",
+  "message": "SUCCESSFUL",
+  "data": {
+    "orderNo": "17484753663740358984353674",
+    "reference": "2022009802414346",
+    "status": "delivered",
+    "errorMsg": "TRANSACTION SUCCESSFUL"
+  }
+}
+```
+
+### Response Explanation
+
+| Key         | Type      | Description                                                              |
+|-------------|-----------|--------------------------------------------------------------------------|
+| success     | boolean   | Indicates whether the top-up was successful (`true` or `false`).         |
+| code        | string    | A system-generated status code. `"00000"` means the transaction was OK.  |
+| message     | string    | General message about the transaction result.                            |
+| data        | object    | Contains the transaction result details.                                 |
+| orderNo | string    | Unique transaction ID for internal tracking.                             |
+| reference | string  | A unique reference ID for the user or client to track the transaction.   |
+| status  | string    | Delivery status (`delivered`, `pending`, `failed`).                      |
+| errorMsg| string    | Description of the result, useful for debugging or user messaging.       |
+
+

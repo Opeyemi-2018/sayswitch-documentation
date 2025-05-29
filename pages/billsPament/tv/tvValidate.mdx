@@ -1,0 +1,52 @@
+## TV Validation  
+This endpoint validates a TV subscription account using the provided TV service provider and IUC (smartcard) number sent in the request body.
+
+### Endpoint 
+`POST https://backendapi.sayswitchgroup.com/api/v1/tv/validate`
+
+### cURL Request Example 
+
+```js
+curl -X POST https://backendapi.sayswitchgroup.com/api/v1/tv/validate \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer YOUR_SECRET_KEY" \
+  -d '{
+    "provider": "GOTV",
+    "number": "2019505346"
+}'
+```
+
+### Example Response
+
+```json
+{
+  "code": "000",
+  "content": {
+    "Customer_Name": "John Doe",
+    "Status": "Closed",
+    "Due_Date": "2025-05-27T00:00:00",
+    "Current_Bouquet": "",
+    "Current_Bouquet_Price": "",
+    "Current_Bouquet_Code": "UNKNOWN",
+    "Renewal_Amount": "11400",
+    "Customer_Type": "GOTV",
+    "Customer_Number": "2019505346"
+  }
+}
+```
+
+### Response Fields
+
+| Field                      | Type   | Description                                                  |
+|---------------------------|--------|--------------------------------------------------------------|
+| code                      | string | Status code ("000" means successful validation)              |
+| content.Customer_Name     | string | Full name of the TV customer                                 |
+| content.Status            | string | Account status ("Active", "Closed", etc.)                    |
+| content.Due_Date          | string | Due date for the subscription (ISO 8601 format)              |
+| content.Current_Bouquet   | string | Name of the currently active bouquet                         |
+| content.Current_Bouquet_Price | string | Price of the current bouquet (may be empty)             |
+| content.Current_Bouquet_Code  | string | Internal bouquet code ("UNKNOWN" if not found)         |
+| content.Renewal_Amount    | string | Amount to renew the subscription                             |
+| content.Customer_Type     | string | Provider name (e.g., "GOTV")                                 |
+| content.Customer_Number   | string | The validated IUC or smartcard number                        |
+

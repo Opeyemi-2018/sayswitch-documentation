@@ -1,0 +1,55 @@
+## Internet Order
+
+This endpoint allows users to place an order to purchase mobile internet data from a specific provider.
+
+###  Endpoint
+
+`POST https://backendapi.sayswitchgroup.com/api/v1/internet/data`
+
+### cURL Request
+```bash
+curl -X POST https://backendapi.sayswitchgroup.com/api/v1/internet/data \
+  -H "Content-Type: application/json" \
+  -d '{
+    "provider": "MTN",
+    "plan_id": 46,
+    "number": "07066369927",
+    "reference": "2024041521481039"
+  }'
+ ```
+
+***Notes***
+
+- Ensure that the reference is unique for each request to avoid duplication.
+
+- The plan_id must be a valid ID obtained from the [internet Plans](/data/internetPlans) endpoint.
+
+### Sample Response
+
+```json
+{
+  "success": true,
+  "code": "00000",
+  "message": "SUCCESSFUL",
+  "data": {
+    "orderNo": "17485319933161880294374534",
+    "reference": "2024041521481039",
+    "status": "delivered",
+    "errorMsg": "TRANSACTION SUCCESSFUL"
+  }
+}
+  ```
+
+  ###  Response Fields
+
+| Field       | Type     | Description                                                         |
+|-------------|----------|---------------------------------------------------------------------|
+| `success`   | boolean  | Indicates whether the request was successful (`true` or `false`).   |
+| `code`      | string   | Status code, where `"00000"` typically means success.               |
+| `message`   | string   | A brief message describing the result of the request.               |
+| `data`      | object   | Contains details about the transaction/order.                       |
+| `orderNo`   | string   | Unique order number assigned to the transaction.                    |
+| `reference` | string   | The transaction reference ID sent in the request payload.          |
+| `status`    | string   | Status of the order (e.g., `"delivered"`, `"failed"`, `"pending"`).|
+| `errorMsg`  | string   | A message describing the outcome of the transaction.                |
+
