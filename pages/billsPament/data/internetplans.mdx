@@ -1,0 +1,93 @@
+## Internet Plans
+
+This endpoint retrieves available internet data plans for a specified internet provider.
+
+### Endpoint
+`GET https://backendapi.sayswitchgroup.com/api/v1/internet/plans/:provider`
+
+- Replace `:provider` with the provider name (e.g., `MTN`, `AIRTEL`, `GLO`, `9MOBILE`, `SMILE4G`).
+
+### Sample cURL request
+
+```js
+curl --request GET \
+  --url "https://backendapi.sayswitchgroup.com/api/v1/internet/plans/MTN \
+  --header 'Authorization: Bearer YOUR_SECRET_KEY'
+ ```
+
+ ### Sample Response
+
+ ```js
+ {
+    "success": true,
+    "code": "00000",
+    "message": "Internet Data Plans Fetched successfully",
+    "data": [
+        {
+            "id": 46,
+            "name": "110MB Daily Plan (1 Day) - N100",
+            "amount": "100.00"
+        },
+        {
+            "id": 47,
+            "name": "1.5GB Weekly Plan (7 Days) - N1,000",
+            "amount": "1000.00"
+        },
+        {
+            "id": 48,
+            "name": "7GB Monthly Plan - N3,500",
+            "amount": "3500.00"
+        },
+        {
+            "id": 49,
+            "name": "3.5GB Weekly Plan (7 Days) - N1,500",
+            "amount": "1500.00"
+        },
+        {
+            "id": 50,
+            "name": "16.5GB Monthly Plan",
+            "amount": "6500.00"
+        },
+        {
+            "id": 51,
+            "name": "20GB Monthly Plan",
+            "amount": "7500.00"
+        },
+        {
+            "id": 52,
+            "name": "25GB Monthly Plan",
+            "amount": "9000.00"
+        },
+        {
+            "id": 53,
+            "name": "36GB Monthly Plan",
+            "amount": "11000.00"
+        },
+        {
+            "id": 54,
+            "name": "75GB Monthly Plan",
+            "amount": "18000.00"
+        },
+        {
+            "id": 55,
+            "name": "2.7GB + 2mins + 2GB All Night Streaming + 200MB YouTube Musi",
+            "amount": "2000.00"
+        },
+        
+       // and more
+    ]
+}
+ ```
+
+### Response Fields
+
+| Field     | Type    | Description                                       |
+|-----------|---------|-------------------------------------------------|
+| `success` | boolean | Indicates if the request was successful.         |
+| `code`    | string  | Response code indicating status (e.g., "00000"). |
+| `message` | string  | A descriptive message about the response.        |
+| `data`    | array   | List of internet plans available for the provider.|
+| `id`     | number  | Unique identifier for the internet plan.     |
+| `name`   | string  | The name and details of the internet plan, including data size, duration, and price. |
+| `amount` | string  | The price of the plan in the provider's currency (e.g., Naira). |
+

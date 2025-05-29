@@ -1,112 +1,178 @@
-{/* ## Bank Payments (S2S)
+import { Callout } from 'nextra/components'
 
-### Overview
 
-Process bank transfers securely through Sayswitch's Server-to-Server (S2S) API. This integration enables direct bank payments without redirecting customers to external banking platforms.
+## Bank Transfer Initialization
 
-### Bank Payment Flow
+This endpoint is used to initialize a bank transfer by generating a virtual account number for the transaction. The user will transfer funds to the generated account.
 
-1. Initialize bank payment request
-2. Validate bank account details
-3. Process bank transfer
-4. Handle payment confirmation
+### Endpoint 
 
-### Basic Implementation
+`POST https://backendapi.sayswitchgroup.com/api/s2s/banktransfer/initialize`
 
-```javascript
-const sayswitch = new Sayswitch({
-  secretKey: process.env.SAYSWITCH_SECRET_KEY
-});
+**Here is the 3 step for seamless integration**
 
-// Process bank payment
-const bankPayment = await sayswitch.s2s.bank.transfer({
-  amount: 10000, // Amount in cents
-  currency: 'USD',
-  bank_account: {
-    account_number: '0123456789',
-    bank_code: 'CITI',
-    account_name: 'John Doe'
-  },
-  customer: {
-    email: 'customer@example.com',
-    reference: 'CUST_123'
-  },
-  narration: 'Payment for Order #123'
-});
+- **1 List Available Banks**
+- **2 Initialize Bank Transfer**
+- **3 Verify Transaction**
+
+
+### 1 List Available Banks
+
+### Sample cURL Request 
+
+```json
+curl -X GET https://backendapi.sayswitchgroup.com/api/v1/bank_list \
+  -H "Authorization: Bearer YOUR_SECRET_KEY"
 ```
 
-### Account Validation
+### Sample Response
 
-```javascript
-const validateAccount = async () => {
-  const verification = await sayswitch.s2s.bank.verifyAccount({
-    account_number: '0123456789',
-    bank_code: 'CITI'
-  });
-
-  return verification.account_name;
-};
+```js 
+ {
+  "success": true,
+  "message": "Bank list retrieved",
+  "currency": "NGN",
+  "data": [
+    {
+      "bankName": "78 FINANCE COMPANY LIMITED",
+      "bankCode": "110072",
+      "logo": "https://cdn-icons-png.freepik.com/256/2830/2830155.png"
+    },  {
+            "bankName": "9 PAYMENT SOLUTIONS BANK",
+            "bankCode": "120001",
+            "logo": "https://cdn-icons-png.freepik.com/256/2830/2830155.png"
+        },
+        {
+            "bankName": "9JAPAY MICROFINANCE BANK",
+            "bankCode": "090629",
+            "logo": "https://cdn-icons-png.freepik.com/256/2830/2830155.png"
+        },
+        
+        // and more ....
+  ]
+}
 ```
 
-### Test Bank Details
+ #### 2 Initialize Bank Transfer
 
-| Bank Code | Account Number | Description |
-|-----------|---------------|-------------|
-| CITI | 0123456789 | Successful transfer |
-| CHASE | 9876543210 | Failed transfer |
-| BOA | 1122334455 | Pending transfer |
+ Send a POST request to 
+ 
+ `https://backendapi.sayswitchgroup.com/api/s2s/banktransfer/initialize`
 
-### Error Handling
+ ### Sample cURL Request
 
-```javascript copy
-try {
-  const payment = await sayswitch.s2s.bank.transfer({
-    // payment details
-  });
-} catch (error) {
-  if (error.code === 'invalid_account') {
-    // Handle invalid account
-  } else if (error.code === 'insufficient_funds') {
-    // Handle insufficient funds
-  } else {
-    // Handle other errors
+ ```bash
+curl -X POST https://backendapi.sayswitchgroup.com/api/s2s/banktransfer/initialize \
+  -H "Content-Type: application/json" \
+  -d '{
+    "email": "opeyemiodunayo2018@gmail.com",
+    "amount": "100",
+    "currency": "NGN",
+    "reference": "895362787365996276345987"
+}'
+
+### Sample Response
+
+```js
+{
+  "status": true,
+  "message": "Account generated successfully",
+  "data": {
+    "account_name": "SAYSWITCH",
+    "account_number": "8787652431",
+    "bank_name": "Wema Bank"
   }
 }
 ```
 
-### Security Requirements
+### Response Field
 
-1. **Account Verification**
-   - Confirm that the account exists  
-   - Ensure the account name matches the provided details  
-   - Validate the bank code for accuracy  
-
-2. **Transaction Controls**
-   - Enforce daily transfer limits  
-   - Track transaction frequency to detect unusual activity  
-   - Apply fraud detection mechanisms to safeguard transactions  
-
-
-### Response Codes
-
-| Code | Description |
-|------|-------------|
-| 0000 | Success |
-| 2000 | Invalid account |
-| 2001 | Insufficient funds |
-| 2002 | Bank not available |
-| 2003 | Transfer failed |
-
-### Best Practices
-- Perform account detail validation before initiating a transfer  
-- Use idempotency keys to handle retries safely and prevent duplicate transfers  
-- Save transaction references for tracking and reconciliation  
-- Continuously monitor the status of each transfer to ensure completion  
-- Set up webhook listeners to automatically handle transfer updates and notifications  
+| Field            | Type    | Description                                                |
+|------------------|---------|------------------------------------------------------------|
+| `status`         | boolean | Indicates if the request was successful (`true` or `false`)|
+| `message`        | string  | A message describing the result of the API call            |
+| `data`           | object  | Contains the virtual account details                       |
+| `account_name`   | string  | Name of the generated virtual account                  |
+| `account_number` | string  | Virtual account number to receive the bank transfer     |
+| `bank_name`      | string  | Name of the bank providing the virtual account          |
 
 
+### Verify Transaction
+After the user completes the bank transfer to the virtual account generated, you must verify the status of the transaction to confirm if the payment was received.
 
+### Endpoint
+`GET https://backendapi.sayswitchgroup.com/api/v1/your_referenceId`
 
-For technical support, contact our team at support@sayswitch.com
+Verification of transaction is done by adding the `reference` of a specific transaction as URL path parameter
 
-*/} 
+### cURL Request
+
+```js
+curl -X GET https://backendapi.sayswitchgroup.com/api/v1/SSW_17482573443162479 \
+  -H "Authorization: Bearer YOUR_SECRET_KEY"
+```
+
+### Sample Response
+
+```js 
+{
+    "success": true,
+    "message": "Verification successful",
+    "data": {
+        "amount": "10.12",
+        "currency": "NGN",
+        "status": "success",
+        "transaction_date": "2025-05-26 12:04:40",
+        "reference": "SSW_17482573443162479",
+        "domain": "live",
+        "gateway_response": null,
+        "channel": "card",
+        "ip_address": null,
+        "originator_name": "",
+        "originator_account_number": "",
+        "fees": "0.12",
+        "plan": null,
+        "requested_amount": "10"
+    },
+    "customer": {
+        "id": 1340,
+        "customer_code": "CUS_7ewvq2vt6zlqyij",
+        "first_name": "",
+        "last_name": "",
+        "email": "johndoe@gmail.com"
+    },
+    "card": {
+        "first6Digits": "506105",
+        "last4Digits": "7163",
+        "expiry": "0827",
+        "type": "verve",
+        "token": "ss-tkn-uoekyzfdvnttyqscdkemrhq9"
+    },
+    "log": {
+        "time_spent": null,
+        "attempts": null,
+        "authentication": null,
+        "errors": 2,
+        "success": true,
+        "channel": "card",
+        "history": [
+            {
+                "id": 8133,
+                "type": "PURCHASES",
+                "message": "{\"transactionRef\":\"SSW_17482573443162479\",\"paymentId\":\"1933911626\",\"bankCode\":\"011\",\"message\":\"Kindly enter the OTP sent to 234706***9927\",\"amount\":\"10.12\",\"responseCode\":\"T0\",\"plainTextSuppo",
+                "time": null,
+                "reference": "SSW_17482573443162479",
+                "channel": "interswitch",
+                "ip_address": "102.89.83.206",
+                "device": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36"
+            },
+            
+        ]
+    }
+}
+```
+
+<Callout type='warning'>
+Note that bank transfers may take a few minutes to reflect, so ensure the transaction status is success
+</Callout>
+

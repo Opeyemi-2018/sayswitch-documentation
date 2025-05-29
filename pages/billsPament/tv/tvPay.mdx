@@ -1,0 +1,57 @@
+##  TV Subscription Payment
+
+The TV Subscription Payment API allows users to conveniently pay for their digital TV subscriptions online. By providing details such as the service provider (e.g., GOTV, DSTV, STARTIMES), the smart card number, the subscription package code, and a unique transaction reference, the API processes the payment and activates the subscription for the user.
+
+### Endpoint 
+`POST https://backendapi.sayswitchgroup.com/api/v1/tv/pay`
+
+### cURL Request
+
+```js
+curl -X POST https://backendapi.sayswitchgroup.com/api/v1/tv/pay \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer YOUR_SECRET_KEY" \
+  -d '{
+    "provider": "GOTV",
+    "number": "2019505346",
+    "code": "gotv-max",
+    "reference": "20220511035554758"
+  }'
+```
+
+### Sample Response
+```js
+{
+  "success": true,
+  "code": "00000",
+  "message": "SUCCESSFUL",
+  "data": {
+    "orderNo": "value_of_$orderNo",
+    "reference": "value_of_$reference",
+    "status": "value_of_$status",
+    "errorMsg": "value_of_$errorMsg",
+    "customer_name": "value_of_$customer_name",
+    "customer_number": "value_of_$customer_number",
+    "bouquet": "value_of_$bouquet",
+    "amount": "value_of_$amount",
+    "date": "value_of_$bl->created_at"
+  }
+}
+```
+
+### Response Field
+
+| Field                   | Type     | Description                                                   |
+|------------------------|----------|---------------------------------------------------------------|
+| `success`              | boolean  | Indicates if the transaction was successful                   |
+| `code`                 | string   | Status code (`00000` means success)                           |
+| `message`              | string   | General response message (e.g. "SUCCESSFUL")                  |
+| `data.orderNo`         | string   | Internal order number assigned to the transaction             |
+| `data.reference`       | string   | Unique transaction reference sent in the request              |
+| `data.status`          | string   | Status of the transaction (e.g., "delivered")                 |
+| `data.errorMsg`        | string   | Detailed message about the transaction result                 |
+| `data.customer_name`   | string   | Name of the account holder for the smart card                 |
+| `data.customer_number` | string   | The smart card number / IUC number used for the subscription  |
+| `data.bouquet`         | string   | Name of the subscription package (e.g., "GOTV Max")           |
+| `data.amount`          | string   | Amount paid for the subscription                              |
+| `data.date`            | string   | Date and time the transaction was processed                   |

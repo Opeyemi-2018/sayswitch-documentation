@@ -21,22 +21,6 @@ Sayswitch provides a robust payment processing system that allows you to accept 
    - Update order status
    - Send confirmation to customer
 
-### Basic Implementation
-
-```javascript
-const sayswitch = new Sayswitch({
-  secretKey: process.env.SAYSWITCH_SECRET_KEY
-});
-
-// Initialize a payment
-const payment = await sayswitch.payments.create({
-  amount: 5000, // Amount in cents
-  currency: 'USD',
-  email: 'customer@example.com',
-  reference: 'ORDER_REF_123',
-  callback_url: 'https://your-website.com/callback'
-});
-```
 
 ### Supported Payment Methods
 
