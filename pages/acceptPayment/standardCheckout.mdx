@@ -68,9 +68,10 @@ Make a POST request to initialize the transaction:
 ```js copy 
 const response = await fetch('https://backendapi.sayswitchgroup.com/api/v1/transaction/initialize', {
     method: 'POST',
-    headers: {
-        'Content-Type': 'application/json'
-    },
+   headers: {
+    'Content-Type': 'application/json',
+    'Authorization': 'Bearer YOUR_SECRET_API_KEY' // Replace with your actual API key 
+  },
     body: JSON.stringify({
         email: 'customer@example.com',
         amount: '100.00',
