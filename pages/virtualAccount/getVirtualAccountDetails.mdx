@@ -40,7 +40,7 @@ curl -X GET https://backendapi.sayswitchgroup.com/api/v1/dedicated_account/484
       "id": 334,
       "first_name": "John",
       "last_name": "Doe",
-      "email": "John Doe@email.com",
+      "email": "Johndoe@email.com",
       "phone": "08159994269",
       "bvn": null,
       "domain": "test",
@@ -70,13 +70,13 @@ curl -X GET https://backendapi.sayswitchgroup.com/api/v1/dedicated_account/484
 | `created_at`    | `string`  | The timestamp indicating when this virtual account was created (ISO 8601 format).                           |
 | `updated_at`    | `string`  | The timestamp indicating when this virtual account was last updated (ISO 8601 format).                      |
 | `customer`      | `object`  | An object containing information about the customer associated with this virtual account:                  |
-| `customer.id`   | `integer` | The unique ID of the customer.                                                                             |
-| `customer.first_name`| `string` | The customer's first name.                                                                               |
-| `customer.last_name` | `string` | The customer's last name.                                                                                |
-| `customer.email`| `string` | The customer's email address.                                                                              |
-| `customer.phone`| `string` | The customer's phone number.                                                                               |
-| `customer.bvn`  | `string`  | The customer's Bank Verification Number (may be `null`).                                                    |
-| `customer.domain`| `string`  | The environment or domain the customer belongs to.                                                         |
-| `customer.customer_code`| `string` | The unique customer code.                                                                            |
-| `customer.metadata`| `string` | Additional information about the customer (often an empty JSON string `{}`).                               |
-| `customer.status`| `string` | The current status of the customer account (e.g., "active").                                              |
+| `id`            | `integer` | The unique ID of the customer.                                                                             |
+| first_name`| `string` | The customer's first name.                                                                               |
+| `last_name` | `string` | The customer's last name.                                                                                |
+| `email`| `string` | The customer's email address.                                                                              |
+| `phone`| `string` | The customer's phone number.                                                                               |
+| `bvn`  | `string`  | The customer's Bank Verification Number (may be `null`).                                                    |
+| `domain`| `string`  | The environment or domain the customer belongs to.                                                         |
+| `customer_code`| `string` | The unique customer code.                                                                            |
+| `metadata`| `string` | Additional information about the customer (often an empty JSON string `{}`).                               |
+| `status`| `string` | The current status of the customer account (e.g., "active").                                              |

@@ -83,11 +83,9 @@ curl -X GET https://backendapi.sayswitchgroup.com/api/v1/settlement \
 
 | Field          | Type    | Description |
 |----------------|---------|-------------|
-| **Root Fields** | | |
 | success        | boolean | Indicates whether the API request was successful |
 | message        | string  | Human-readable status message about the operation |
 | data           | array   | Contains the list of settlement records |
-| **Settlement Fields** | | |
 | id             | integer | Unique identifier for the settlement record |
 | batchid        | string  | Unique identifier for the batch of transactions |
 | currency       | string  | Currency code of the settlement (ISO 4217 format) |
