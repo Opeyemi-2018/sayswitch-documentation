@@ -1,0 +1,89 @@
+###  Initiate payout 
+The Initiate payout API allows you to integrate bank payout functionality into your applications. It enables you to automatically send money to bank accounts across supported Nigerian banks
+
+### Endpoint
+`POST https://backendapi.sayswitchgroup.com/api/v1/bank_transfer`
+
+### Sample cURL Request
+
+```js
+    curl -X POST https://backendapi.sayswitchgroup.com/api/v1/bank_transfer \
+    -H "Content-Type: application/json" \
+    -H "Authorization: Bearer YOUR_SECRET_KEY" \
+    -d '{
+        "account_name": "John Doe",
+        "account_number": "1234567890",
+        "amount": "100",
+        "bank_code": "100004",
+        "bank_name": "OPAY",
+        "currency": "NGN",
+        "narration": "Test transfer",
+        "reference": "2024031404929202020"
+    }'
+```
+
+### Request Parameters
+| Parameter      | Type   | Required | Description                                           |
+|----------------|--------|----------|-------------------------------------------------------|
+| account_name   | string | Yes      | The name of the recipient's bank account              |
+| account_number | string | Yes      | The recipient's bank account number                   |
+| amount         | string | Yes      | Amount to transfer (in the smallest currency unit)    |
+| bank_code      | string | Yes      | The bank's unique identifier code                     |
+| bank_name      | string | Yes      | The name of the recipient's bank                      |
+| currency       | string | Yes      | Currency code (e.g., "NGN" for Nigerian Naira)       |
+| narration      | string | Yes      | Description or purpose of the transfer                |
+| reference      | string | Yes      | Unique reference ID for tracking the transaction      |
+
+### Sample Response 
+
+```js
+{
+  "success": true,
+  "message": "Transfer successfully logged and Processing",
+  "data": {
+    "reference": "2024031404929202020",
+    "currency": "NGN",
+    "amount": "100",
+    "fee": "15",
+    "bank_code": "100004",
+    "bank_name": "OPAY",
+    "countryCode": "NG",
+    "serviceCode": null,
+    "paymentMode": "bank",
+    "account_number": "1234567890",
+    "account_name": "John Doe",
+    "narration": "Test transfer",
+    "domain": "live",
+    "requestIp": "102.89.76.213",
+    "status": "pending",
+    "updated_at": "2025-08-30T11:47:10.000000Z",
+    "created_at": "2025-08-30T11:47:10.000000Z"
+  }
+}
+```
+
+
+### Response Explanation
+
+| Key         | Type    | Description                                                                |
+|-------------|---------|----------------------------------------------------------------------------|
+| success     | boolean | Indicates whether the transfer request was successfully received (`true` or `false`) |
+| message     | string  | General message about the transaction result                               |
+| data        | object  | Contains the transaction details and processing information                |
+| reference   | string  | The unique reference ID provided in the request                            |
+| currency    | string  | Currency code for the transaction                                          |
+| amount      | string  | Transfer amount                                                            |
+| fee         | string  | Processing fee charged for the transfer                                    |
+| bank_code   | string  | The bank's identifier code                                                 |
+| bank_name   | string  | Name of the recipient's bank                                               |
+| countryCode | string  | Country code where the transfer is being processed                        |
+| serviceCode | string  | Service-specific code (may be null)                                       |
+| paymentMode | string  | Type of payment method used ("bank" for bank transfers)                   |
+| account_number | string | Recipient's bank account number                                         |
+| account_name | string | Recipient's account name                                                   |
+| narration   | string  | Transfer description or purpose                                            |
+| domain      | string  | Environment where the transaction was processed ("live" or "test")        |
+| requestIp   | string  | IP address from which the request originated                               |
+| status      | string  | Current status of the transfer (`pending`, `completed`, `failed`)         |
+| updated_at  | string  | Timestamp when the record was last updated (ISO 8601 format)             |
+| created_at  | string  | Timestamp when the transfer was initiated (ISO 8601 format)              |
