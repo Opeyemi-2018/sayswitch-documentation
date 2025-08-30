@@ -1,0 +1,116 @@
+### Initiate Bulk Payout
+The Bulk Payout API allows you to integrate bulk bank payout functionality into your applications. It enables you to automatically send money to multiple bank accounts in a single request across supported Nigerian banks.
+
+### Endpoint
+`POST https://backendapi.sayswitchgroup.com/api/v1/bulk_bank_transfer`
+
+### Sample cURL Request
+```js
+curl -X POST https://backendapi.sayswitchgroup.com/api/v1/bulk_bank_transfer \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer YOUR_SECRET_KEY" \
+  -d '{
+    "currency": "NGN",
+    "transfers": [
+        {
+            "amount": "200",
+            "bank_code": "000013",
+            "bank_name": "GUARANTY TRUST BANK",
+            "account_number": "1234567890",
+            "narration": "January Salary"
+        },
+        {
+            "amount": "100",
+            "bank_code": "000013",
+            "bank_name": "GUARANTY TRUST BANK",
+            "account_number": "1234567890",
+            "narration": "February Salary"
+        }
+    ]
+  }'
+```
+
+### Request Parameters
+
+| Parameter      | Type   | Required | Description                                           |
+|----------------|--------|----------|-------------------------------------------------------|
+| currency       | string | Yes      | Currency code (e.g., "NGN" for Nigerian Naira)       |
+| transfers      | array  | Yes      | Array of transfer objects to be processed             |
+| amount         | string | Yes      | Amount to transfer (in the smallest currency unit) - Inside transfers array |
+| bank_code      | string | Yes      | The bank's unique identifier code - Inside transfers array |
+| bank_name      | string | Yes      | The name of the recipient's bank - Inside transfers array |
+| account_number | string | Yes      | The recipient's bank account number - Inside transfers array |
+| narration      | string | Yes      | Description or purpose of the transfer - Inside transfers array |
+
+### Sample Response 
+```js
+{
+  "success": true,
+  "message": "Transfer Queued Successfully",
+  "total": 2,
+  "failed": 0,
+  "successful": 2,
+  "data": [
+    {
+      "reference": "SSW_trf_6e8b2d2361b573",
+      "currency": "NGN",
+      "amount": "100",
+      "fee": "15",
+      "bank_code": "000013",
+      "bank_name": "GUARANTY TRUST BANK",
+      "account_number": "1234567890",
+      "account_name": "John Doe",
+      "narration": "January Salary",
+      "requestIp": "102.89.76.213",
+      "status": "pending",
+      "updated_at": "2025-08-30T12:25:24.000000Z",
+      "created_at": "2025-08-30T12:25:24.000000Z"
+    },
+    {
+      "reference": "SSW_trf_z4jv377082a16b",
+      "currency": "NGN",
+      "amount": "100",
+      "fee": "15",
+      "bank_code": "000013",
+      "bank_name": "GUARANTY TRUST BANK",
+      "account_number": "1234567890",
+      "account_name": "John Doe",
+      "narration": "February Salary",
+      "requestIp": "102.89.76.213",
+      "status": "pending",
+      "updated_at": "2025-08-30T12:25:25.000000Z",
+      "created_at": "2025-08-30T12:25:25.000000Z"
+    }
+  ],
+  "failed_list": [
+    []
+  ]
+}
+```
+
+
+### Response Explanation
+
+| Key         | Type    | Description                                                                |
+|-------------|---------|----------------------------------------------------------------------------|
+| success     | boolean | Indicates whether the bulk transfer request was successfully received (`true` or `false`) |
+| message     | string  | General message about the transaction result                               |
+| total       | number  | Total number of transfers processed                                        |
+| failed      | number  | Number of transfers that failed                                            |
+| successful  | number  | Number of transfers that were successfully queued                          |
+| data        | array   | Array containing details of each successfully queued transfer              |
+| failed_list | array   | Array containing details of any failed transfers                           |
+| reference   | string  | System-generated unique reference ID for each transfer - Inside data array |
+| currency    | string  | Currency code for the transaction - Inside data array                     |
+| amount      | string  | Transfer amount - Inside data array                                        |
+| fee         | string  | Processing fee charged for the transfer - Inside data array               |
+| bank_code   | string  | The bank's identifier code - Inside data array                            |
+| bank_name   | string  | Name of the recipient's bank - Inside data array                          |
+| account_number | string | Recipient's bank account number - Inside data array                    |
+| account_name | string | Recipient's account name (resolved from bank) - Inside data array         |
+| narration   | string  | Transfer description or purpose - Inside data array                       |
+| requestIp   | string  | IP address from which the request originated - Inside data array          |
+| status      | string  | Current status of the transfer (`pending`, `completed`, `failed`) - Inside data array |
+| updated_at  | string  | Timestamp when the record was last updated (ISO 8601 format) - Inside data array |
+| created_at  | string  | Timestamp when the transfer was initiated (ISO 8601 format) - Inside data array |
+

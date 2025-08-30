@@ -9,51 +9,14 @@ This endpoint is used to initialize a bank transfer by generating a virtual acco
 
 `POST https://backendapi.sayswitchgroup.com/api/s2s/banktransfer/initialize`
 
-**Here is the 3 step for seamless integration**
+**Here is the 2 step for seamless integration**
 
-- **1 List Available Banks**
-- **2 Initialize Bank Transfer**
-- **3 Verify Transaction**
+- **1 Initialize Bank Transfer**
+- **2 Verify Transaction**
 
 
-### 1 List Available Banks
 
-### Sample cURL Request 
-
-```json
-curl -X GET https://backendapi.sayswitchgroup.com/api/v1/bank_list \
-  -H "Authorization: Bearer YOUR_SECRET_KEY"
-```
-
-### Sample Response
-
-```js 
- {
-  "success": true,
-  "message": "Bank list retrieved",
-  "currency": "NGN",
-  "data": [
-    {
-      "bankName": "78 FINANCE COMPANY LIMITED",
-      "bankCode": "110072",
-      "logo": "https://cdn-icons-png.freepik.com/256/2830/2830155.png"
-    },  {
-            "bankName": "9 PAYMENT SOLUTIONS BANK",
-            "bankCode": "120001",
-            "logo": "https://cdn-icons-png.freepik.com/256/2830/2830155.png"
-        },
-        {
-            "bankName": "9JAPAY MICROFINANCE BANK",
-            "bankCode": "090629",
-            "logo": "https://cdn-icons-png.freepik.com/256/2830/2830155.png"
-        },
-        
-        // and more ....
-  ]
-}
-```
-
- #### 2 Initialize Bank Transfer
+ #### 1 Initialize Bank Transfer
 
  Send a POST request to 
  
@@ -65,7 +28,7 @@ curl -X GET https://backendapi.sayswitchgroup.com/api/v1/bank_list \
 curl -X POST https://backendapi.sayswitchgroup.com/api/s2s/banktransfer/initialize \
   -H "Content-Type: application/json" \
   -d '{
-    "email": "opeyemiodunayo2018@gmail.com",
+    "email": "johndoe@gmail.com",
     "amount": "100",
     "currency": "NGN",
     "reference": "895362787365996276345987"
@@ -98,7 +61,7 @@ curl -X POST https://backendapi.sayswitchgroup.com/api/s2s/banktransfer/initiali
 | `bank_name`      | string  | Name of the bank providing the virtual account          |
 
 
-### Verify Transaction
+### 2 Verify Transaction
 After the user completes the bank transfer to the virtual account generated, you must verify the status of the transaction to confirm if the payment was received.
 
 ### Endpoint
