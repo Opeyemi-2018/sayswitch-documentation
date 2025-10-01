@@ -1,111 +1,177 @@
 ## Card Payments (S2S)
 
-### Introduction
+### Overview
 
-Enable secure card transactions by integrating with Sayswitch's Server-to-Server (S2S) API. This approach allows you to handle card payments directly from your backend, keeping sensitive card information off the client side.
+Process secure card payments using Sayswitch's Server-to-Server (S2S) API. This integration allows you to handle card transactions directly from your backend while keeping sensitive card data secure.
 
-### How It Works
+### Quick Start Guide
 
+Card payments with Sayswitch follow a simple 4-step process:
 
-### 1. Collection of Card information
+1. **Encrypt card details** → Get a secure card token
+2. **Initialize payment** → Start the transaction 
+3. **Handle OTP verification** → Customer completes 3DS authentication
+4. **Verify transaction** → Confirm payment status
 
-`POST https://backendapi.sayswitchgroup.com/api/s2s/transaction/initialize`
-### Request Headers
+---
 
-| Header          | Type     | Description                                                                |  Required  |    
-| --------------- | -------- | ------------------------------------------------------                     | ---------- |
-| `Content-Type`  | `string` | Specifies that the request body should be formatted as `application/json`. |      Yes   |
-| `Authorization` | `string` | Your API secret key, prefixed with `Bearer `. Example: `YOUR_SECRET_KEY`.  |      Yes   |
+### Step 1: Encrypt Card Details
 
+Before processing any payment, you must first encrypt the card details to ensure security.
 
-### Sample Request 
-``` js copy
+#### Endpoint
+```
+POST https://backendapi.sayswitchgroup.com/api/s2s/test/encryption
+```
+
+#### Headers
+```json
 {
-    "amount": "10",
-    "card" :"0fda52cd13d6ba74d4065b872310d128c50b317ddb9117bc7c553d17476d36d7de56044182d7b384357636e0581c99ca964f1772970d31a3547fa551fba893d4a118a60104a0969eaa1dbae11d00272633fccfb89af69fdf5551a5c693bc58d2",
-    "currency": "NGN",
-    "email": "test@gmail.com",
-    "pin":"1234",
-    "reference": "4757846579098456"
+  "Content-Type": "application/json",
+  "Authorization": "Bearer sk_test_your_secret_key_here"
 }
 ```
 
-Request Parameters
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| `amount`  | string | Yes | Transaction amount |
-| `card` | string | Yes | Encrypted card details |
-| `currency` | string | Yes | Currency code (e.g., NGN for Nigerian Naira) |
-| `email` | string | Yes | Customer's email address |
-| `pin` | string | Yes | Card PIN |
-| `reference` | string | Yes | Unique transaction reference |
+#### Request Body
+```json
+{
+    "data": {
+        "number": "4111111111111111",
+        "expiryMonth": "12",
+        "expiryYear": "28",
+        "cvv": "123"
+    },
+    "reference": "TEST_REF_2025_001"
+}
+```
 
-### Response Format
-```js 
+#### cURL Example
+```bash copy
+curl --location 'https://backendapi.sayswitchgroup.com/api/s2s/test/encryption' \
+--header 'Content-Type: application/json' \
+--header 'Authorization: Bearer sk_test_your_secret_key_here' \
+--data '{
+    "data": {
+        "number": "4111111111111111",
+        "expiryMonth": "12",
+        "expiryYear": "28",
+        "cvv": "123"
+    },
+    "reference": "TEST_REF_2025_001"
+}'
+```
+
+#### Response
+```json
+{
+    "status": true,
+    "message": "Card encrypted successfully",
+    "data": {
+        "encryptedCard": "mock_encrypted_card_token_1234567890abcdef",
+        "reference": "TEST_REF_2025_001"
+    }
+}
+```
+
+> **💡 Important:** Save the `encryptedCard` value - you'll need it for the next step.
+
+---
+
+### Step 2: Initialize Payment
+
+Use the encrypted card token to start the payment process.
+
+#### Endpoint
+```
+POST https://backendapi.sayswitchgroup.com/api/s2s/transaction/initialize
+```
+
+#### Headers
+```json
+{
+  "Content-Type": "application/json",
+  "Authorization": "Bearer sk_test_your_secret_key_here"
+}
+```
+
+#### Request Body
+```json
+{
+    "amount": "10.00",
+    "card": "mock_encrypted_card_token_1234567890abcdef",
+    "currency": "NGN",
+    "email": "test@example.com",
+    "pin": "1234",
+    "reference": "TEST_TXN_REF_001"
+}
+```
+
+#### Response
+```json
 {
     "status": true,
     "message": "Kindly enter the OTP sent to 234706***9927",
     "data": {
         "paymentid": "1933565739",
-        "supportMessage": "Didn't get the OTP? Dial *322*0# on your phone (MTN, Etisalat, Airtel) Glo, use *805*0#.",
+        "supportMessage": "Didn't get the OTP? Dial *322*0# on your phone",
         "_links": {
             "url": "https://backendapi.sayswitchgroup.com/api/i5678930tyuhjns-cardotp",
             "method": "POST",
-            "payload": [
-                "otp",
-                "ref", 
-                "payid"
-            ]
+            "payload": ["otp", "ref", "payid"]
         }
     }
 }
 ```
 
-### Response Field 
-| Field | Type | Description |
-|-------|------|-------------|
-| `status` | boolean | Transaction status indicator |
-| `message` | string | User-friendly message about OTP delivery |
-| `data.paymentid` | string | Unique payment identifier for this transaction |
-| `data.supportMessage` | string | Instructions for customers who don't receive OTP |
-| `data._links.url` | string | Next step URL for OTP verification |
-| `data._links.method` | string | HTTP method for the next request |
-| `data._links.payload` | array | Required parameters for OTP verification |
+> **📱 Next Step:** Customer receives an OTP on their phone and needs to complete verification.
 
+---
 
+### Step 3: Handle OTP Verification
 
-### 2. 3DS Verification
-After receiving the initial response, the user will be navigated to the SaySwitch checkout page to complete the transaction using the provided URL:
+After Step 2, redirect your customer to complete OTP verification on Sayswitch's secure page.
 
-`https://backendapi.sayswitchgroup.com/api/i5678930tyuhjns`
+#### What Happens:
+1. Customer receives OTP on their registered phone number
+2. Customer is redirected to: `https://backendapi.sayswitchgroup.com/api/i5678930tyuhjns`
+3. Customer enters OTP on the secure page
+4. Sayswitch processes the verification automatically
 
-### 3DS Verification Request
-The checkout page will make a POST request to the above URL with the following parameters:
+#### OTP Verification Parameters
+The verification page handles these parameters automatically:
+
 | Parameter | Description |
 |-----------|-------------|
-| `otp` | One-time password sent to customer's phone |
-| `ref` | Transaction reference from initial request |
-| `payid` | Payment ID from the initial response |
+| `otp` | One-time password sent to customer |
+| `ref` | Your transaction reference (`TEST_TXN_REF_001`) |
+| `payid` | Payment ID from Step 2 response (`1933565739`) |
 
-### Verify Transaction  
-Required Headers
+---
+
+### Step 4: Verify Transaction Status
+
+After OTP verification, check the final transaction status.
+
+#### Endpoint
+```
+GET https://backendapi.sayswitchgroup.com/api/s2s/{reference}
+```
+
+#### Headers
 ```json
- httpAuthorization: Bearer YOUR_SECRET_KEY
-   Content-Type: application/json
-```
-### Endpoint
-Append the transaction reference ID to the endpoint URL to verify the transaction status
-
-` GET https://backendapi.sayswitchgroup.com/api/s2s/reference`
-### Example usage
-```http
- https://backendapi.sayswitchgroup.com/api/s2s/4757846579098812
+{
+  "Authorization": "Bearer sk_test_your_secret_key_here",
+  "Content-Type": "application/json"
+}
 ```
 
+#### Example Request
+```
+GET https://backendapi.sayswitchgroup.com/api/s2s/TEST_TXN_REF_001
+```
 
-### Success Response
-
-```js 
+#### Success Response
+```json
 {
     "success": true,
     "message": "Verification successful",
@@ -113,93 +179,122 @@ Append the transaction reference ID to the endpoint URL to verify the transactio
         "amount": "10.12",
         "currency": "NGN",
         "status": "success",
-        "transaction_date": "2025-05-26 08:52:23",
-        "reference": "4757846579098812",
-        "domain": "live",
-        "gateway_response": null,
+        "transaction_date": "2025-10-01 08:52:23",
+        "reference": "TEST_TXN_REF_001",
         "channel": "card",
-        "ip_address": null,
-        "originator_name": "",
-        "originator_account_number": "",
         "fees": "0.12",
-        "plan": null,
-        "requested_amount": "10"
+        "requested_amount": "10.00"
     },
     "customer": {
-        "id": 1340,
-        "customer_code": "CUS_7ewvq2vt6zlqyij",
-        "first_name": "",
-        "last_name": "",
-        "email": "test@gmail.com"
+        "email": "test@example.com",
+        "customer_code": "CUS_7ewvq2vt6zlqyij"
     },
     "card": {
-        "first6Digits": "506105",
-        "last4Digits": "7163",
-        "expiry": "0827",
-        "type": "verve",
+        "first6Digits": "411111",
+        "last4Digits": "1111",
+        "type": "visa",
         "token": "ss-tkn-fin1refv13noydilm77dhske"
-    },
-    "log": {
-        "time_spent": null,
-        "attempts": null,
-        "authentication": null,
-        "errors": 3,
-        "success": true,
-        "channel": "card",
-        "history": [
-            {
-                "id": 8125,
-                "type": "TRANSACTION RECORDED",
-                "message": "success",
-                "time": null,
-                "reference": "4757846579098812",
-                "channel": "S2S",
-                "ip_address": "102.89.76.86",
-                "device": "PostmanRuntime/7.43.4"
-            },
-        ]
     }
 }
 ```
 
-### Verification Response Fields
-
-| Field | Type | Description |
-|-------|------|-------------|
-| `success` | boolean | Verification request status |
-| `message` | string | Verification response message |
-| `data.status` | string | Transaction status (`success`, `pending`, `failed`) |
-| `data.amount` | string | Final transaction amount including fees |
-| `data.requested_amount` | string | Original requested amount |
-| `data.fees` | string | Transaction fees charged |
-| `data.currency` | string | Transaction currency |
-| `data.reference` | string | Transaction reference |
-| `data.transaction_date` | string | Transaction completion timestamp |
-| `data.channel` | string | Payment channel used (card) |
-| `customer.email` | string | Customer email address |
-| `customer.customer_code` | string | Unique customer identifier |
-| `card.first6Digits` | string | First 6 digits of the card |
-| `card.last4Digits` | string | Last 4 digits of the card |
-| `card.type` | string | Card type (e.g., verve, visa, mastercard) |
-| `card.token` | string | Tokenized card reference for future use |
-| `log.history` | array | Transaction processing history |
-
-
-### Transaction Status Values
+#### Transaction Statuses
 
 | Status | Description |
 |--------|-------------|
-| `success` | Transaction completed successfully |
-| `pending` | Transaction is still being processed |
-| `failed` | Transaction failed or was declined |
+| `success`  | Payment completed successfully |
+| `pending`  | Payment is still processing |
+| `failed`  | Payment failed or was declined |
 
+---
 
-### Transaction Flow
+### Complete Integration Example
 
-1. **Initialize Transaction** – Send card details and other required fields to initiate a payment.
-2. **OTP Prompt** – Customer receives a one-time password (OTP) on their registered mobile number.
-3. **Redirect to Checkout** – Customer is directed to a secure Sayswitch page to input their OTP.
-4. **Complete Transaction** – OTP is validated and the payment is processed.
-5. **Verify Status** – Use the verification endpoint to confirm the final transaction result.
+Here's how all the steps work together:
 
-Need help? Contact our support team at support@sayswitch.com
+```javascript
+// Step 1: Encrypt card details
+const encryptResponse = await fetch('https://backendapi.sayswitchgroup.com/api/s2s/test/encryption', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    'Authorization': 'Bearer sk_test_your_secret_key_here'
+  },
+  body: JSON.stringify({
+    data: {
+      number: "4111111111111111",
+      expiryMonth: "12",
+      expiryYear: "28",
+      cvv: "123"
+    },
+    reference: "TEST_REF_2025_001"
+  })
+});
+
+const { data: { encryptedCard } } = await encryptResponse.json();
+
+// Step 2: Initialize payment
+const paymentResponse = await fetch('https://backendapi.sayswitchgroup.com/api/s2s/transaction/initialize', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    'Authorization': 'Bearer sk_test_your_secret_key_here'
+  },
+  body: JSON.stringify({
+    amount: "10.00",
+    card: encryptedCard,
+    currency: "NGN",
+    email: "test@example.com",
+    pin: "1234",
+    reference: "TEST_TXN_REF_001"
+  })
+});
+
+const paymentData = await paymentResponse.json();
+
+// Step 3: Redirect customer to OTP page
+window.location.href = paymentData.data._links.url;
+
+// Step 4: Verify transaction (after customer completes OTP)
+const verifyResponse = await fetch('https://backendapi.sayswitchgroup.com/api/s2s/TEST_TXN_REF_001', {
+  headers: {
+    'Authorization': 'Bearer sk_test_your_secret_key_here'
+  }
+});
+
+const verification = await verifyResponse.json();
+console.log('Payment status:', verification.data.status);
+```
+
+---
+
+### Request Parameters Reference
+
+#### Card Encryption Parameters
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `data.number` | string | Yes | Card number (16 digits) |
+| `data.expiryMonth` | string | Yes | Expiry month (MM format) |
+| `data.expiryYear` | string | Yes | Expiry year (YY format) |
+| `data.cvv` | string | Yes | Card security code |
+| `reference` | string | Yes | Unique encryption reference |
+
+#### Payment Initialization Parameters
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `amount` | string | Yes | Payment amount |
+| `card` | string | Yes | Encrypted card token from Step 1 |
+| `currency` | string | Yes | Currency code (NGN, USD, etc.) |
+| `email` | string | Yes | Customer email address |
+| `pin` | string | Yes | Card PIN |
+| `reference` | string | Yes | Unique transaction reference |
+
+---
+
+## Need Help?
+
+- **Support:** support@sayswitch.com
+- **Documentation:** [API Reference](/api-reference)
+- **Test Cards:** Use `4111111111111111` for testing
+
+> **🔒 Security Note:** Never store or log actual card details. Always use the encryption endpoint first.

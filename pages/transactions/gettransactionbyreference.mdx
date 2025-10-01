@@ -1,0 +1,222 @@
+## Get Transaction by Reference
+
+Retrieve transaction details using a unique reference identifier. This endpoint allows you to verify and fetch the status of any transaction using its reference code.
+
+
+---
+
+### Endpoint
+
+```
+GET https://backendapi.sayswitchgroup.com/api/v1/transaction/verify/{reference}
+```
+
+#### Path Parameter
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `reference` | string | Yes | The unique transaction reference code |
+
+---
+
+### Request
+
+#### Headers
+
+```json
+{
+  "Content-Type": "application/json",
+  "Authorization": "Bearer YOUR_SECRET_KEY"
+}
+```
+
+#### Example Request
+
+```bash copy
+curl --location --request GET 'https://backendapi.sayswitchgroup.com/api/v1/transaction/verify/TEST_TXN_REF_001' \
+--header 'Content-Type: application/json' \
+--header 'Authorization: Bearer YOUR_SECRET_KEY'
+```
+
+> **Note:** This is a GET request, so no request body is required. The reference is passed in the URL path.
+
+---
+
+### Response
+
+#### Success Response
+
+```json
+{
+    "success": true,
+    "message": "Transaction retrieved successfully",
+    "data": {
+        "id": 12345,
+        "domain": "test",
+        "status": "success",
+        "reference": "TEST_TXN_REF_001",
+        "amount": "1012",
+        "gateway_response": "Transaction successful",
+        "paid_at": "2025-10-01T14:30:25.000000Z",
+        "created_at": "2025-10-01T14:30:15.000000Z",
+        "channel": "card",
+        "currency": "NGN",
+        "ip_address": "192.168.1.100",
+        "fees": "12",
+        "requested_amount": "1000"
+    },
+    "customer": {
+        "id": 456,
+        "customer_code": "CUS_test123456789",
+        "first_name": "John",
+        "last_name": "Doe",
+        "email": "test@example.com",
+        "phone": "08012345678",
+        "metadata": "{}"
+    },
+    "log": {
+        "time_spent": 15000,
+        "attempts": 1,
+        "authentication": "successful",
+        "errors": 0,
+        "success": true,
+        "channel": "card",
+        "history": [
+            {
+                "id": 1001,
+                "type": "TRANSACTION_INITIATED",
+                "message": "Transaction started",
+                "time": "2025-10-01T14:30:15.000000Z",
+                "reference": "TEST_TXN_REF_001",
+                "channel": "card"
+            },
+            {
+                "id": 1002,
+                "type": "PAYMENT_COMPLETED",
+                "message": "Payment successful",
+                "time": "2025-10-01T14:30:25.000000Z",
+                "reference": "TEST_TXN_REF_001",
+                "channel": "card"
+            }
+        ]
+    },
+    "plan": null,
+    "authorization": {
+        "authorization_code": "AUTH_test_12345",
+        "bin": "411111",
+        "last4": "1111",
+        "exp_month": "12",
+        "exp_year": "28",
+        "card_type": "visa",
+        "bank": "Test Bank",
+        "country_code": "NG",
+        "brand": "visa",
+        "reusable": true
+    }
+}
+```
+
+#### Error Response
+
+```json
+{
+    "success": false,
+    "message": "Transaction not found",
+    "error": "No transaction found with reference: INVALID_REF_001"
+}
+```
+
+---
+
+### Response Fields
+
+#### Main Transaction Data
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `success` | boolean | Indicates if the request was successful |
+| `message` | string | Descriptive message about the request status |
+| `data` | object | Main transaction details |
+| `data.id` | integer | Unique transaction identifier |
+| `data.domain` | string | Environment (test/live) |
+| `data.status` | string | Transaction status |
+| `data.reference` | string | Unique transaction reference |
+| `data.amount` | string | Final amount charged (including fees) |
+| `data.requested_amount` | string | Original requested amount |
+| `data.fees` | string | Transaction fees |
+| `data.currency` | string | Transaction currency |
+| `data.channel` | string | Payment channel used |
+| `data.gateway_response` | string | Response from payment gateway |
+| `data.paid_at` | string | Payment completion timestamp |
+| `data.created_at` | string | Transaction creation timestamp |
+| `data.ip_address` | string | Customer's IP address |
+
+#### Customer Information
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `customer.id` | integer | Customer's unique identifier |
+| `customer.customer_code` | string | Customer's unique code |
+| `customer.first_name` | string | Customer's first name |
+| `customer.last_name` | string | Customer's last name |
+| `customer.email` | string | Customer's email address |
+| `customer.phone` | string | Customer's phone number |
+| `customer.metadata` | string | Additional customer data |
+
+#### Transaction Log
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `log.time_spent` | integer | Processing time in milliseconds |
+| `log.attempts` | integer | Number of processing attempts |
+| `log.authentication` | string | Authentication status |
+| `log.errors` | integer | Number of errors encountered |
+| `log.success` | boolean | Overall success status |
+| `log.channel` | string | Payment channel |
+| `log.history` | array | Detailed transaction events |
+
+#### Authorization Details (Card Payments)
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `authorization.authorization_code` | string | Authorization code for future charges |
+| `authorization.bin` | string | Bank Identification Number |
+| `authorization.last4` | string | Last 4 digits of card |
+| `authorization.exp_month` | string | Card expiry month |
+| `authorization.exp_year` | string | Card expiry year |
+| `authorization.card_type` | string | Type of card (visa, mastercard, etc.) |
+| `authorization.bank` | string | Issuing bank name |
+| `authorization.country_code` | string | Card issuing country |
+| `authorization.reusable` | boolean | Whether authorization can be reused |
+
+---
+
+### Transaction Status Values
+
+| Status | Description |
+|--------|-------------|
+| `success` | Transaction completed successfully |
+| `pending` | Transaction is still processing |
+| `failed` | Transaction failed or was declined |
+| `cancelled` | Transaction was cancelled |
+
+---
+
+## Error Handling
+
+### Common Error Responses
+
+| Status Code | Description | Response |
+|-------------|-------------|----------|
+| `404` | Transaction not found | `{"success": false, "message": "Transaction not found"}` |
+| `401` | Unauthorized | `{"success": false, "message": "Invalid API key"}` |
+| `400` | Bad request | `{"success": false, "message": "Invalid reference format"}` |
+| `500` | Server error | `{"success": false, "message": "Internal server error"}` |
+
+### Best Practices
+
+1. **Always check the `success` field** before processing response data
+2. **Handle different transaction statuses** appropriately in your application
+3. **Implement retry logic** for failed requests with exponential backoff
+4. **Store transaction references** securely for future verification
+5. **Validate response data** before using it in your application
