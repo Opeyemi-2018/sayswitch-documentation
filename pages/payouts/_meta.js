@@ -4,5 +4,5 @@ export default {
   initiatePayout: "Initiate Payout",
   initiateBulkPayout: "Initiate Bulk Payout",
   getPayouts: "Get Payouts",
-  getPayoutDetails: "⁠Get Payout Details",
+  getPayoutDetails: "Get Payout Details",
 };

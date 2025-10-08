@@ -1,4 +1,4 @@
 export default {
   airtimeProvider: "Airtime Provider",
-  airtimeTopup: "Airtime Topup"
+  airtimeTopup: "Airtime Topup",
 };

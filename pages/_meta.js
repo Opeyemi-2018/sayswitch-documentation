@@ -8,5 +8,5 @@ export default {
   refunds: "Refunds",
   customers: "Customers",
   virtualAccount: "Virtual Account",
-  billspayment: "Bills Payments"
+  billspayment: "Bills Payments",
 };

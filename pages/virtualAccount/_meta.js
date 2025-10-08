@@ -1,5 +1,5 @@
 export default {
-  overview: "overview",
+  overview: "Overview",
   createVirtualAccount: "Create Virtual Account",
   getVirtualAccount: "Get Virtual Accounts",
   getVirtualAccountDetails: "Get Virtual Account Details",

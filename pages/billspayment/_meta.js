@@ -1,6 +1,6 @@
 export default {
   airtime: "Airtime",
   data: "Data (Internet)",
-  electricity: "electricity",
+  electricity: "Electricity",
   tv: "TV",
 };
