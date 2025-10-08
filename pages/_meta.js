@@ -1,7 +1,7 @@
 export default {
   index: "Overview",
   authentication: "Authentication",
-  acceptPayment: "Accept Paments",
+  acceptPayment: "Accept Payments",
   transactions: "Transactions",
   payouts: "Payouts",
   wallet: "Wallet",
