@@ -1,5 +1,6 @@
 export default {
   overview: "Overview",
-  apiBasics: "API Basics",
+  apibasics: "API Basics",
   apikeys: "API Keys",
+  apiencryption: "API Encryption"
 };

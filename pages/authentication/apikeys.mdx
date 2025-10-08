@@ -1,60 +1,75 @@
 ## API Keys
 
-### Understanding Sayswitch API Keys
+### Overview
 
-Sayswitch provides two types of API keys for secure authentication:
+Sayswitch uses API keys to authenticate requests. Each key is designed for specific use cases and environments.
+
+### Key Types
 
 #### Public Keys
-- Start with `pk_`
-- Safe to expose in client-side code
-- Used for client-facing operations
-- Available for both test (`pk_test_`) and live (`pk_live_`) modes
+- **Format**: `pk_test_...` (test) / `pk_live_...` (live)
+- **Usage**: Client-side operations, payment initialization
+- **Security**: Safe to expose in frontend code
 
 #### Secret Keys
-- Start with `sk_`
-- Must be kept secure and private
-- Used for server-side operations
-- Available for both test (`sk_test_`) and live (`sk_live_`) modes
+- **Format**: `sk_test_...` (test) / `sk_live_...` (live)  
+- **Usage**: Server-side operations, payment processing
+- **Security**: Keep private - never expose in client code
 
-### Getting Your API Keys
+### Getting Your Keys
 
-1. Log in to your [Sayswitch Dashboard](https://merchant.sayswitchgroup.com)
+1. Login to [Sayswitch Dashboard](https://merchant.sayswitchgroup.com)
 2. Navigate to Settings > API Keys
-3. Generate or view your API keys
+3. Copy your keys for integration
 
-![Alt text](/assets/img/api-key.png)
+![API Key Management](/assets/img/api-key.png)
 
+### Authentication
 
-### Key Security Guidelines
+Include your API key in the Authorization header:
 
-1. **Never Share Secret Keys**
-   - Keep secret keys on your server(.env)
-   - Don't include them in public repositories
-   - Don't expose them in client-side code
+```bash
+Authorization: Bearer YOUR_API_KEY
+```
 
-2. **Key Rotation**
-   - Rotate keys every 6 months
-   - Immediately rotate if compromised
-   - Update all integration points after rotation
+### Example Request
 
-3. **Environment Separation**
+```bash
+curl -X GET https://backendapi.sayswitchgroup.com/api/v1/transactions \
+  -H "Authorization: Bearer sk_test_your_secret_key_here" \
+  -H "Content-Type: application/json"
+```
+
+### Security Best Practices
+
+1. **Protect Secret Keys**
+   - Store in environment variables
+   - Never commit to version control
+   - Keep out of client-side code
+
+2. **Environment Separation**
    - Use test keys for development
    - Use live keys only in production
-   - Keep environments strictly separated
 
-### API Key Permissions
+3. **Key Rotation**
+   - Rotate keys every 6 months
+   - Replace immediately if compromised
 
-| Key Type | Allowed Operations |
-|----------|-------------------|
-| Public Key | - Payment initialization - Client-side validation - Public endpoints |
-| Secret Key | - Payment verification - Refunds - Webhooks - All API endpoints |
+### Key Permissions
+
+| Key Type | Permissions |
+|----------|-------------|
+| Public Key | Payment initialization, public endpoints |
+| Secret Key | Full API access, refunds, webhooks |
 
 ### Troubleshooting
 
-Common API key issues and solutions:
+| Issue | Solution |
+|-------|----------|
+| `401 Unauthorized` | Check key format and validity |
+| `403 Forbidden` | Verify correct key type for operation |
+| Environment errors | Ensure test/live key matches endpoint |
 
-- **Authentication Error**: Verify correct key format and environment
-- **Invalid Key**: Ensure key hasn't been revoked or expired
-- **Access Denied**: Check if using correct key type for operation
+### Support
 
-Need help? Contact support at support@sayswitch.com
+Need help? Contact support@sayswitch.com

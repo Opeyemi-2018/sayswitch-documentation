@@ -39,7 +39,6 @@ To get started, ensure the following are in place:
 
 ---
 
-
 ### Payment Processing Workflow
 
 #### 1. Authentication
@@ -58,6 +57,25 @@ To get started, ensure the following are in place:
 - Confirm the transaction status via response or webhook
 - Process any incoming **webhook notifications**
 - Update your system records based on the final outcome
+
+---
+
+### API Payload Encryption
+
+For enhanced security, S2S endpoints support AES 256 CBC encryption for request payloads. This optional feature provides an additional layer of protection for sensitive transaction data.
+
+**Key Benefits:**
+- End-to-end encryption of API request payloads
+- AES 256 CBC encryption standard
+- Configurable encryption keys and initialization vectors
+- Support for all S2S endpoints
+
+**Getting Started:**
+1. Enable encryption in your [Sayswitch Dashboard](https://merchant.sayswitchgroup.com)
+2. Retrieve your encryption credentials
+3. Implement payload encryption in your integration
+
+For complete implementation details, see [API Encryption Documentation](/authentication/apiencryption).
 
 
 

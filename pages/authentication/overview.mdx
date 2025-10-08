@@ -2,51 +2,36 @@
 
 ### Overview
 
-Sayswitch uses API keys to authenticate requests. You need to obtain your API keys from the Sayswitch Dashboard before you can make API calls. We provide two types of keys:
+Get started with Sayswitch! Our comprehensive payment APIs enable you to process transactions across multiple currencies and regions using various payment methods. Follow these steps to begin:
 
-- **Public Key**: Used for client-side operations
-- **Secret Key**: Used for server-side operations (must be kept secure)
+### Step 1: Register Your Account
+Begin by signing up for your complimentary Sayswitch developer account. Upon registration, you'll immediately gain access to our sandbox environment for testing and development.
 
-### API Keys
+### Step 2: Verify Your Business Identity
+To activate live transaction processing, we require verification of your business credentials. Submit your company documentation and business information for our compliance review to ensure optimal service delivery.
 
-#### Test Mode vs Live Mode
+### Step 3: Launch Your Payment Integration
+After successful verification and approval, you're ready to process real customer transactions. Our support team is available to assist you throughout the integration process.
 
-Each environment has its own set of API keys:
+---
 
-- **Test Keys**: Used for development and testing
-- **Live Keys**: Used for processing real transactions
+### Next Steps
 
-### Authentication Headers
+Ready to start integrating? Here's what to do next:
 
-Include your API key in the Authorization header of your requests:
+1. **Get Your API Keys**: Visit the [API Keys](/authentication/apikeys) section to learn about obtaining and managing your authentication credentials
+2. **Explore API Basics**: Check out our [API Basics](/authentication/apiBasics) guide to understand how to make your first API calls
+3. **Test Integration**: Use our sandbox environment to test your implementation before going live
 
-```bash
-Authorization: Bearer YOUR_SECRET_KEY
-```
+### Quick Links
 
-### Security Best Practices
-
-1. **Never expose your secret key**
-   - Keep it on your server
-   - Don't include it in client-side code
-   - Don't commit it to version control
-
-
-3. **Rotate Keys Regularly**
-   - Generate new keys every few months
-   - Update all integration points
-   - Revoke old keys after successful migration
-
-### Key Management
-
-- Access your keys in the [Sayswitch Dashboard](https://merchant.sayswitchgroup.com)
-- Generate new keys as needed
-- Revoke compromised keys immediately
-- Monitor key usage in dashboard
+- [API Keys Management](/authentication/apikeys)
+- [API Basics & Examples](/authentication/apiBasics)
+- [Sayswitch Dashboard](https://merchant.sayswitchgroup.com)
 
 ### Support
 
-Need help with authentication? Contact our support team:
+Need assistance with getting started? Our team is here to help:
 - Email: support@sayswitch.com
 - Documentation: [API Reference](/api-reference)
 - Support Portal: [Help Center](https://support.sayswitch.com)

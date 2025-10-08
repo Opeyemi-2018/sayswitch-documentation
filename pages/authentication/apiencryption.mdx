@@ -1,0 +1,283 @@
+import { Tabs } from 'nextra/components'
+
+## API Payload Encryption
+
+### Overview
+
+Sayswitch supports AES 256 CBC encryption for Server-to-Server (S2S) API payloads, providing an additional layer of security for sensitive data transmission.
+
+> This feature is exclusively available for S2S endpoints and allows you to encrypt request payloads before sending them to our API.
+
+### Prerequisites
+
+- Active Sayswitch merchant account
+- Valid API keys (see [API Keys](/authentication/apikeys))
+- AES 256 encryption enabled in your dashboard
+
+### Enabling Encryption
+
+#### Step 1: Access Encryption Settings
+
+1. Login to [Sayswitch Dashboard](https://merchant.sayswitchgroup.com)
+2. Navigate to Settings > API Keys > Encryption Settings
+3. Toggle "Enable AES 256 Encryption"
+4. Your encryption key and IV will be automatically generated
+
+#### Step 2: Retrieve Encryption Credentials
+
+Once enabled, you'll receive:
+- **Encryption Key**: 32-byte AES 256 key (base64 encoded)
+- **Initialization Vector (IV)**: 16-byte IV (base64 encoded)
+
+> **⚠️ Security Note**: Store these credentials securely alongside your API keys.
+
+![Encryption Key Management](/assets/img/encryption-key.png)
+
+### Key Management
+
+#### Regenerating Encryption Credentials
+
+If your encryption credentials are compromised:
+
+1. Navigate to Settings > API Keys > Encryption Settings
+2. Disable AES 256 encryption
+3. Re-enable AES 256 encryption
+4. New encryption key and IV will be generated automatically
+5. Update your integration with the new credentials
+
+### Implementation
+
+#### Encryption Process
+
+1. **Prepare Payload**: Convert your JSON payload to string
+2. **Encrypt**: Use AES 256 CBC with your key and IV
+3. **Encode**: Base64 encode the encrypted data
+4. **Send**: Include encrypted payload in request body
+
+#### Request Format
+
+When using encryption for S2S APIs, send requests with:
+
+```json
+{
+  "data": "ENCRYPTED_PAYLOAD"
+}
+```
+
+Where `ENCRYPTED_PAYLOAD` is your base64 encoded encrypted data.
+
+### Code Examples
+
+<Tabs items={['JavaScript', 'PHP', 'Python']}>
+<Tabs.Tab>
+```javascript
+const crypto = require('crypto');
+
+function encryptPayload(data, key, iv) {
+  try {
+    const algorithm = 'aes-256-cbc';
+    
+    // Convert key and IV to buffers
+    const keyBuffer = Buffer.from(key, 'utf-8');
+    const ivBuffer = Buffer.from(iv, 'utf-8');
+    
+    // Create cipher
+    const cipher = crypto.createCipheriv(algorithm, keyBuffer, ivBuffer);
+    
+    // Encrypt data
+    let encrypted = cipher.update(JSON.stringify(data), 'utf-8', 'hex');
+    encrypted += cipher.final('hex');
+    
+    return encrypted;
+  } catch (error) {
+    return ''; // Handle encryption errors gracefully
+  }
+}
+```
+</Tabs.Tab>
+<Tabs.Tab>
+```php
+<?php
+function encryptPayload($data, $key, $iv) {
+    $algorithm = 'aes-256-cbc';
+    
+    // Decode base64 key and IV
+    $keyDecoded = base64_decode($key);
+    $ivDecoded = base64_decode($iv);
+    
+    // Encrypt data
+    $jsonData = json_encode($data);
+    $encrypted = openssl_encrypt($jsonData, $algorithm, $keyDecoded, 0, $ivDecoded);
+    
+    return $encrypted;
+}
+?>
+```
+</Tabs.Tab>
+<Tabs.Tab>
+```python
+import json
+from Crypto.Cipher import AES
+from Crypto.Util.Padding import pad
+
+def encrypt_payload(data, key, iv):
+    try:
+        # Convert key and IV to bytes
+        key_bytes = key.encode('utf-8')
+        iv_bytes = iv.encode('utf-8')
+        
+        # Create cipher
+        cipher = AES.new(key_bytes, AES.MODE_CBC, iv_bytes)
+        
+        # Prepare and encrypt data
+        json_data = json.dumps(data).encode('utf-8')
+        padded_data = pad(json_data, AES.block_size)
+        encrypted = cipher.encrypt(padded_data)
+        
+        return encrypted.hex()
+    except Exception as error:
+        return ''  # Handle encryption errors gracefully
+```
+</Tabs.Tab>
+</Tabs>
+
+### Supported Endpoints
+
+Encryption is available exclusively for Server-to-Server (S2S) API endpoints:
+
+- S2S Payment initialization
+- S2S Transaction processing
+- S2S Customer management
+- S2S Refund operations
+- S2S Webhook configurations
+
+> **Note**: Encryption is not supported for standard API endpoints - only S2S endpoints.
+
+### Response Handling
+
+#### Encrypted Responses
+
+When AES 256 encryption is enabled for your S2S account, **all API responses will also be encrypted** using the same encryption key and IV. The API will return responses in the following format:
+
+```json
+{
+  "data": "ENCRYPTED_RESPONSE_DATA"
+}
+```
+
+You must decrypt the response data to access the actual API response content.
+
+#### Decryption Implementation
+
+<Tabs items={['JavaScript', 'PHP', 'Python']}>
+<Tabs.Tab>
+```javascript
+const crypto = require('crypto');
+
+function decryptResponse(encryptedData, key, iv) {
+  try {
+    const algorithm = 'aes-256-cbc';
+    
+    // Convert key and IV to buffers
+    const keyBuffer = Buffer.from(key, 'utf-8');
+    const ivBuffer = Buffer.from(iv, 'utf-8');
+    
+    // Create decipher
+    const decipher = crypto.createDecipheriv(algorithm, keyBuffer, ivBuffer);
+    
+    // Decrypt data
+    let decrypted = decipher.update(encryptedData, 'hex', 'utf8');
+    decrypted += decipher.final('utf8');
+    
+    return JSON.parse(decrypted);
+  } catch (error) {
+    return null; // Handle decryption errors gracefully
+  }
+}
+```
+</Tabs.Tab>
+<Tabs.Tab>
+```php
+<?php
+function decryptResponse($encryptedData, $key, $iv) {
+    $algorithm = 'aes-256-cbc';
+    
+    // Decode base64 key and IV
+    $keyDecoded = base64_decode($key);
+    $ivDecoded = base64_decode($iv);
+    
+    // Decrypt data
+    $decrypted = openssl_decrypt($encryptedData, $algorithm, $keyDecoded, 0, $ivDecoded);
+    
+    return json_decode($decrypted, true);
+}
+?>
+```
+</Tabs.Tab>
+<Tabs.Tab>
+```python
+import json
+from Crypto.Cipher import AES
+from Crypto.Util.Padding import unpad
+
+def decrypt_response(encrypted_data, key, iv):
+    try:
+        # Convert key and IV to bytes
+        key_bytes = key.encode('utf-8')
+        iv_bytes = iv.encode('utf-8')
+        
+        # Create cipher
+        cipher = AES.new(key_bytes, AES.MODE_CBC, iv_bytes)
+        
+        # Decrypt data
+        encrypted_bytes = bytes.fromhex(encrypted_data)
+        decrypted_padded = cipher.decrypt(encrypted_bytes)
+        decrypted = unpad(decrypted_padded, AES.block_size)
+        
+        return json.loads(decrypted.decode('utf-8'))
+    except Exception as error:
+        return None  # Handle decryption errors gracefully
+```
+</Tabs.Tab>
+</Tabs>
+
+### Security Best Practices
+
+1. **Credential Protection**
+   - Store encryption keys securely in environment variables
+   - Never expose keys in client-side code
+   - Use different keys for test and live environments
+
+2. **Key Rotation**
+   - Rotate encryption credentials regularly
+   - Immediately regenerate if compromise is suspected
+   - Test new credentials before deploying to production
+
+3. **Implementation Security**
+   - Validate decrypted data structure
+   - Implement proper error handling for decryption failures
+   - Log encryption/decryption errors for monitoring
+
+### Troubleshooting
+
+| Issue | Cause | Solution |
+|-------|-------|----------|
+| Decryption failure | Wrong key/IV | Verify credentials from dashboard |
+| Invalid encrypted data | Encoding issue | Check base64 encoding/decoding |
+| Endpoint error | Unsupported endpoint | Verify endpoint supports encryption |
+| Key generation failed | Dashboard issue | Disable and re-enable encryption |
+
+### Testing Encryption
+
+1. **Enable Test Encryption**: Use test environment encryption settings
+2. **Validate Implementation**: Test with simple payloads first
+3. **Error Handling**: Test with invalid keys to verify error handling
+4. **Performance**: Monitor encryption/decryption impact on response times
+
+### Support
+
+For assistance with payload encryption:
+
+- **Technical Support**: support@sayswitch.com
+- **Security Questions**: security@sayswitch.com
+- **Documentation**: [API Reference](/api-reference)
