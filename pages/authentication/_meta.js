@@ -3,4 +3,4 @@ export default {
   apibasics: "API Basics",
   apikeys: "API Keys",
   apiencryption: "API Encryption",
-};
+}; 
