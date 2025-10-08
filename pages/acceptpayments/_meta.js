@@ -1,5 +1,5 @@
 export default {
-    introduction: "Introduction",
-    standardCheckout: "Standard Checkout",
+    overview: "Overview",
+    standardcheckout: "Standard Checkout",
     s2s: "Server to Server",
 };

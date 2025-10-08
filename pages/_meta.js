@@ -9,4 +9,5 @@ export default {
   customers: "Customers",
   virtualAccount: "Virtual Account",
   billspayment: "Bills Payments",
+  webhooks: "Webhooks",
 };
