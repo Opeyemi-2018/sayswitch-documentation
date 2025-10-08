@@ -77,14 +77,15 @@ function encryptPayload(data, key, iv) {
   try {
     const algorithm = 'aes-256-cbc';
     
-    // Convert key and IV to buffers
+    // Truncate IV to 16 bytes and convert to buffer
+    const ivTruncated = iv.substring(0, 16);
     const keyBuffer = Buffer.from(key, 'utf-8');
-    const ivBuffer = Buffer.from(iv, 'utf-8');
+    const ivBuffer = Buffer.from(ivTruncated, 'utf-8');
     
     // Create cipher
     const cipher = crypto.createCipheriv(algorithm, keyBuffer, ivBuffer);
     
-    // Encrypt data
+    // Encrypt data and return as hex
     let encrypted = cipher.update(JSON.stringify(data), 'utf-8', 'hex');
     encrypted += cipher.final('hex');
     
@@ -101,15 +102,15 @@ function encryptPayload(data, key, iv) {
 function encryptPayload($data, $key, $iv) {
     $algorithm = 'aes-256-cbc';
     
-    // Decode base64 key and IV
-    $keyDecoded = base64_decode($key);
-    $ivDecoded = base64_decode($iv);
+    // Truncate IV to 16 bytes
+    $ivTruncated = substr($iv, 0, 16);
     
     // Encrypt data
     $jsonData = json_encode($data);
-    $encrypted = openssl_encrypt($jsonData, $algorithm, $keyDecoded, 0, $ivDecoded);
+    $encrypted = openssl_encrypt($jsonData, $algorithm, $key, OPENSSL_RAW_DATA, $ivTruncated);
     
-    return $encrypted;
+    // Return hex-encoded encrypted data
+    return bin2hex($encrypted);
 }
 ?>
 ```
@@ -122,9 +123,10 @@ from Crypto.Util.Padding import pad
 
 def encrypt_payload(data, key, iv):
     try:
-        # Convert key and IV to bytes
+        # Truncate IV to 16 bytes and convert to bytes
+        iv_truncated = iv[:16]
         key_bytes = key.encode('utf-8')
-        iv_bytes = iv.encode('utf-8')
+        iv_bytes = iv_truncated.encode('utf-8')
         
         # Create cipher
         cipher = AES.new(key_bytes, AES.MODE_CBC, iv_bytes)
@@ -134,6 +136,7 @@ def encrypt_payload(data, key, iv):
         padded_data = pad(json_data, AES.block_size)
         encrypted = cipher.encrypt(padded_data)
         
+        # Return hex-encoded encrypted data
         return encrypted.hex()
     except Exception as error:
         return ''  # Handle encryption errors gracefully
@@ -167,14 +170,15 @@ function decryptResponse(encryptedData, key, iv) {
   try {
     const algorithm = 'aes-256-cbc';
     
-    // Convert key and IV to buffers
+    // Truncate IV to 16 bytes and convert to buffer
+    const ivTruncated = iv.substring(0, 16);
     const keyBuffer = Buffer.from(key, 'utf-8');
-    const ivBuffer = Buffer.from(iv, 'utf-8');
+    const ivBuffer = Buffer.from(ivTruncated, 'utf-8');
     
     // Create decipher
     const decipher = crypto.createDecipheriv(algorithm, keyBuffer, ivBuffer);
     
-    // Decrypt data
+    // Decrypt data (input is hex-encoded)
     let decrypted = decipher.update(encryptedData, 'hex', 'utf8');
     decrypted += decipher.final('utf8');
     
@@ -191,14 +195,26 @@ function decryptResponse(encryptedData, key, iv) {
 function decryptResponse($encryptedData, $key, $iv) {
     $algorithm = 'aes-256-cbc';
     
-    // Decode base64 key and IV
-    $keyDecoded = base64_decode($key);
-    $ivDecoded = base64_decode($iv);
+    // Truncate IV to 16 bytes
+    $ivTruncated = substr($iv, 0, 16);
+    
+    // Convert hex string to binary
+    $encryptedBinary = hex2bin($encryptedData);
     
     // Decrypt data
-    $decrypted = openssl_decrypt($encryptedData, $algorithm, $keyDecoded, 0, $ivDecoded);
+    $decryptedJson = openssl_decrypt($encryptedBinary, $algorithm, $key, OPENSSL_RAW_DATA, $ivTruncated);
     
-    return json_decode($decrypted, true);
+    if ($decryptedJson === false) {
+        return null; // Handle decryption errors gracefully
+    }
+    
+    $decryptedData = json_decode($decryptedJson, true);
+    
+    if (json_last_error() !== JSON_ERROR_NONE) {
+        return null; // Handle invalid JSON
+    }
+    
+    return $decryptedData;
 }
 ?>
 ```
@@ -211,14 +227,15 @@ from Crypto.Util.Padding import unpad
 
 def decrypt_response(encrypted_data, key, iv):
     try:
-        # Convert key and IV to bytes
+        # Truncate IV to 16 bytes and convert to bytes
+        iv_truncated = iv[:16]
         key_bytes = key.encode('utf-8')
-        iv_bytes = iv.encode('utf-8')
+        iv_bytes = iv_truncated.encode('utf-8')
         
         # Create cipher
         cipher = AES.new(key_bytes, AES.MODE_CBC, iv_bytes)
         
-        # Decrypt data
+        # Decrypt data (input is hex-encoded)
         encrypted_bytes = bytes.fromhex(encrypted_data)
         decrypted_padded = cipher.decrypt(encrypted_bytes)
         decrypted = unpad(decrypted_padded, AES.block_size)
@@ -229,6 +246,63 @@ def decrypt_response(encrypted_data, key, iv):
 ```
 </Tabs.Tab>
 </Tabs>
+
+
+### Test & Verify Endpoint
+
+You can test and verify your encryption implementation using our dedicated test endpoints:
+
+#### Encryption Endpoint
+
+**Endpoint:** `/api/s2s/aes-encrypt`
+
+**Method:** `POST`
+
+**Headers:**
+- `iv` - Your encryption IV
+- `key` - Your encryption key
+
+**Request Body:** JSON string to encrypt
+
+**Example Request:**
+
+```bash
+curl -X POST https://api.sayswitchgroup.com/api/s2s/aes-encrypt \
+  -H "iv: YOUR_ENCRYPTION_IV" \
+  -H "key: YOUR_ENCRYPTION_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"amount": 1000, "currency": "NGN"}'
+```
+
+This endpoint will return the encrypted version of your JSON payload, allowing you to verify your encryption implementation.
+
+#### Decryption Endpoint
+
+**Endpoint:** `/api/s2s/aes-decrypt`
+
+**Method:** `POST`
+
+**Headers:**
+- `iv` - Your encryption IV
+- `key` - Your encryption key
+- `Content-Type: application/json`
+
+**Request Body:** JSON object with `encrypted_data` field
+
+**Example Request:**
+
+```bash
+curl --location 'https://backendapi.sayswitchgroup.com/api/s2s/aes-decrypt' \
+  --header 'iv: YOUR_ENCRYPTION_IV' \
+  --header 'key: YOUR_ENCRYPTION_KEY' \
+  --header 'Content-Type: application/json' \
+  --data '{
+    "encrypted_data": "YOUR_HEX_ENCODED_ENCRYPTED_DATA"
+  }'
+```
+
+This endpoint will return the decrypted JSON payload, allowing you to verify your decryption implementation and test the complete encryption/decryption cycle.
+
 
 ### Security Best Practices
 
