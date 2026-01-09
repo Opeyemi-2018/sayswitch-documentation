@@ -1,0 +1,259 @@
+import { Callout } from "nextra/components";
+
+## USSD Payment Initialization.
+
+Here are the 3 steps for seamless integration.
+
+- **1 Get Bank List**
+- **2 Initialize USSD Payment**
+- **3 Verify Transaction**
+
+## 1 Get USSD Bank List
+
+This endpoint is used to retrieve the list of banks that support USSD payments on the platform. Each bank is represented by its name, unique short code, and corresponding CBN code.
+
+Endpoint
+
+GET https://backendapi.sayswitchgroup.com/api/s2s/v1/ussd/list/live
+
+Sample cURL Request
+
+```bash
+curl -X GET https://backendapi.sayswitchgroup.com/api/s2s/v1/ussd/list/live
+```
+
+Sample Response
+
+```js
+{
+  "status": true,
+  "message": "USSD List",
+  "data": [
+    {
+      "name": "Access Bank",
+      "code": "ABP",
+      "cbnCode": "ABP"
+    },
+    {
+      "name": "Ecobank",
+      "code": "ECO",
+      "cbnCode": "ECO"
+    },
+    {
+      "name": "FCMB",
+      "code": "FCMB",
+      "cbnCode": "FCMB"
+    },
+    {
+      "name": "Fidelity Bank",
+      "code": "FBP",
+      "cbnCode": "FBP"
+    },
+    {
+      "name": "First Bank",
+      "code": "FBN",
+      "cbnCode": "FBN"
+    },
+    {
+      "name": "GLOBUS BANK",
+      "code": "GSB",
+      "cbnCode": "GSB"
+    },
+    {
+      "name": "Guaranty Trust Bank",
+      "code": "GTB",
+      "cbnCode": "GTB"
+    },
+    {
+      "name": "Keystone Bank",
+      "code": "KSB",
+      "cbnCode": "KSB"
+    },
+    {
+      "name": "Stanbic IBTC Bank",
+      "code": "IBTC",
+      "cbnCode": "IBTC"
+    },
+    {
+      "name": "Sterling Bank",
+      "code": "SBP",
+      "cbnCode": "SBP"
+    },
+    {
+      "name": "Union Bank",
+      "code": "UBN",
+      "cbnCode": "UBN"
+    },
+    {
+      "name": "United Bank of Africa",
+      "code": "UBA",
+      "cbnCode": "UBA"
+    },
+    {
+      "name": "Unity Bank",
+      "code": "UBP",
+      "cbnCode": "UBP"
+    },
+    {
+      "name": "Zenith Bank",
+      "code": "ZIB",
+      "cbnCode": "ZIB"
+    }
+  ]
+}
+```
+
+Response Field
+
+| Field      | Type    | Description                                                                 |
+| ---------- | ------- | --------------------------------------------------------------------------- |
+| `status`   | boolean | Indicates if the request was successful (`true` or `false`)                 |
+| `message`  | string  | A message describing the result of the API call                             |
+| `data`     | array   | Contains a list of banks that support USSD transactions                     |
+| `name`.    | string  | The full name of the bank                                                   |
+| `code`.    | string  | The short code used to identify the bank during USSD payment initialization |
+| `cbnCode`. | string  | Contains potential next steps or verification links (optional)              |
+
+## 2 Initialize USSD Payment
+
+This endpoint is used to initialize a USSD payment by generating a USSD code for the transaction. The user will dial the generated code to complete the payment.
+
+### Endpoint
+
+`POST https://backendapi.sayswitchgroup.com/api/s2s/v1/ussd/initialize`
+
+
+### Sample cURL Request
+
+```bash
+curl -X POST https://backendapi.sayswitchgroup.com/api/s2s/v1/ussd/initialize \
+ -H "Content-Type: application/json" \
+ -d '{
+   "email": "test@email.com",
+   "amount": "100",
+   "currency": "NGN",
+   "reference": "2345673627589602112",
+   "bankCode": "GTB"
+}'
+```
+
+### Sample Response
+
+```js
+{
+  "status": true,
+  "message": "Transaction processed",
+  "data": {
+    "paymentid": "4772",
+    "code": *737*000*4772#,
+    "_links": {
+      "url": "https://backendapi.sayswitchgroup.com/api/i5678930tyuhjns-verifypayment",
+      "method": "POST",
+      "payload": [
+        "ref"
+      ]
+    }
+  }
+}
+```
+
+<Callout type="warning">
+  The value returned in the code field (e.g., *737*000*4772#) is the USSD string
+  that the user must immediately dial on their mobile phone to initiate and
+  complete the payment. The code expires in three(3) minutes
+</Callout>
+
+### Response Field
+
+| Field      | Type    | Description                                                    |
+| ---------- | ------- | -------------------------------------------------------------- |
+| `status`   | boolean | Indicates if the request was successful (`true` or `false`)    |
+| `message`  | string  | A message describing the result of the API call                |
+| `data`     | object  | Contains the USSD payment details                              |
+| `paymentid | string  | Unique ID for the payment transaction                          |
+| `code.     | string  | The USSD code the user needs to dial to complete the payment   |
+| `co_links. | object  | Contains potential next steps or verification links (optional) |
+
+## 3 Verify Transaction
+
+After the user completes the payment by dialing the USSD code, you must verify the status of the transaction to confirm if the payment was successful.
+
+### Endpoint
+
+`POST https://backendapi.sayswitchgroup.com/api/s2s/v1/ussd/verify`
+
+### cURL Request
+
+```js
+curl -X POST {{baseurl}}/ussd/verify \
+ -H "Content-Type: application/json" \
+ -d '{
+   "reference": "968573627589609378"
+}'
+```
+
+### Sample Response
+
+```js
+{
+    "success": true,
+    "message": "Verification successful",
+    "data": {
+        "amount": "10.12",
+        "currency": "NGN",
+        "status": "success",
+        "transaction_date": "2025-05-26 12:04:40",
+        "reference": "SSW_17482573443162479",
+        "domain": "live",
+        "gateway_response": null,
+        "channel": "card",
+        "ip_address": null,
+        "originator_name": "",
+        "originator_account_number": "",
+        "fees": "0.12",
+        "plan": null,
+        "requested_amount": "10"
+    },
+    "customer": {
+        "id": 1340,
+        "customer_code": "CUS_7ewvq2vt6zlqyij",
+        "first_name": "",
+        "last_name": "",
+        "email": "johndoe@gmail.com"
+    },
+    "card": {
+        "first6Digits": "506105",
+        "last4Digits": "7163",
+        "expiry": "0827",
+        "type": "verve",
+        "token": "ss-tkn-uoekyzfdvnttyqscdkemrhq9"
+    },
+    "log": {
+        "time_spent": null,
+        "attempts": null,
+        "authentication": null,
+        "errors": 2,
+        "success": true,
+        "channel": "card",
+        "history": [
+            {
+                "id": 8133,
+                "type": "PURCHASES",
+                "message": "{\"transactionRef\":\"SSW_17482573443162479\",\"paymentId\":\"1933911626\",\"bankCode\":\"011\",\"message\":\"Kindly enter the OTP sent to 234706***9927\",\"amount\":\"10.12\",\"responseCode\":\"T0\",\"plainTextSuppo",
+                "time": null,
+                "reference": "SSW_17482573443162479",
+                "channel": "interswitch",
+                "ip_address": "102.89.83.206",
+                "device": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36"
+            },
+
+        ]
+    }
+}
+```
+
+<Callout type="warning">
+  The user must complete the USSD payment on their device for the transaction to
+  be verifiable. Ensure you only call the verification endpoint after giving the
+  user enough time to dial the code and complete the steps.
+</Callout>

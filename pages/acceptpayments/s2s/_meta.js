@@ -1,5 +1,6 @@
 export default {
-    overview: "Overview",
-    card: "Card",
-    bank: "Bank Transfer",
+  overview: "Overview",
+  card: "Card",
+  bank: "Bank Transfer",
+  ussd: "USSD Payment",
 };
