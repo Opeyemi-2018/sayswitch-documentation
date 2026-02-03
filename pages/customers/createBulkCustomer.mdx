@@ -1,0 +1,73 @@
+## Create Bulk Customer
+
+This endpoint allows you to register multiple customers on the platform simultaneously by submitting an array of customer information. This is useful for onboarding multiple customers at once.
+
+#### API Endpoint
+
+```js copy
+POST https://backendapi.sayswitchgroup.com/api/v1/customer/bulk_create
+```
+
+### Sample Request
+
+```js
+curl -X POST https://backendapi.sayswitchgroup.com/api/v1/customer/bulk_create \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer YOUR_SECRET_KEY" \
+  -d '{
+    "customers": [
+      {
+        "email": "akinlabiolaoluwa15@gmail.com",
+        "first_name": "olaoluwa",
+        "last_name": "akinlabi",
+        "phone": "07040237649",
+        "bvn": "22358970815" // optional
+      },
+      {
+        "email": "adola.bisi@gmail.com",
+        "first_name": "Adeola",
+        "last_name": "Bisi",
+        "phone": "08039876543"
+      }
+    ]
+  }
+```
+
+### Request Explanation
+
+| Fields       | Type     | Description                                         |
+| ------------ | -------- | --------------------------------------------------- |
+| `customers`  | `array`  | An array of customer objects to be created.         |
+| `email`      | `string` | The customer's valid email address.                 |
+| `first_name` | `string` | The customer's given name.                          |
+| `last_name`  | `string` | The customer's surname or family name.              |
+| `phone`      | `string` | The customer's primary phone number.                |
+| `bvn`        | `string` | (Optional) The customer's Bank Verification Number. |
+
+#### Sample Response
+
+```
+{
+  "status": true,
+  "message": "Customers processed",
+  "data": {
+    "batchid": "0705855c54999",
+    "totalSubmitted": 2,
+    "totalCreated": 2,
+    "totalSkipped": 0,
+    "domain": "live"
+  }
+}
+```
+
+#### Response Explanation
+
+| Fields           | Type      | Description                                         |
+| ---------------- | --------- | --------------------------------------------------- |
+| `status`         | `boolean` | Indicates whether the request was successful.       |
+| `message`        | `string`  | A descriptive message about the operation result.   |
+| `batchid`        | `string`  | Unique identifier for this bulk creation batch.     |
+| `totalSubmitted` | `integer` | Total number of customers submitted in the request. |
+| `totalCreated`   | `integer` | Number of customers successfully created.           |
+| `totalSkipped`   | `integer` | Number of customers skipped (e.g., duplicates).     |
+| `domain`         | `string`  | The domain environment (e.g., "live" or "test").    |

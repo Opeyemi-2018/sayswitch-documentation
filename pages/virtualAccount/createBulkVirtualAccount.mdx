@@ -1,0 +1,96 @@
+## Create Dedicated Bulk Virtual Account
+
+This endpoint allows you to create dedicated virtual accounts in bulk for multiple customers using the batch ID from the [create bulk customer](/customers/createBulkCustomer) endpoint response. This is useful for generating unique virtual account numbers for each customer in a batch.
+
+#### API Endpoint
+
+```js copy
+POST https://backendapi.sayswitchgroup.com/api/v1/dedicated_bulk_virtual_account
+```
+
+```js
+curl -X POST https://backendapi.sayswitchgroup.com/api/v1/dedicated_bulk_virtual_account \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer YOUR_SECRET_KEY" \
+  -d '{
+    "batchId": "6641876634878"
+  }'
+```
+
+#### Request Explanation
+
+| Fields    | Type     | Description                                                           |
+| --------- | -------- | --------------------------------------------------------------------- |
+| `batchId` | `string` | The unique batch identifier from the bulk customer creation response. |
+
+```js
+
+
+#### Sample Response
+
+
+{
+  "status": true,
+  "message": "NUBAN accounts successfully created",
+  "totalCreated": 2,
+  "totalSkipped": 0,
+  "data": [
+    {
+      "businesses_id": 96,
+      "customer_id": 2108,
+      "account_name": "SUN",
+      "account_number": "6600026605",
+      "bank_name": "Moniepoint Microfinance Bank",
+      "currency": "NGN",
+      "domain": "live",
+      "status": "active",
+      "provider_id": 1,
+      "reference": "v31jqnnxuqydmm2",
+      "assignment": "reserved",
+      "updated_at": "2026-02-02T21:53:30.000000Z",
+      "created_at": "2026-02-02T21:53:30.000000Z",
+      "id": 1958
+    },
+    {
+      "businesses_id": 96,
+      "customer_id": 2109,
+      "account_name": "Adeola Bisi",
+      "account_number": "8787606921",
+      "bank_name": "Wema Bank",
+      "currency": "NGN",
+      "domain": "live",
+      "status": "active",
+      "provider_id": 1,
+      "reference": "rwniknz6axh8gsm",
+      "assignment": "reserved",
+      "updated_at": "2026-02-02T21:53:30.000000Z",
+      "created_at": "2026-02-02T21:53:30.000000Z",
+      "id": 1959
+    }
+  ]
+}
+```
+
+#### Response Explanation
+
+| Fields           | Type      | Description                                               |
+| ---------------- | --------- | --------------------------------------------------------- |
+| `status`         | `boolean` | Indicates whether the request was successful.             |
+| `message`        | `string`  | A descriptive message about the operation result.         |
+| `totalCreated`   | `integer` | Number of virtual accounts successfully created.          |
+| `totalSkipped`   | `integer` | Number of accounts skipped during creation.               |
+| `data`           | `array`   | Array of created virtual account objects.                 |
+| `businesses_id`  | `integer` | The business identifier associated with the account.      |
+| `customer_id`    | `integer` | The customer identifier for whom the account was created. |
+| `account_name`   | `string`  | The name registered to the virtual account.               |
+| `account_number` | `string`  | The unique virtual account number (NUBAN).                |
+| `bank_name`      | `string`  | The name of the bank providing the virtual account.       |
+| `currency`       | `string`  | The currency of the account (e.g., "NGN").                |
+| `domain`         | `string`  | The domain environment (e.g., "live" or "test").          |
+| `status`         | `string`  | The current status of the account (e.g., "active").       |
+| `provider_id`    | `integer` | The identifier for the account provider.                  |
+| `reference`      | `string`  | Unique reference code for the virtual account.            |
+| `assignment`     | `string`  | Account assignment type (e.g., "reserved").               |
+| `created_at`     | `string`  | Timestamp when the account was created.                   |
+| `updated_at`     | `string`  | Timestamp when the account was last updated.              |
+| `id`             | `integer` | The unique identifier for the virtual account record.     |
